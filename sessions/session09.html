@@ -8,10 +8,24 @@
         body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
+        h3 { color: #16a085; margin-top: 20px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
+        code { background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
+        .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+
+        .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
+        .accordion:hover { background-color: #ddd; }
+        .accordion.active { background-color: #3498db; color: white; }
+        .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
+
+        .math { font-family: "Times New Roman", serif; font-size: 1.2em; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background-color: #3498db; color: white; }
     </style>
 </head>
 <body>
@@ -28,49 +42,300 @@
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>دسته‌بندی (Classification)</h2>
+    <button class="accordion">دسته‌بندی (Classification) چیست؟</button>
+    <div class="panel">
         <div class="key-concept">
-            <strong>دسته‌بندی:</strong> پیش‌برچسب‌گذاری شده→یک کلاس اختصاص دادن
+            <strong>دسته‌بندی:</strong> پیش‌بینی یک برچسب (کلاس) برای هر نمونه بر اساس ویژگی‌های آن.
         </div>
+
+        <h3>انواع دسته‌بندی:</h3>
+        <ul>
+            <li><strong>دو کلاسه (Binary):</strong> بله/خیر، spam/not spam</li>
+            <li><strong>چند کلاسه (Multi-class):</strong> گربه/سگ/پرنده</li>
+            <li><strong>چند برچسبه (Multi-label):</strong> یک نمونه چند برچسب دارد</li>
+        </ul>
+
+        <h3>مثال‌های کاربردی:</h3>
         <ul>
             <li>تشخیص ایمیل اسپم</li>
-            <li>تشخیص بیماری</li>
+            <li>تشخیص بیماری از علائم</li>
             <li>تشخیص چهره</li>
+            <li>پیش‌بینی ریزش مشتریان</li>
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>الگوریتم‌های دسته‌بندی</h2>
-        <ul>
-            <li><strong>Logistic Regression:</strong> رگرسیون لجستیک</li>
-            <li><strong>K-Nearest Neighbors (KNN):</strong> نزدیک‌ترین همسایه</li>
-            <li><strong>Decision Tree:</strong> درخت تصمیم</li>
-            <li><strong>Support Vector Machine (SVM):</strong> ماشین بردار پشتیبان</li>
-            <li><strong>Neural Networks:</strong> شبکه‌های عصبی</li>
-        </ul>
-    </div>
-
-    <div class="phase">
-        <h2>خوشه‌بندی (Clustering)</h2>
+    <button class="accordion">الگوریتم‌های دسته‌بندی - KNN</button>
+    <div class="panel">
+        <h3>K-Nearest Neighbors (KNN)</h3>
         <div class="key-concept">
-            <strong>خوشه‌بندی:</strong> گروه‌بندی داده‌های مشابه بدون برچسب
+            "به همسایه‌هایت نگاه کن" - برچسب نمونه را طبق اکثریت همسایه‌های نزدیک تعیین می‌کنیم.
         </div>
+
+        <h3>الگوریتم:</h3>
+        <ol>
+            <li>فاصله نمونه جدید را با همه نمونه‌های آموزش محاسبه کن</li>
+            <li>K همسایه نزدیک را پیدا کن</li>
+            <li>برچسب اکثریت را به نمونه جدید بده</li>
+        </ol>
+
+        <h3>فرمول فاصله اقلیدسی:</h3>
+        <div class="formula">
+            d(x, y) = √Σ(x<sub>i</sub> - y<sub>i</sub>)²
+        </div>
+
+        <h3>مزایا و معایب:</h3>
+        <table>
+            <tr>
+                <th>مزایا</th>
+                <th>معایب</th>
+            </tr>
+            <tr>
+                <td>ساده و قابل فهم</td>
+                <td>کند در زمان پیش‌بینی</td>
+            </tr>
+            <tr>
+                <td>ندارد مرحله آموزش</td>
+                <td>حساس به مقیاس ویژگی‌ها</td>
+            </tr>
+            <tr>
+                <td>طبیعی</td>
+                <td>نیاز به تعیین K</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">الگوریتم‌های دسته‌بندی - Logistic Regression</button>
+    <div class="panel">
+        <h3>رگرسیون لجستیک</h3>
+        <div class="key-concept">
+            استفاده از تابع لجستیک برای تبدیل خروجی خطی به احتمال
+        </div>
+
+        <h3>تابع لجستیک (Sigmoid):</h3>
+        <div class="formula">
+            σ(z) = 1 / (1 + e<sup>-z</sup>)
+        </div>
+
+        <h3>مدل:</h3>
+        <div class="formula">
+            P(y=1|x) = σ(wx + b) = 1 / (1 + e<sup>-(wx+b)</sup>)
+        </div>
+
+        <h3>مرز تصمیم:</h3>
+        <p>وقتی P > 0.5 → کلاس 1</p>
+        <p>وقتی P ≤ 0.5 → کلاس 0</p>
+
+        <div class="example">
+            <p>مثال: تشخیص اسپم</p>
+            <p>x = تعداد کلمات مشکوک</p>
+            <p>اگر wx + b = 2 → P = 0.88 → اسپم</p>
+            <p>اگر wx + b = -1 → P = 0.27 → اسپم نیست</p>
+        </div>
+    </div>
+
+    <button class="accordion">الگوریتم‌های دسته‌بندی - SVM</button>
+    <div class="panel">
+        <h3>Support Vector Machine (SVM)</h3>
+        <div class="key-concept">
+            پیدا کردن ابرصفحه‌ای که بیشترین فاصله را بین کلاس‌ها دارد.
+        </div>
+
+        <h3>مفاهیم کلیدی:</h3>
+        <ul>
+            <li><strong>Support Vectors:</strong> نمونه‌هایی که روی مرز هستند</li>
+            <li><strong>Maximum Margin:</strong> بیشترین فاصله بین کلاس‌ها</li>
+            <li><strong>Hyperplane:</strong> مرز تصمیم در فضای چند بعدی</li>
+        </ul>
+
+        <h3>فرمول:</h3>
+        <div class="formula">
+            w · x + b = 0
+        </div>
+
+        <h3>Kernel Trick:</h3>
+        <p>استفاده از توابع هسته برای تبدیل فضا به فضای با بُعد بالاتر:</p>
+        <ul>
+            <li>Linear Kernel</li>
+            <li>Polynomial Kernel</li>
+            <li>RBF (Gaussian) Kernel</li>
+        </ul>
+
+        <div class="example">
+            <p>مثال: تفکیک دایره‌ای از نقاط</p>
+            <p>با RBF Kernel می‌توان مرز دایره‌ای ایجاد کرد</p>
+        </div>
+    </div>
+
+    <button class="accordion">الگوریتم‌های دسته‌بندی - Decision Tree</button>
+    <div class="panel">
+        <h3>درخت تصمیم</h3>
+        <div class="key-concept">
+            استفاده از قوانین if-then برای دسته‌بندی
+        </div>
+
+        <h3>مفاهیم:</h3>
+        <ul>
+            <li><strong>Root:</strong> ریشه - اولین سوال</li>
+            <li><strong>Node:</strong> هر سوال</li>
+            <li><strong>Leaf:</strong> برگ - نتیجه نهایی</li>
+            <li><strong>Split:</strong> تقسیم بر اساس یک ویژگی</li>
+        </ul>
+
+        <h3>معیارهای تقسیم:</h3>
+        <ul>
+            <li><strong>Gini Impurity:</strong></li>
+            <div class="formula">
+                Gini = 1 - Σp<sub>i</sub>²
+            </div>
+            <li><strong>Entropy:</strong></li>
+            <div class="formula">
+                Entropy = -Σp<sub>i</sub> × log₂(p<sub>i</sub>)
+            </div>
+            <li><strong>Information Gain:</strong></li>
+            <div class="formula">
+                IG = Entropy(parent) - Weighted_Avg(Entropy(children))
+            </div>
+        </ul>
+
+        <h3>مزایا و معایب:</h3>
+        <table>
+            <tr>
+                <th>مزایا</th>
+                <th>معایب</th>
+            </tr>
+            <tr>
+                <td>قابل تفسیر</td>
+                <td>مستعد بیش‌برازش</td>
+            </tr>
+            <tr>
+                <td>نیازی به مقیاس داده نیست</td>
+                <td>ناپایدار (تغییر کم داده → تغییر زیاد درخت)</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">خوشه‌بندی (Clustering) چیست؟</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>خوشه‌بندی:</strong> گروه‌بندی داده‌های مشابه بدون برچسب اولیه
+        </div>
+
+        <h3>تفاوت با دسته‌بندی:</h3>
+        <table>
+            <tr>
+                <th>دسته‌بندی</th>
+                <th>خوشه‌بندی</th>
+            </tr>
+            <tr>
+                <td>یادگیری باناظر</td>
+                <td>یادگیری بی‌ناظر</td>
+            </tr>
+            <tr>
+                <td>برچسب‌ها مشخص</td>
+                <td>برچسب‌ها نامشخص</td>
+            </tr>
+            <tr>
+                <td>داده‌های برچسب‌گذاری شده</td>
+                <td>فقط داده‌های خام</td>
+            </tr>
+        </table>
+
+        <h3>کاربردها:</h3>
         <ul>
             <li>سگمان‌بندی مشتریان</li>
             <li>فشرده‌سازی تصویر</li>
             <li>تشخیص ناهنجاری</li>
+            <li>تحلیل شبکه‌های اجتماعی</li>
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>الگوریتم‌های خوشه‌بندی</h2>
+    <button class="accordion">الگوریتم K-Means</button>
+    <div class="panel">
+        <h3>K-Means</h3>
+        <div class="key-concept">
+            تقسیم داده‌ها به K خوشه بر اساس فاصله از مراکز
+        </div>
+
+        <h3>الگوریتم:</h3>
+        <ol>
+            <li>K نقطه تصادفی به عنوان مراکز (Centroids) انتخاب کن</li>
+            <li>هر داده را به نزدیک‌ترین مرکز اختصاص بده</li>
+            <li>مراکز را دوباره محاسبه کن (میانگین هر خوشه)</li>
+            <li>تکرار ۲ و ۳ تا همگرایی</li>
+        </ol>
+
+        <h3>فرمول:</h3>
+        <div class="formula">
+            J = Σ<sub>k</sub> Σ<sub>i∈C_k</sub> ||x<sub>i</sub> - μ<sub>k</sub>||²
+        </div>
+        <p>که μ<sub>k</sub> مرکز خوشه k است.</p>
+
+        <h3>مزایا و معایب:</h3>
+        <table>
+            <tr>
+                <th>مزایا</th>
+                <th>معایب</th>
+            </tr>
+            <tr>
+                <td>ساده و سریع</td>
+                <td>نیاز به تعیین K</td>
+            </tr>
+            <tr>
+                <td>مقیاس‌پذیر</td>
+                <td>حساس به نقطه اولیه</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>فرض کروی بودن خوشه‌ها</td>
+            </tr>
+        </table>
+
+        <h3>روش Elbow:</h3>
+        <p>برای پیدا کردن K بهینه، مجموع فاصله‌های درون‌خوشه‌ای را برای Kهای مختلف رسم کنید. نقطه‌ای که کاهش آهسته می‌شود (آرنج) را انتخاب کنید.</p>
+    </div>
+
+    <button class="accordion">الگوریتم DBSCAN</button>
+    <div class="panel">
+        <h3>DBSCAN</h3>
+        <div class="key-concept">
+            خوشه‌بندی بر اساس چگالی - خوشه‌ها مناطق با چگالی بالا هستند
+        </div>
+
+        <h3>مفاهیم:</h3>
         <ul>
-            <li><strong>K-Means:</strong> محورهای مرکزی</li>
-            <li><strong>Hierarchical:</strong> سلسله‌مراتبی</li>
-            <li><strong>DBSCAN:</strong> بر اساس چگالی</li>
+            <li><strong>Core Point:</strong> نقطه‌ای با حداقل MinPts همسایه در شعاع ε</li>
+            <li><strong>Border Point:</strong> نقطه‌ای که هسته نیست ولی در همسایگی هسته است</li>
+            <li><strong>Noise Point:</strong> نقطه‌ای که در هیچ خوشه‌ای نیست</li>
+        </ul>
+
+        <h3>پارامترها:</h3>
+        <ul>
+            <li><strong>ε (eps):</strong> شعاع همسایگی</li>
+            <li><strong>MinPts:</strong> حداقل نقاط برای هسته شدن</li>
+        </ul>
+
+        <h3>مزایا:</h3>
+        <ul>
+            <li>تعداد خوشه‌ها خودکار تعیین می‌شود</li>
+            <li>می‌تواند خوشه‌های شکل‌های مختلف را پیدا کند</li>
+            <li>نقاط نویز را تشخیص می‌دهد</li>
         </ul>
     </div>
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 
     <p style="text-align: center; color: #7f8c8d; margin-top: 40px;">
         <a href="../plan.html">بازگشت به برنامه درسی</a>

@@ -8,10 +8,24 @@
         body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
+        h3 { color: #16a085; margin-top: 20px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
+        code { background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
+        .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+
+        .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
+        .accordion:hover { background-color: #ddd; }
+        .accordion.active { background-color: #3498db; color: white; }
+        .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
+
+        .math { font-family: "Times New Roman", serif; font-size: 1.2em; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background-color: #3498db; color: white; }
     </style>
 </head>
 <body>
@@ -28,56 +42,252 @@
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>یادگیری باناظر (Supervised)</h2>
+    <button class="accordion">یادگیری باناظر (Supervised Learning)</button>
+    <div class="panel">
         <div class="key-concept">
-            یادگیری با داده‌های برچسب‌گذاری شده.
+            یادگیری با داده‌های برچسب‌گذاری شده - مدل از جفت‌های (ورودی، خروجی) یاد می‌گیرد.
         </div>
+
+        <h3>ساختار داده:</h3>
+        <div class="formula">
+            D = {(x₁, y₁), (x₂, y₂), ..., (xₙ, yₙ)}
+        </div>
+        <p>که x ورودی و y برچسب (خروجی) است.</p>
+
+        <h3>دو دسته اصلی:</h3>
         <ul>
-            <li>ورودی → خروجی مشخص</li>
-            <li>مدل از مثال‌ها یاد می‌گیرد</li>
+            <li><strong>رگرسیون:</strong> خروجی پیوسته (عدد)</li>
+            <li><strong>طبقه‌بندی:</strong> خروجی گسسته (برچسب)</li>
         </ul>
-        <h3>کاربردها:</h3>
+
+        <h3>الگوریتم‌های رایج:</h3>
+        <table>
+            <tr>
+                <th>رگرسیون</th>
+                <th>طبقه‌بندی</th>
+            </tr>
+            <tr>
+                <td>Linear Regression</td>
+                <td>Logistic Regression</td>
+            </tr>
+            <tr>
+                <td>Polynomial Regression</td>
+                <td>K-Nearest Neighbors</td>
+            </tr>
+            <tr>
+                <td>Decision Tree</td>
+                <td>Decision Tree</td>
+            </tr>
+            <tr>
+                <td>Random Forest</td>
+                <td>Random Forest</td>
+            </tr>
+            <tr>
+                <td>SVR</td>
+                <td>SVM</td>
+            </tr>
+            <tr>
+                <td>Neural Networks</td>
+                <td>Neural Networks</td>
+            </tr>
+        </table>
+
+        <h3>مثال:</h3>
+        <div class="example">
+            <p>آموزش مدل تشخیص گربه:</p>
+            <ul>
+                <li>تصویر (ورودی) → برچسب "گربه" (خروجی)</li>
+                <li>با هزاران مثال، مدل یاد می‌گیرد</li>
+                <li>سپس برای تصویر جدید، برچسب پیش‌بینی می‌کند</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">یادگیری بی‌ناظر (Unsupervised Learning)</button>
+    <div class="panel">
+        <div class="key-concept">
+            یادگیری بدون داده‌های برچسب‌گذاری شده - مدل باید ساختار پنهان در داده‌ها را کشف کند.
+        </div>
+
+        <h3>دسته‌های اصلی:</h3>
         <ul>
-            <li>طبقه‌بندی ایمیل‌ها</li>
-            <li>پیش‌بینی قیمت</li>
-            <li>تشخیص تصویر</li>
+            <li><strong>خوشه‌بندی:</strong> گروه‌بندی داده‌های مشابه</li>
+            <li><strong>کاهش بُعد:</strong> فشرده‌سازی داده‌ها</li>
+            <li><strong>تشخیص ناهنجاری:</strong> پیدا کردن نقاط غیرعادی</li>
+            <li><strong>یادگیری قانون:</strong> استخراج قوانین انجمنی</li>
+        </ul>
+
+        <h3>الگوریتم‌های رایج:</h3>
+        <table>
+            <tr>
+                <th>خوشه‌بندی</th>
+                <th>کاهش بُعد</th>
+            </tr>
+            <tr>
+                <td>K-Means</td>
+                <td>PCA</td>
+            </tr>
+            <tr>
+                <td>Hierarchical</td>
+                <td>t-SNE</td>
+            </tr>
+            <tr>
+                <td>DBSCAN</td>
+                <td>UMAP</td>
+            </tr>
+            <tr>
+                <td>Gaussian Mixture</td>
+                <td>Autoencoder</td>
+            </tr>
+        </table>
+
+        <h3>مثال:</h3>
+        <div class="example">
+            <p>سگمان‌بندی مشتریان:</p>
+            <ul>
+                <li>ورودی: اطلاعات خرید مشتریان</li>
+                <li>بدون برچسب!</li>
+                <li>مدل مشتریان مشابه را گروه‌بندی می‌کند</li>
+                <li>مثلاً: گروه "خریداران منظم"، "خریداران گاه‌به‌گاه"</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">یادگیری تقویتی (Reinforcement Learning)</button>
+    <div class="panel">
+        <div class="key-concept">
+            یادگیری از طریق تعامل با محیط و دریافت پاداش یا جریمه
+        </div>
+
+        <h3>ساختار:</h3>
+        <ul>
+            <li><strong>Agent (عامل):</strong> یادگیرنده</li>
+            <li><strong>Environment (محیط):</strong> جایی که عامل در آن عمل می‌کند</li>
+            <li><strong>Action (عمل):</strong> تصمیم عامل</li>
+            <li><strong>State (وضعیت):</strong> وضعیت فعلی محیط</li>
+            <li><strong>Reward (پاداش):</strong> بازخورد از محیط</li>
+        </ul>
+
+        <h3>فرآیند:</h3>
+        <div class="formula">
+            State → Action → Reward → New State → ...
+        </div>
+
+        <h3>مفاهیم کلیدی:</h3>
+        <ul>
+            <li><strong>Policy (سیاست):</strong> استراتژی انتخاب عمل</li>
+            <li><strong>Value Function:</strong> ارزش انتظاری هر وضعیت</li>
+            <li><strong>Q-Value:</strong> ارزش انتظاری عمل در وضعیت</li>
+        </ul>
+
+        <h3>الگوریتم‌های رایج:</h3>
+        <ul>
+            <li>Q-Learning</li>
+            <li>Deep Q-Network (DQN)</li>
+            <li>Policy Gradient</li>
+            <li>Actor-Critic</li>
+            <li>Proximal Policy Optimization (PPO)</li>
+        </ul>
+
+        <h3>مثال:</h3>
+        <div class="example">
+            <p>بازی شطرنج:</p>
+            <ul>
+                <li>عامل: برنامه شطرنج</li>
+                <li>عمل: حرکت مهره</li>
+                <li>پاداش: +۱ برد، -۱ باخت، ۰ مساوی</li>
+                <li>مدل یاد می‌گیرد کدام حرکات برد را افزایش می‌دهند</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">مقایسه انواع یادگیری</button>
+    <div class="panel">
+        <table>
+            <tr>
+                <th>ویژگی</th>
+                <th>باناظر</th>
+                <th>بی‌ناظر</th>
+                <th>تقویتی</th>
+            </tr>
+            <tr>
+                <td>نوع داده</td>
+                <td>برچسب‌دار</td>
+                <td>بدون برچسب</td>
+                <td>تعاملی</td>
+            </tr>
+            <tr>
+                <td>خروجی</td>
+                <td>پیش‌بینی</td>
+                <td>ساختار/الگو</td>
+                <td>سیاست</td>
+            </tr>
+            <tr>
+                <td>هدف</td>
+                <td>یادگیری نگاشت</td>
+                <td>کشف الگو</td>
+                <td>بیشینه‌سازی پاداش</td>
+            </tr>
+            <tr>
+                <td>مثال</td>
+                <td>تشخیص spam</td>
+                <td>خوشه‌بندی</td>
+                <td>بازی کامپیوتری</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">یادگیری نیمه‌ناظر (Semi-Supervised)</button>
+    <div class="panel">
+        <div class="key-concept">
+            ترکیب داده‌های برچسب‌دار و بدون برچسب
+        </div>
+
+        <h3>چرا مفید است؟</h3>
+        <ul>
+            <li>برچسب‌گذاری داده‌ها گران و زمان‌بر است</li>
+            <li>معمولاً داده‌های بدون برچسب بیشتر از برچسب‌دار هستند</li>
+        </ul>
+
+        <h3>روش‌ها:</h3>
+        <ul>
+            <li>Self-Training: استفاده از مدل برای برچسب‌گذاری داده‌های بدون برچسب</li>
+            <li>Co-Training: ترکیب چند مدل</li>
+            <li>Generative Models: مدل‌های مولد</li>
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>یادگیری بی‌ناظر (Unsupervised)</h2>
+    <button class="accordion">یادگیری خودآموز (Self-Supervised)</button>
+    <div class="panel">
         <div class="key-concept">
-            یادگیری بدون داده‌های برچسب‌گذاری شده.
+            ایجاد برچسب از داده بدون نیاز به انسان
         </div>
+
+        <h3>مثال:</h3>
         <ul>
-            <li>فقط ورودی → الگو در داده</li>
-            <li>کشف ساختار پنهان</li>
+            <li><strong>Word2Vec:</strong> پیش‌بینی کلمه بر اساس上下文</li>
+            <li><strong>BERT:</strong> پیش‌بینی کلمه masked در جمله</li>
+            <li><strong>Contrastive Learning:</strong> تشخیص تصویر مشابه/متفاوت</li>
         </ul>
-        <h3>کاربردها:</h3>
-        <ul>
-            <li>خوشه‌بندی مشتریان</li>
-            <li>کاهش بُعد</li>
-            <li>تشخیص ناهنجاری</li>
-        </ul>
+
+        <h3>کاربرد:</h3>
+        <p>بسیار رایج در پردازش زبان طبیعی و بینایی ماشین برای پیش‌آموزش مدل‌های بزرگ.</p>
     </div>
 
-    <div class="phase">
-        <h2>یادگیری تقویتی (Reinforcement)</h2>
-        <div class="key-concept">
-            یادگیری از طریق تعامل با محیط و دریافت پاداش/جریمه.
-        </div>
-        <ul>
-            <li>Agent → Action → Environment → Reward</li>
-            <li>یادگیری سیاست بهینه</li>
-        </ul>
-        <h3>کاربردها:</h3>
-        <ul>
-            <li>بازی‌های کامپیوتری</li>
-            <li>رباتیک</li>
-            <li>خودروهای خودران</li>
-        </ul>
-    </div>
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 
     <p style="text-align: center; color: #7f8c8d; margin-top: 40px;">
         <a href="../plan.html">بازگشت به برنامه درسی</a>

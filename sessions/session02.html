@@ -8,12 +8,18 @@
         body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
+        h3 { color: #16a085; margin-top: 20px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: right; }
+        .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+        .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
+        .accordion:hover { background-color: #ddd; }
+        .accordion.active { background-color: #3498db; color: white; }
+        .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
         th { background-color: #3498db; color: white; }
     </style>
 </head>
@@ -31,63 +37,132 @@
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>فناوری‌های اصلی</h2>
-
-        <h3>۱. هوش مصنوعی و یادگیری ماشین</h3>
+    <button class="accordion">۱. هوش مصنوعی و یادگیری ماشین</button>
+    <div class="panel">
         <div class="key-concept">
-            <strong>هوش مصنوعی (AI):</strong> توانایی ماشین‌ها برای模仿 هوشمندی انسان.
+            <strong>هوش مصنوعی (AI):</strong> توانایی ماشین‌ها برای شبیه‌سازی هوشمندی انسان.
             <br><strong>یادگیری ماشین (ML):</strong> زیرشاخه‌ای از AI که سیستم‌ها را قادر به یادگیری از داده می‌کند.
         </div>
+
+        <h3>شاخه‌های اصلی:</h3>
         <ul>
-            <li>پردازش زبان طبیعی (NLP)</li>
-            <li>بینایی ماشین (Computer Vision)</li>
+            <li><strong>پردازش زبان طبیعی (NLP):</strong> درک و تولید زبان</li>
+            <li><strong>بینایی ماشین (Computer Vision):</strong> تحلیل تصاویر</li>
+            <li><strong>یادگیری عمیق:</strong> شبکه‌های عصبی چندلایه</li>
+        </ul>
+
+        <h3>کاربردها:</h3>
+        <ul>
+            <li>چت‌بات‌ها و دستیارهای صوتی</li>
+            <li>تشخیص چهره و تصویر</li>
             <li>سیستم‌های توصیه‌گر</li>
+            <li>خودروهای خودران</li>
         </ul>
+    </div>
 
-        <h3>۲. اینترنت اشیاء (IoT)</h3>
+    <button class="accordion">۲. اینترنت اشیاء (IoT)</button>
+    <div class="panel">
         <div class="key-concept">
-            اتصال دستگاه‌های فیزیکی به اینترنت و تبادل داده بین آن‌ها.
+            <strong>IoT:</strong> اتصال دستگاه‌های فیزیکی به اینترنت و تبادل داده بین آن‌ها.
         </div>
+
+        <h3>مولفه‌ها:</h3>
         <ul>
-            <li>خانه‌های هوشمند</li>
-            <li>شهرهای هوشمند</li>
-            <li>صنعت ۴.۰</li>
+            <li><strong>سنسورها:</strong> جمع‌آوری داده از محیط</li>
+            <li><strong>اتصال:</strong> انتقال داده (WiFi, 5G, LoRa)</li>
+            <li><strong>پلتفرم:</strong> پردازش و تحلیل داده</li>
+            <li><strong>اپلیکیشن:</strong> نمایش و کنترل</li>
         </ul>
 
-        <h3>۳. کلان‌داده (Big Data)</h3>
-        <div class="key-concept">
-            مجموعه داده‌های حجیم که با ابزارهای سنتی قابل پردازش نیستند.
+        <h3>کاربردها:</h3>
+        <div class="example">
+            <ul>
+                <li><strong>خانه‌های هوشمند:</strong> ترموستات، روشنایی، امنیت</li>
+                <li><strong>شهرهای هوشمند:</strong> مدیریت ترافیک، آلودگی</li>
+                <li><strong>صنعت ۴.۰:</strong> نگهداری پیشگیرانه، کنترل کیفیت</li>
+                <li><strong>کشاورزی هوشمند:</strong> آبیاری، کنترل آفات</li>
+            </ul>
         </div>
+    </div>
+
+    <button class="accordion">۳. کلان‌داده (Big Data)</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>کلان‌داده:</strong> مجموعه داده‌های حجیم که با ابزارهای سنتی قابل پردازش نیستند.
+        </div>
+
+        <h3>۵V کلان‌داده:</h3>
         <ul>
-            <li>۵V: Volume, Velocity, Variety, Veracity, Value</li>
-            <li>تحلیل پیش‌بینانه</li>
-            <li>Apache Hadoop, Spark</li>
+            <li><strong>Volume (حجم):</strong> داده‌های ترابایتی و پتابایتی</li>
+            <li><strong>Velocity (سرعت):</strong> تولید و پردازش بلادرنگ</li>
+            <li><strong>Variety (تنوع):</strong> متن، تصویر، ویدیو، سنسور</li>
+            <li><strong>Veracity (صحت):</strong> کیفیت و قابلیت اعتماد</li>
+            <li><strong>Value (ارزش):</strong> بینش و تصمیم‌گیری</li>
         </ul>
 
-        <h3>۴. بلاک‌چین</h3>
+        <h3>ابزارها:</h3>
+        <ul>
+            <li>Apache Hadoop</li>
+            <li>Apache Spark</li>
+            <li>NoSQL Databases</li>
+        </ul>
+    </div>
+
+    <button class="accordion">۴. بلاک‌چین</button>
+    <div class="panel">
         <div class="key-concept">
-            دفتر کل توزیع‌شده و غیرقابل تغییر برای ثبت تراکنش‌ها.
+            <strong>بلاک‌چین:</strong> دفتر کل توزیع‌شده و غیرقابل تغییر برای ثبت تراکنش‌ها.
         </div>
+
+        <h3>ویژگی‌ها:</h3>
+        <ul>
+            <li><strong>غیرمتمرکز:</strong> بدون واسطه</li>
+            <li><strong>شفاف:</strong> همه می‌توانند ببینند</li>
+            <li><strong>تغییرناپذیر:</strong> قابل دستکاری نیست</li>
+            <li><strong>امن:</strong> رمزنگاری شده</li>
+        </ul>
+
+        <h3>کاربردها:</h3>
         <ul>
             <li>ارزهای دیجیتال (Bitcoin, Ethereum)</li>
             <li>قراردادهای هوشمند</li>
             <li>زنجیره تأمین</li>
-        </ul>
-
-        <h3>۵. رایانش ابری (Cloud Computing)</h3>
-        <div class="key-concept">
-            ارائه خدمات کامپیوتری از طریق اینترنت.
-        </div>
-        <ul>
-            <li>IaaS, PaaS, SaaS</li>
-            <li>مقیاس‌پذیری و انعطاف‌پذیری</li>
-            <li>AWS, Azure, Google Cloud</li>
+            <li>رأی‌گیری</li>
+            <li>مدیریت اسناد</li>
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>ترکیب فناوری‌ها</h2>
+    <button class="accordion">۵. رایانش ابری (Cloud Computing)</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>رایانش ابری:</strong> ارائه خدمات کامپیوتری از طریق اینترنت.
+        </div>
+
+        <h3>انواع خدمات:</h3>
+        <ul>
+            <li><strong>IaaS:</strong> زیرساخت (سرور، شبکه)</li>
+            <li><strong>PaaS:</strong> پلتفرم (محیط توسعه)</li>
+            <li><strong>SaaS:</strong> نرم‌افزار (اپلیکیشن)</li>
+        </ul>
+
+        <h3>مزایا:</h3>
+        <ul>
+            <li>مقیاس‌پذیری</li>
+            <li>کاهش هزینه</li>
+            <li>دسترسی Anywhere</li>
+            <li>امنیت</li>
+        </ul>
+
+        <h3>ارائه‌دهندگان:</h3>
+        <ul>
+            <li>Amazon Web Services (AWS)</li>
+            <li>Microsoft Azure</li>
+            <li>Google Cloud Platform</li>
+        </ul>
+    </div>
+
+    <button class="accordion">ترکیب فناوری‌ها</button>
+    <div class="panel">
         <table>
             <tr>
                 <th>ترکیب</th>
@@ -109,8 +184,27 @@
                 <td>AI + Big Data</td>
                 <td>مدل‌های پیش‌بینی دقیق</td>
             </tr>
+            <tr>
+                <td>Cloud + AI</td>
+                <td>سرویس‌های هوشمند (AI-as-a-Service)</td>
+            </tr>
         </table>
     </div>
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 
     <p style="text-align: center; color: #7f8c8d; margin-top: 40px;">
         <a href="../plan.html">بازگشت به برنامه درسی</a>

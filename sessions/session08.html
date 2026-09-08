@@ -8,11 +8,24 @@
         body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
+        h3 { color: #16a085; margin-top: 20px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
         code { background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
+        .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+
+        .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
+        .accordion:hover { background-color: #ddd; }
+        .accordion.active { background-color: #3498db; color: white; }
+        .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
+
+        .math { font-family: "Times New Roman", serif; font-size: 1.2em; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background-color: #3498db; color: white; }
     </style>
 </head>
 <body>
@@ -29,45 +42,238 @@
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>گرادیان چیست؟</h2>
+    <button class="accordion">گرادیان چیست؟</button>
+    <div class="panel">
         <div class="key-concept">
             <strong>گرادیان:</strong> برداری که جهت بیش‌ترین افزایش تابع را نشان می‌دهد.
-            <br>منفی گرادیان = جهت بیش‌ترین کاهش
+            <br><strong>منفی گرادیان:</strong> جهت بیش‌ترین کاهش تابع
         </div>
+
+        <h3>تعریف ریاضی:</h3>
+        <p>اگر f(x,y) یک تابع دو متغیره باشد:</p>
+        <div class="formula">
+            ∇f = [∂f/∂x, ∂f/∂y]
+        </div>
+
+        <h3>تصویری:</h3>
+        <div class="example">
+            <p>فرض کنید روی یک کوه هستید و می‌خواهید به پایین‌ترین نقطه (دره) بروید.</p>
+            <ul>
+                <li>گرادیان جهت بالاترین شیب را نشان می‌دهد</li>
+                <li>حرکت در جهت منفی گرادیان شما را به پایین می‌برد</li>
+                <li>هرچه شیب بیشتر باشد، گرادیان بزرگتر است</li>
+            </ul>
+        </div>
+
+        <h3>مشتق جزئی:</h3>
+        <p>مشتق جزئی ∂f/∂x نشان می‌دهد f چقدر تغییر می‌کند اگر فقط x تغییر کند و y ثابت بماند.</p>
     </div>
 
-    <div class="phase">
-        <h2>الگوریتم Gradient Descent</h2>
+    <button class="accordion">الگوریتم Gradient Descent</button>
+    <div class="panel">
         <div class="key-concept">
-            تکرار: w = w - α × ∂J/∂w
-            <br>α (آلفا): نرخ یادگیری (Learning Rate)
+            الگوریتم بهینه‌سازی برای پیدا کردن مینیمم تابع
+        </div>
+
+        <h3>فرمول به‌روزرسانی:</h3>
+        <div class="formula">
+            w<sub>new</sub> = w<sub>old</sub> - α × ∂J/∂w
+        </div>
+
+        <table>
+            <tr>
+                <th>نماد</th>
+                <th>توضیح</th>
+            </tr>
+            <tr>
+                <td>w</td>
+                <td>پارامتر مدل (وزن)</td>
+            </tr>
+            <tr>
+                <td>α</td>
+                <td>نرخ یادگیری (Learning Rate)</td>
+            </tr>
+            <tr>
+                <td>∂J/∂w</td>
+                <td>گرادیان تابع هزینه نسبت به w</td>
+            </tr>
+        </table>
+
+        <h3>مراحل الگوریتم:</h3>
+        <ol>
+            <li>مقدار اولیه برای پارامترها انتخاب کن (معمولاً تصادفی)</li>
+            <li>گرادیان تابع هزینه را محاسبه کن</li>
+            <li>پارامترها را در جهت منفی گرادیان به‌روز کن</li>
+            <li>تکرار مراحل ۲ و ۳ تا همگرایی</li>
+        </ol>
+
+        <h3>شرط همگرایی:</h3>
+        <div class="formula">
+            |∂J/∂w| < ε
+        </div>
+        <p>یا تغییر تابع هزینه از یک تکرار به بعد کمتر از آستانه باشد.</p>
+    </div>
+
+    <button class="accordion">مثال عملی: رگرسیون خطی</button>
+    <div class="panel">
+        <p>بیایید Gradient Descent را برای رگرسیون خطی ساده اعمال کنیم.</p>
+
+        <h3>مدل:</h3>
+        <div class="formula">
+            ŷ = wx + b
+        </div>
+
+        <h3>تابع هزینه (MSE):</h3>
+        <div class="formula">
+            J(w,b) = <span class="math">1/2n × Σ(ŷ<sub>i</sub> - y<sub>i</sub>)<sup>2</sup></span>
+        </div>
+
+        <h3>محاسبه گرادیان‌ها:</h3>
+        <div class="formula">
+            ∂J/∂w = <span class="math">1/n × Σ(ŷ - y) × x</span>
+        </div>
+        <div class="formula">
+            ∂J/∂b = <span class="math">1/n × Σ(ŷ - y)</span>
+        </div>
+
+        <h3>به‌روزرسانی:</h3>
+        <div class="formula">
+            w = w - α × <span class="math">1/n × Σ(ŷ - y) × x</span>
+        </div>
+        <div class="formula">
+            b = b - α × <span class="math">1/n × Σ(ŷ - y)</span>
+        </div>
+
+        <h3>مثال عددی:</h3>
+        <div class="example">
+            <p>داده: x = [1, 2, 3, 4, 5]، y = [2, 4, 5, 4, 5]</p>
+            <p>مقدار اولیه: w = 0.1، b = 0</p>
+            <p>نرخ یادگیری: α = 0.01</p>
+            <p>Iteration 1:</p>
+            <p>predictions: [0.1, 0.2, 0.3, 0.4, 0.5]</p>
+            <p>errors: [-1.9, -3.8, -4.7, -3.6, -4.5]</p>
+            <p>∂J/∂w = -4.7, ∂J/∂b = -3.7</p>
+            <p>w = 0.1 - 0.01 × (-4.7) = 0.147</p>
+            <p>b = 0 - 0.01 × (-3.7) = 0.037</p>
+        </div>
+    </div>
+
+    <button class="accordion">نرخ یادگیری (Learning Rate)</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>نرخ یادگیری (α):</strong> اندازه قدم‌ها در هر تکرار
+        </div>
+
+        <h3>مقایسه نرخ‌های یادگیری:</h3>
+        <table>
+            <tr>
+                <th>نرخ یادگیری</th>
+                <th>رفتار</th>
+                <th>مشکل</th>
+            </tr>
+            <tr>
+                <td>خیلی کوچک (مثلاً 0.0001)</td>
+                <td>همگرایی آهسته</td>
+                <td>زمان زیاد</td>
+            </tr>
+            <tr>
+                <td>کوچک (مثلاً 0.001)</td>
+                <td>همگرایی稳步</td>
+                <td>acceptable</td>
+            </tr>
+            <tr>
+                <td>بزرگ (مثلاً 0.1)</td>
+                <td>همگرایی سریع</td>
+                <td>ممکن است واگرا شود</td>
+            </tr>
+            <tr>
+                <td>خیلی بزرگ (مثلاً 1)</td>
+                <td>واگرایی</td>
+                <td>Never converges</td>
+            </tr>
+        </table>
+
+        <h3>راهکارها:</h3>
+        <ul>
+            <li><strong>Learning Rate Schedule:</strong> کاهش نرخ یادگیری در طول زمان</li>
+            <li><strong>Adaptive Learning Rate:</strong> تغییر خودکار نرخ یادگیری (Adam, RMSprop)</li>
+            <li><strong>Momentum:</strong> استفاده از سرعت قبلی</li>
+        </ul>
+    </div>
+
+    <button class="accordion">انواع Gradient Descent</button>
+    <div class="panel">
+        <h3>۱. Batch Gradient Descent:</h3>
+        <p>استفاده از کل داده‌ها برای محاسبه گرادیان در هر تکرار.</p>
+        <div class="formula">
+            ∂J/∂w = <span class="math">1/n × Σ∇L(x<sub>i</sub>, y<sub>i</sub>, w)</span>
         </div>
         <ul>
-            <li>۱. مقدار اولیه برای پارامترها انتخاب کن</li>
-            <li>۲. گرادیان تابع هزینه را محاسبه کن</li>
-            <li>۳. پارامترها را در جهت منفی گرادیان به‌روز کن</li>
-            <li>۴. تکرار تا همگرایی</li>
+            <li>✓ همگرایی یکنواخت</li>
+            <li>✗ برای داده‌های بزرگ کند</li>
+        </ul>
+
+        <h3>۲. Stochastic Gradient Descent (SGD):</h3>
+        <p>استفاده از یک نمونه در هر تکرار.</p>
+        <div class="formula">
+            w = w - α × ∇L(x<sub>i</sub>, y<sub>i</sub>, w)
+        </div>
+        <ul>
+            <li>✓ سریع</li>
+            <li>✗ نویزدار (همگرایی ناهموار)</li>
+        </ul>
+
+        <h3>۳. Mini-batch Gradient Descent:</h3>
+        <p>استفاده از دسته‌ای از داده‌ها (مثلاً ۳۲، ۶۴، ۱۲۸).</p>
+        <ul>
+            <li>✓ تعادل بین سرعت و پایداری</li>
+            <li>✓ استفاده بهینه از حافظه</li>
+            <li>✓ رایج‌ترین روش</li>
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>نرخ یادگیری (Learning Rate)</h2>
+    <button class="accordion">تکنیک‌های پیشرفته</button>
+    <div class="panel">
+        <h3>Momentum:</h3>
+        <p>افزودن سرعت به به‌روزرسانی:</p>
+        <div class="formula">
+            v<sub>t</sub> = βv<sub>t-1</sub> + α∇J(w)
+            <br>
+            w = w - v<sub>t</sub>
+        </div>
+        <p>معمولاً β = 0.9</p>
+
+        <h3>Adam (Adaptive Moment Estimation):</h3>
+        <p>ترکیب Momentum و RMSprop:</p>
         <ul>
-            <li><strong>خیلی کوچک:</strong> همگرایی آهسته</li>
-            <li><strong>خیلی بزرگ:</strong> واگرایی</li>
-            <li><strong>مناسب:</strong> همگرایی سریع</li>
+            <li>محاسبه گرادیان</li>
+            <li>به‌روزرسانی ممان اول و دوم</li>
+            <li>تصحیح بایاس</li>
+            <li>به‌روزرسانی پارامترها</li>
         </ul>
+
+        <h3>RMSprop:</h3>
+        <div class="formula">
+            E[g²]<sub>t</sub> = βE[g²]<sub>t-1</sub> + (1-β)g²
+            <br>
+            w = w - α/g² + ε × g
+        </div>
     </div>
 
-    <div class="phase">
-        <h2>انواع Gradient Descent</h2>
-        <ul>
-            <li><strong>Batch GD:</strong> استفاده از کل داده‌ها در هر قدم</li>
-            <li><strong>Stochastic GD (SGD):</strong> استفاده از یک نمونه</li>
-            <li><strong>Mini-batch GD:</strong> استفاده از دسته‌ای از داده‌ها</li>
-        </ul>
-    </div>
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 
     <p style="text-align: center; color: #7f8c8d; margin-top: 40px;">
         <a href="../plan.html">بازگشت به برنامه درسی</a>

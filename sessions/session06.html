@@ -8,11 +8,28 @@
         body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
+        h3 { color: #16a085; margin-top: 20px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
         code { background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
+        .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+
+        /* Accordion Styles */
+        .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
+        .accordion:hover { background-color: #ddd; }
+        .accordion.active { background-color: #3498db; color: white; }
+        .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
+
+        .math { font-family: "Times New Roman", serif; font-size: 1.2em; }
+        .sub { font-size: 0.8em; vertical-align: sub; }
+        .sup { font-size: 0.8em; vertical-align: super; }
+
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background-color: #3498db; color: white; }
     </style>
 </head>
 <body>
@@ -29,49 +46,206 @@
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>رگرسیون چیست؟</h2>
+    <button class="accordion">رگرسیون چیست؟</button>
+    <div class="panel">
         <div class="key-concept">
             <strong>رگرسیون:</strong> پیش‌بینی یک مقدار پیوسته بر اساس ورودی‌ها.
         </div>
+        <p>رگرسیون یکی از مهم‌ترین تکنیک‌های یادگیری ماشین است که برای پیش‌بینی مقادیر پیوسته استفاده می‌شود. برخلاف طبقه‌بندی که خروجی آن یک برچسب یا کلاس است، خروجی رگرسیون یک عدد پیوسته است.</p>
+
+        <h3>مثال‌های کاربردی:</h3>
         <ul>
-            <li>پیش‌بینی قیمت خانه</li>
-            <li>پیش‌بینی دما</li>
-            <li>پیش‌بینی فروش</li>
+            <li>پیش‌بینی قیمت خانه بر اساس متراژ، تعداد اتاق، موقعیت</li>
+            <li>پیش‌بینی دمای فردا بر اساس داده‌های تاریخی</li>
+            <li>پیش‌بینی میزان فروش بر اساس هزینه تبلیغات</li>
+            <li>پیش‌بینی مصرف برق بر اساس ساعت روز و فصل</li>
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>انواع رگرسیون</h2>
+    <button class="accordion">انواع رگرسیون</button>
+    <div class="panel">
         <ul>
-            <li><strong>رگرسیون خطی ساده:</strong> یک متغیر ورودی</li>
-            <li><strong>رگرسیون خطی چندگانه:</strong> چند متغیر ورودی</li>
-            <li><strong>رگرسیون پلی‌نومیال:</strong> روابط غیرخطی</li>
-            <li><strong>رگرسیون ریج و لاسو:</strong> منظم‌سازی</li>
+            <li><strong>رگرسیون خطی ساده:</strong> یک متغیر ورودی - پیش‌بینی با یک ویژگی</li>
+            <li><strong>رگرسیون خطی چندگانه:</strong> چند متغیر ورودی - پیش‌بینی با چند ویژگی</li>
+            <li><strong>رگرسیون پلی‌نومیال:</strong> روابط غیرخطی - استفاده از توان‌های متغیر</li>
+            <li><strong>رگرسیون ریج و لاسو:</strong> منظم‌سازی - جلوگیری از بیش‌برازش</li>
+            <li><strong>رگرسیون درخت تصمیم:</strong> استفاده از درخت برای پیش‌بینی</li>
+            <li><strong>رگرسیون بردار پشتیبان (SVR):</strong> استفاده از تابع هسته</li>
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>رگرسیون خطی</h2>
-        <div class="key-concept">
-            فرمول: y = wx + b
-            <br>w: وزن (شیب)
-            <br>b: بایاس (عرض از مبدأ)
+    <button class="accordion">رگرسیون خطی ساده</button>
+    <div class="panel">
+        <p>ساده‌ترین نوع رگرسیون است که فقط یک متغیر ورودی (ویژگی) دارد.</p>
+
+        <div class="formula">
+            y = wx + b
         </div>
-        <p>هدف: پیدا کردن بهترین خطی که نقاط را به هم وصل کند.</p>
+
+        <table>
+            <tr>
+                <th>نماد</th>
+                <th>توضیح</th>
+            </tr>
+            <tr>
+                <td>y</td>
+                <td>متغیر وابسته (خروجی) - مقداری که می‌خواهیم پیش‌بینی کنیم</td>
+            </tr>
+            <tr>
+                <td>x</td>
+                <td>متغیر مستقل (ورودی) - ویژگی</td>
+            </tr>
+            <tr>
+                <td>w</td>
+                <td> وزن (Weight) - شیب خط - نشان‌دهنده تأثیر x بر y</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>بایاس (Bias) - عرض از مبدأ - مقدار y وقتی x=0</td>
+            </tr>
+        </table>
+
+        <h3>مثال عددی:</h3>
+        <div class="example">
+            <p>فرض کنید می‌خواهیم قیمت خانه را بر اساس متراژ پیش‌بینی کنیم:</p>
+            <p>اگر w = 500 (هر متراژ ۵۰۰ هزار تومان)</p>
+            <p>و b = 50,000,000 (قیمت پایه)</p>
+            <p>آنگاه برای خانه‌ای با ۱۰۰ متر:</p>
+            <p>قیمت = 500 × 100 + 50,000,000 = 50,050,000 تومان</p>
+        </div>
+
+        <h3>پیدا کردن بهترین خط:</h3>
+        <p>برای پیدا کردن بهترین w و b، از روش کمترین مربعات (Least Squares) استفاده می‌کنیم:</p>
+        <div class="formula">
+            w = <span class="math">Σ(x<sub>i</sub> - x̄)(y<sub>i</sub> - ȳ)</span> / <span class="math">Σ(x<sub>i</sub> - x̄)<sup>2</sup></span>
+        </div>
     </div>
 
-    <div class="phase">
-        <h2>مسائل ارضای محدودیت (CSP)</h2>
-        <div class="key-concept">
-            <strong>CSP:</strong> مسائلی که در آن‌ها باید متغیرها را طوری مقداردهی کنیم که محدودیت‌هایی را برآورده کنند.
+    <button class="accordion">رگرسیون خطی چندگانه</button>
+    <div class="panel">
+        <p>وقتی چندین ویژگی برای پیش‌بینی داریم، از رگرسیون چندگانه استفاده می‌کنیم.</p>
+
+        <div class="formula">
+            y = w<sub>1</sub>x<sub>1</sub> + w<sub>2</sub>x<sub>2</sub> + ... + w<sub>n</sub>x<sub>n</sub> + b
         </div>
+
+        <p>یا به صورت برداری:</p>
+        <div class="formula">
+            y = W<sup>T</sup>X + b
+        </div>
+
+        <h3>مثال:</h3>
+        <div class="example">
+            <p>پیش‌بینی قیمت خانه با ۳ ویژگی:</p>
+            <ul>
+                <li>x<sub>1</sub> = متراژ (مثلاً ۱۰۰)</li>
+                <li>x<sub>2</sub> = تعداد اتاق (مثلاً ۳)</li>
+                <li>x<sub>3</sub> = سن ساختمان (مثلاً ۵)</li>
+            </ul>
+            <p>قیمت = 500×100 + 10,000,000×3 - 500,000×5 + 50,000,000</p>
+        </div>
+
+        <h3>ماتریس طراحی:</h3>
+        <p>اگر n نمونه داده داشته باشیم:</p>
+        <div class="formula">
+            X = <span class="math">[n × (d+1)]</span> matrix
+        </div>
+    </div>
+
+    <button class="accordion">رگرسیون پلی‌نومیال</button>
+    <div class="panel">
+        <p>برای مدل کردن روابط غیرخطی از چندجمله‌ای‌ها استفاده می‌کنیم.</p>
+
+        <div class="formula">
+            y = w<sub>0</sub> + w<sub>1</sub>x + w<sub>2</sub>x<sup>2</sup> + w<sub>3</sub>x<sup>3</sup> + ...
+        </div>
+
+        <h3>مثال:</h3>
+        <div class="example">
+            <p>رابطه بین سن خودرو و قیمت آن معمولاً خطی نیست:</p>
+            <p>قیمت = 50,000,000 - 2,000,000x + 50,000x<sup>2</sup></p>
+            <p>در اینجا x سن خودرو است.</p>
+        </div>
+
+        <h3>نکته مهم:</h3>
+        <p>استفاده از درجه بالای چندجمله‌ای ممکن است باعث بیش‌برازش شود. همیشه از اعتبارسنجی استفاده کنید.</p>
+    </div>
+
+    <button class="accordion">رگرسیون ریج و لاسو (منظم‌سازی)</button>
+    <div class="panel">
+        <p>برای جلوگیری از بیش‌برازش، از تکنیک‌های منظم‌سازی (Regularization) استفاده می‌کنیم.</p>
+
+        <h3>رگرسیون ریج (Ridge):</h3>
+        <div class="formula">
+            Loss = MSE + αΣw<sub>i</sub><sup>2</sup>
+        </div>
+        <p>منظم‌سازی L2 - وزن‌ها را به سمت صفر می‌برد اما هرگز صفر نمی‌کند.</p>
+
+        <h3>رگرسیون لاسو (Lasso):</h3>
+        <div class="formula">
+            Loss = MSE + αΣ|w<sub>i</sub>|
+        </div>
+        <p>منظم‌سازی L1 - برخی وزن‌ها را دقیقاً صفر می‌کند (انتخاب ویژگی).</p>
+
+        <h3>Elastic Net:</h3>
+        <div class="formula">
+            Loss = MSE + α<sub>1</sub>Σ|w<sub>i</sub>| + α<sub>2</sub>Σw<sub>i</sub><sup>2</sup>
+        </div>
+        <p>ترکیب هر دو روش.</p>
+    </div>
+
+    <button class="accordion">مسائل ارضای محدودیت (CSP)</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>CSP (Constraint Satisfaction Problem):</strong> مسائلی که در آن‌ها باید متغیرها را طوری مقداردهی کنیم که محدودیت‌هایی را برآورده کنند.
+        </div>
+
+        <h3>اجزای CSP:</h3>
         <ul>
-            <li>جدول زمان‌بندی</li>
-            <li>مسیریابی</li>
-            <li>تخصیص منابع</li>
+            <li><strong>متغیرها:</strong> X = {X1, X2, ..., Xn}</li>
+            <li><strong>دامنه‌ها:</strong> D = {D1, D2, ..., Dn}</li>
+            <li><strong>محدودیت‌ها:</strong> C = {C1, C2, ..., Cm}</li>
+        </ul>
+
+        <h3>مثال: جدول زمان‌بندی کلاس‌ها</h3>
+        <div class="example">
+            <ul>
+                <li>متغیرها: کلاس‌های درس (A, B, C)</li>
+                <li>دامنه: روزهای هفته (شنبه تا پنج‌شنبه)</li>
+                <li>محدودیت‌ها: دو کلاس همزمان نباشند</li>
+            </ul>
+        </div>
+
+        <h3>الگوریتم‌های حل CSP:</h3>
+        <ul>
+            <li><strong>Backtracking:</strong> جستجوی عمقی با بازگشت</li>
+            <li><strong>Arc Consistency (AC-3):</strong> سازگاری قوس</li>
+            <li><strong>Min-Conflicts:</strong> کمینه کردن تعارضات</li>
+            <li><strong>Genetic Algorithms:</strong> الگوریتم ژنتیک</li>
+        </ul>
+
+        <h3>کاربردهای CSP در ML:</h3>
+        <ul>
+            <li>انتخاب ویژگی</li>
+            <li>تنظیم ابرپارامترها</li>
+            <li>یادگیری ساختار شبکه بیز</li>
         </ul>
     </div>
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 
     <p style="text-align: center; color: #7f8c8d; margin-top: 40px;">
         <a href="../plan.html">بازگشت به برنامه درسی</a>

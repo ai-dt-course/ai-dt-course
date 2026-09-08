@@ -8,10 +8,21 @@
         body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
+        h3 { color: #16a085; margin-top: 20px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
+        .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+        .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
+        .accordion:hover { background-color: #ddd; }
+        .accordion.active { background-color: #3498db; color: white; }
+        .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
+        .math { font-family: "Times New Roman", serif; font-size: 1.2em; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background-color: #3498db; color: white; }
     </style>
 </head>
 <body>
@@ -28,39 +39,187 @@
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>پارامتر vs ابرپارامتر</h2>
+    <button class="accordion">پارامتر vs ابرپارامتر</button>
+    <div class="panel">
+        <h3>پارامتر (Parameter):</h3>
         <div class="key-concept">
-            <strong>پارامتر:</strong> مقداری که مدل از داده یاد می‌گیرد.
-            <br>مثال: وزن‌ها در رگرسیون
+            مقداری که مدل از داده یاد می‌گیرد.
         </div>
+        <ul>
+            <li>وزن‌ها در رگرسیون خطی</li>
+            <li>مراکز خوشه‌ها در K-Means</li>
+            <li>weights در شبکه عصبی</li>
+        </ul>
+
+        <h3>ابرپارامتر (Hyperparameter):</h3>
         <div class="key-concept">
-            <strong>ابرپارامتر:</strong> مقداری که قبل از آموزش تنظیم می‌شود.
-            <br>مثال: نرخ یادگیری، تعداد لایه‌ها
+            مقداری که قبل از آموزش تنظیم می‌شود و از داده یاد نمی‌گیرد.
         </div>
+        <ul>
+            <li>نرخ یادگیری</li>
+            <li>تعداد لایه‌ها</li>
+            <li>تعداد همسایه‌ها در KNN</li>
+        </ul>
+
+        <h3>تفاوت کلیدی:</h3>
+        <table>
+            <tr>
+                <th>پارامتر</th>
+                <th>ابرپارامتر</th>
+            </tr>
+            <tr>
+                <td>از داده یاد می‌گیرد</td>
+                <td>توسط انسان تنظیم می‌شود</td>
+            </tr>
+            <tr>
+                <td>در مدل ذخیره می‌شود</td>
+                <td>قبل از آموزش تعیین می‌شود</td>
+            </tr>
+        </table>
     </div>
 
-    <div class="phase">
-        <h2>تنظیم ابرپارامتر</h2>
+    <button class="accordion">تنظیم ابرپارامتر - روش‌ها</button>
+    <div class="panel">
+        <h3>۱. Grid Search:</h3>
+        <p>جستجوی تمام ترکیبات ممکن</p>
+        <div class="example">
+            <p>learning_rate: [0.01, 0.1, 1]</p>
+            <p>n_estimators: [100, 200]</p>
+            <p>→ 3 × 2 = 6 ترکیب</p>
+        </div>
         <ul>
-            <li><strong>Grid Search:</strong> جستجوی تمام ترکیبات</li>
-            <li><strong>Random Search:</strong> جستجوی تصادفی</li>
-            <li><strong>Bayesian Optimization:</strong> بهینه‌سازی احتمالی</li>
-            <li><strong>Early Stopping:</strong> توقف زودهنگام</li>
+            <li>✓ جامع</li>
+            <li>✗ زمان‌بر برای فضای بزرگ</li>
+        </ul>
+
+        <h3>۲. Random Search:</h3>
+        <p>جستجوی تصادفی از فضای ابرپارامتر</p>
+        <ul>
+            <li>✓ سریع‌تر</li>
+            <li>✓ گاهی نتایج بهتر</li>
+            <li>✗ ممکن است بهینه را از دست بدهد</li>
+        </ul>
+
+        <h3>۳. Bayesian Optimization:</h3>
+        <p>استفاده از مدل احتمالی برای هدایت جستجو</p>
+        <ul>
+            <li>✓ هوشمند</li>
+            <li>✓ کمترین تکرار</li>
+            <li>✗ پیچیده‌تر</li>
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>ابرپارامترهای رایج</h2>
+    <button class="accordion">نرخ یادگیری (Learning Rate)</button>
+    <div class="panel">
+        <div class="key-concept">
+            مهم‌ترین ابرپارامتر - اندازه قدم در هر تکرار بهینه‌سازی
+        </div>
+
+        <h3>مقادیر رایج:</h3>
         <ul>
-            <li>Learning Rate</li>
-            <li>Batch Size</li>
-            <li>Number of Epochs</li>
-            <li>Number of Layers/Neurons</li>
-            <li>Regularization (L1, L2)</li>
-            <li>Dropout Rate</li>
+            <li>0.001, 0.01, 0.1, 1</li>
+            <li>معمولاً کوچک‌تر از 1</li>
+        </ul>
+
+        <h3>Learning Rate Schedules:</h3>
+        <ul>
+            <li><strong>Step Decay:</strong> هر n اپoch نرخ را نصف کن</li>
+            <li><strong>Exponential Decay:</strong> نرخ به صورت نمایی کم شود</li>
+            <li><strong>Cosine Annealing:</strong> نرخ به صورت کسینوسی</li>
+            <li><strong>Reduce on Plateau:</strong> وقتی plateau شد، کم کن</li>
         </ul>
     </div>
+
+    <button class="accordion">ابرپارامترهای شبکه عصبی</button>
+    <div class="panel">
+        <h3>مهم‌ترین‌ها:</h3>
+        <ul>
+            <li><strong>Learning Rate:</strong> نرخ یادگیری</li>
+            <li><strong>Batch Size:</strong> اندازه دسته</li>
+            <li><strong>Number of Epochs:</strong> تعداد تکرار آموزش</li>
+            <li><strong>Hidden Layers:</strong> تعداد لایه‌های پنهان</li>
+            <li><strong>Hidden Units:</strong> تعداد نورون‌ها در هر لایه</li>
+            <li><strong>Activation Function:</strong> تابع فعال‌سازی</li>
+            <li><strong>Dropout Rate:</strong> نرخ حذف</li>
+            <li><strong>Weight Initialization:</strong> نحوه مقداردهی اولیه</li>
+        </ul>
+
+        <h3>Batch Size:</h3>
+        <table>
+            <tr>
+                <th>کوچک</th>
+                <th>بزرگ</th>
+            </tr>
+            <tr>
+                <td>نویزدار</td>
+                <td>همگرایی صاف</td>
+            </tr>
+            <tr>
+                <td>معمولاً بهتر generalizes</td>
+                <td>سریع‌تر</td>
+            </tr>
+            <tr>
+                <td>32, 64, 128</td>
+                <td>256, 512, 1024</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">Early Stopping</button>
+    <div class="panel">
+        <div class="key-concept">
+            توقف زودهنگام آموزش وقتی عملکرد روی validation بهتر نشود
+        </div>
+
+        <h3>پارامترها:</h3>
+        <ul>
+            <li><strong>Patience:</strong> چند epoch صبر کنیم</li>
+            <li><strong>Min Delta:</strong> چقدر بهبود مهم است</li>
+            <li><strong>Monitor:</strong> کدام معیار</li>
+        </ul>
+
+        <h3>مزایا:</h3>
+        <ul>
+            <li>جلوگیری از بیش‌برازش</li>
+            <li>کاهش زمان آموزش</li>
+            <li>انتخاب خودکار تعداد epochs</li>
+        </ul>
+    </div>
+
+    <button class="accordion">بهترین عملکردها</button>
+    <div class="panel">
+        <h3>پیشنهادات کلی:</h3>
+        <ul>
+            <li>با مقادیر پیش‌فرض شروع کنید</li>
+            <li>یک ابرپارامتر را در یک زمان تغییر دهید</li>
+            <li>از Grid Search کوچک شروع کنید</li>
+            <li>از validation set برای تنظیم استفاده کنید</li>
+            <li>نتایج را ثبت کنید</li>
+        </ul>
+
+        <h3>ابزارها:</h3>
+        <ul>
+            <li>Optuna</li>
+            <li>Hyperopt</li>
+            <li>Ray Tune</li>
+            <li>Scikit-learn GridSearchCV, RandomizedSearchCV</li>
+        </ul>
+    </div>
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 
     <p style="text-align: center; color: #7f8c8d; margin-top: 40px;">
         <a href="../plan.html">بازگشت به برنامه درسی</a>

@@ -8,11 +8,24 @@
         body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
+        h3 { color: #16a085; margin-top: 20px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
         code { background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
+        .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+
+        .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
+        .accordion:hover { background-color: #ddd; }
+        .accordion.active { background-color: #3498db; color: white; }
+        .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
+
+        .math { font-family: "Times New Roman", serif; font-size: 1.2em; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background-color: #3498db; color: white; }
     </style>
 </head>
 <body>
@@ -29,42 +42,183 @@
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>تابع هدف (Objective Function)</h2>
+    <button class="accordion">تابع هدف (Objective Function)</button>
+    <div class="panel">
         <div class="key-concept">
-            تابعی که می‌خواهیم آن را بهینه (کمینه یا بیشینه) کنیم.
+            <strong>تابع هدف:</strong> تابعی که می‌خواهیم آن را بهینه (کمینه یا بیشینه) کنیم.
+        </div>
+
+        <h3>تفاوت در انواع مسائل:</h3>
+        <ul>
+            <li><strong>رگرسیون:</strong> کمینه‌سازی خطای پیش‌بینی</li>
+            <li><strong>طبقه‌بندی:</strong> بیشینه‌سازی دقت یا احتمال</li>
+            <li><strong>یادگیری تقویتی:</strong> بیشینه‌سازی پاداش کل</li>
+        </ul>
+
+        <h3>مولفه‌های تابع هدف:</h3>
+        <ul>
+            <li><strong>تابع هزینه (Loss):</strong> اندازه‌گیری خطا برای یک نمونه</li>
+            <li><strong>عبارت منظم‌سازی:</strong> جلوگیری از بیش‌برازش</li>
+            <li><strong>عبارت جریمه:</strong> اعمال محدودیت‌های اضافی</li>
+        </ul>
+
+        <div class="example">
+            <strong>مثال:</strong>
+            <p>در رگرسیون خطی: کمینه‌سازی MSE</p>
+            <p>در SVM: کمینه‌سازی حاشیه + جریمه طبقه‌بندی نادرست</p>
+        </div>
+    </div>
+
+    <button class="accordion">تابع هزینه (Cost Function)</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>تابع هزینه:</strong> تابعی که خطای پیش‌بینی مدل را اندازه‌گیری می‌کند. هدف: کمینه‌سازی این تابع
+        </div>
+
+        <h3>MSE - میانگین مجذور خطا (Mean Squared Error):</h3>
+        <div class="formula">
+            MSE = <span class="math">1/n × Σ(y<sub>i</sub> - ŷ<sub>i</sub>)<sup>2</sup></span>
         </div>
         <ul>
-            <li>در分類: بیشینه‌سازی دقت</li>
-            <li>در رگرسیون: کمینه‌سازی خطا</li>
+            <li>حساس به نقاط پرت</li>
+            <li>همیشه مثبت است</li>
+            <li>یکای آن مجذور یکای اصلی است</li>
+        </ul>
+
+        <h3>RMSE - ریشه میانگین مجذور خطا:</h3>
+        <div class="formula">
+            RMSE = √MSE
+        </div>
+        <ul>
+            <li>هم‌یکا با متغیر خروجی</li>
+            <li>قابل فهم‌تر از MSE</li>
+        </ul>
+
+        <h3>MAE - میانگین قدرمطلق خطا:</h3>
+        <div class="formula">
+            MAE = <span class="math">1/n × Σ|y<sub>i</sub> - ŷ<sub>i</sub>|</span>
+        </div>
+        <ul>
+            <li>کمتر حساس به نقاط پرت</li>
+            <li>یکای آن همان یکای اصلی است</li>
+        </ul>
+
+        <h3>MSE vs MAE:</h3>
+        <table>
+            <tr>
+                <th>ویژگی</th>
+                <th>MSE</th>
+                <th>MAE</th>
+            </tr>
+            <tr>
+                <td>حساسیت به پرت</td>
+                <td>بالا</td>
+                <td>پایین</td>
+            </tr>
+            <tr>
+                <td>مشتق‌پذیری</td>
+                <td>بله</td>
+                <td>خیر (در صفر)</td>
+            </tr>
+            <tr>
+                <td>کاربرد</td>
+                <td>رگرسیون</td>
+                <td>رگرسیون (مقاوم)</td>
+            </tr>
+        </table>
+
+        <div class="example">
+            <strong>مثال عددی:</strong>
+            <p>مقدار واقعی: [10, 20, 30, 40]</p>
+            <p>پیش‌بینی: [12, 18, 35, 38]</p>
+            <p>MSE = ((10-12)² + (20-18)² + (30-35)² + (40-38)²)/4 = (4+4+25+4)/4 = 9.25</p>
+            <p>MAE = (|10-12| + |20-18| + |30-35| + |40-38|)/4 = (2+2+5+2)/4 = 2.75</p>
+        </div>
+    </div>
+
+    <button class="accordion">تابع ضرر (Loss Function)</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>تابع ضرر:</strong> تابع هزینه برای یک نمونه منفرد (در مقابل کل داده‌ها).
+        </div>
+
+        <h3>رابطه Loss و Cost:</h3>
+        <div class="formula">
+            Cost = <span class="math">1/n × Σ Loss<sub>i</sub></span>
+        </div>
+
+        <h3>انواع Loss:</h3>
+        <ul>
+            <li><strong>Squared Loss:</strong> (y - ŷ)²</li>
+            <li><strong>Absolute Loss:</strong> |y - ŷ|</li>
+            <li><strong>Huber Loss:</strong> ترکیب MSE و MAE</li>
         </ul>
     </div>
 
-    <div class="phase">
-        <h2>تابع هزینه (Cost Function)</h2>
-        <div class="key-concept">
-            تابعی که خطای پیش‌بینی مدل را اندازه‌گیری می‌کند.
-            <br>هدف: کمینه‌سازی این تابع
+    <button class="accordion">توابع هزینه طبقه‌بندی</button>
+    <div class="panel">
+        <h3>Cross-Entropy (Entropy متقاطع):</h3>
+        <div class="formula">
+            CE = -Σ y<sub>i</sub> × log(ŷ<sub>i</sub>)
+        </div>
+        <p>یا برای دو کلاس:</p>
+        <div class="formula">
+            CE = -[y × log(ŷ) + (1-y) × log(1-ŷ)]
         </div>
 
-        <h3>انواع توابع هزینه</h3>
-        <ul>
-            <li><strong>MSE (Mean Squared Error):</strong> میانگین مجذور خطا</li>
-            <li><strong>MAE (Mean Absolute Error):</strong> میانگین قدرمطلق خطا</li>
-            <li><strong>Cross-Entropy:</strong> برای طبقه‌بندی</li>
-        </ul>
+        <h3>Binary Cross-Entropy:</h3>
+        <div class="example">
+            <p>برای یک نمونه با برچسب 1 و پیش‌بینی 0.9:</p>
+            <p>Loss = -[1×log(0.9) + 0×log(0.1)] = -log(0.9) = 0.105</p>
+            <p>برای پیش‌بینی 0.1:</p>
+            <p>Loss = -log(0.1) = 2.302</p>
+            <p>→ پیش‌بینی اشتباه جریمه سنگین‌تری می‌شود!</p>
+        </div>
+
+        <h3>Categorical Cross-Entropy:</h3>
+        <div class="formula">
+            CE = -Σ<sub>c</sub> y<sub>c</sub> × log(ŷ<sub>c</sub>)
+        </div>
+        <p>برای مسائل چند کلاسه.</p>
     </div>
 
-    <div class="phase">
-        <h2>تابع ضرر (Loss Function)</h2>
-        <div class="key-concept">
-            تابع هزینه برای یک نمونه منفرد (در مقابل کل داده‌ها).
+    <button class="accordion">منظم‌سازی (Regularization)</button>
+    <div class="panel">
+        <p>اضافه کردن جریمه برای جلوگیری از بیش‌برازش.</p>
+
+        <h3>L1 Regularization (Lasso):</h3>
+        <div class="formula">
+            Loss = MSE + α × Σ|w<sub>i</sub>|
         </div>
-        <ul>
-            <li>Loss = (y_true - y_pred)²</li>
-            <li>Cost = (1/n) × Σ Loss</li>
-        </ul>
+
+        <h3>L2 Regularization (Ridge):</h3>
+        <div class="formula">
+            Loss = MSE + α × Σw<sub>i</sub><sup>2</sup>
+        </div>
+
+        <h3>Elastic Net:</h3>
+        <div class="formula">
+            Loss = MSE + α<sub>1</sub>Σ|w<sub>i</sub>| + α<sub>2</sub>Σw<sub>i</sub><sup>2</sup>
+        </div>
+
+        <h3>Dropout:</h3>
+        <p>در شبکه‌های عصبی: حذف تصادفی نورون‌ها در هنگام آموزش.</p>
     </div>
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 
     <p style="text-align: center; color: #7f8c8d; margin-top: 40px;">
         <a href="../plan.html">بازگشت به برنامه درسی</a>
