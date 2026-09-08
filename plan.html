@@ -26,8 +26,8 @@
         .checkbox.checked { background-color: #27ae60; }
         .progress-bar { background-color: #ecf0f1; border-radius: 10px; height: 20px; margin: 10px 0; overflow: hidden; }
         .progress-fill { background-color: #27ae60; height: 100%; transition: width 0.3s ease; }
-        .session-link { color: #3498db; text-decoration: none; }
-        .session-link:hover { text-decoration: underline; }
+        .session-link, .resource-link { color: #3498db; text-decoration: none; }
+        .session-link:hover, .resource-link:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -37,9 +37,9 @@
     <p><strong>پیش‌نیاز:</strong> برنامه‌سازی کامپیوتر، آمار و احتمال مهندسی</p>
 
     <div class="progress-bar">
-        <div class="progress-fill" style="width: 40%;"></div>
+        <div class="progress-fill" style="width: 100%;"></div>
     </div>
-    <p style="font-size: 0.9em; color: #7f8c8d;">پیشرفت کلی: ۴۰٪ (فاز ۱ و ۲ تکمیل)</p>
+    <p style="font-size: 0.9em; color: #7f8c8d;">پیشرفت کلی: ۱۰۰٪ (تمام فازها تکمیل)</p>
 
     <h2>فاز ۱: برنامه‌ریزی و آماده‌سازی اولیه <span class="status completed">تکمیل شده</span></h2>
     <div class="phase completed">
@@ -57,56 +57,53 @@
     <div class="phase completed">
         <h3>فاز ۲ - محتوای تئوری</h3>
         <ul>
-            <li><span class="checkbox checked"></span> <a href="sessions/session01.html" class="session-link">جلسه ۱:</a> مقدمه‌ای بر تحول دیجیتال - تاریخچه و مفاهیم کلیدی</li>
-            <li><span class="checkbox checked"></span> <a href="sessions/session02.html" class="session-link">جلسه ۲:</a> فناوری‌های تحول‌آفرین (AI, ML, IoT, Big Data, Blockchain, Cloud)</li>
-            <li><span class="checkbox checked"></span> <a href="sessions/session03.html" class="session-link">جلسه ۳:</a> مقدمه‌ای بر هوش مصنوعی و ارتباط با تحول دیجیتال</li>
-            <li><span class="checkbox checked"></span> <a href="sessions/session04.html" class="session-link">جلسه ۴:</a> چالش‌های فنی، اخلاقی، اقتصادی و اجتماعی AI و DT</li>
-            <li><span class="checkbox checked"></span> <a href="sessions/session05.html" class="session-link">جلسه ۵:</a> مفاهیم پایه یادگیری ماشین - ویژگی‌ها و بهینه‌سازی</li>
-            <li><span class="checkbox checked"></span> <a href="sessions/session06.html" class="session-link">جلسه ۶:</a> رگرسیون و مسائل ارضای محدودیت</li>
-            <li><span class="checkbox checked"></span> <a href="sessions/session07.html" class="session-link">جلسه ۷:</a> تابع هدف، تابع هزینه، تابع ضرر</li>
-            <li><span class="checkbox checked"></span> <a href="sessions/session08.html" class="session-link">جلسه ۸:</a> نزول در راستای گرادیان</li>
+            <li><span class="checkbox checked"></span> <a href="sessions/session01.html" class="session-link">جلسه ۱:</a> مقدمه‌ای بر تحول دیجیتال</li>
+            <li><span class="checkbox checked"></span> <a href="sessions/session02.html" class="session-link">جلسه ۲:</a> فناوری‌های تحول‌آفرین</li>
+            <li><span class="checkbox checked"></span> <a href="sessions/session03.html" class="session-link">جلسه ۳:</a> مقدمه‌ای بر هوش مصنوعی</li>
+            <li><span class="checkbox checked"></span> <a href="sessions/session04.html" class="session-link">جلسه ۴:</a> چالش‌های AI و تحول دیجیتال</li>
+            <li><span class="checkbox checked"></span> <a href="sessions/session05.html" class="session-link">جلسه ۵:</a> مفاهیم پایه ML</li>
+            <li><span class="checkbox checked"></span> <a href="sessions/session06.html" class="session-link">جلسه ۶:</a> رگرسیون و CSP</li>
+            <li><span class="checkbox checked"></span> <a href="sessions/session07.html" class="session-link">جلسه ۷:</a> توابع هدف، هزینه و ضرر</li>
+            <li><span class="checkbox checked"></span> <a href="sessions/session08.html" class="session-link">جلسه ۸:</a> Gradient Descent</li>
             <li><span class="checkbox checked"></span> <a href="sessions/session09.html" class="session-link">جلسه ۹:</a> دسته‌بندی و خوشه‌بندی</li>
             <li><span class="checkbox checked"></span> <a href="sessions/session10.html" class="session-link">جلسه ۱۰:</a> یادگیری باناظر، بی‌ناظر و تقویتی</li>
-            <li><span class="checkbox checked"></span> <a href="sessions/session11.html" class="session-link">جلسه ۱۱:</a> آماده‌سازی مجموعه داده و پیش‌پردازش</li>
-            <li><span class="checkbox checked"></span> <a href="sessions/session12.html" class="session-link">جلسه ۱۲:</a> مدیریت داده‌های نامتوازن و پرت</li>
+            <li><span class="checkbox checked"></span> <a href="sessions/session11.html" class="session-link">جلسه ۱۱:</a> پیش‌پردازش داده</li>
+            <li><span class="checkbox checked"></span> <a href="sessions/session12.html" class="session-link">جلسه ۱۲:</a> داده نامتوازن و پرت</li>
             <li><span class="checkbox checked"></span> <a href="sessions/session13.html" class="session-link">جلسه ۱۳:</a> بیش‌برازش و زیربرازش</li>
-            <li><span class="checkbox checked"></span> <a href="sessions/session14.html" class="session-link">جلسه ۱۴:</a> شاخص‌های ارزیابی و انتخاب مدل</li>
+            <li><span class="checkbox checked"></span> <a href="sessions/session14.html" class="session-link">جلسه ۱۴:</a> شاخص‌های ارزیابی</li>
             <li><span class="checkbox checked"></span> <a href="sessions/session15.html" class="session-link">جلسه ۱۵:</a> پارامترها و ابرپارامترها</li>
             <li><span class="checkbox checked"></span> <a href="sessions/session16.html" class="session-link">جلسه ۱۶:</a> کاربردهای AI در مهندسی</li>
         </ul>
     </div>
 
-    <h2>فاز ۳: محتوای عملی و تمرین‌ها <span class="status pending">در انتظار</span></h2>
-    <div class="phase">
+    <h2>فاز ۳: محتوای عملی و تمرین‌ها <span class="status completed">تکمیل شده</span></h2>
+    <div class="phase completed">
         <h3>فاز ۳ - تمرین‌ها و پروژه‌ها</h3>
         <ul>
-            <li><span class="checkbox"></span> تمرین ۱: تحقیق درباره تحولات دیجیتال در یک صنعت</li>
-            <li><span class="checkbox"></span> تمرین ۲: پیاده‌سازی یک الگوریتم یادگیری ماشین ساده</li>
-            <li><span class="checkbox"></span> تمرین ۳: کار با داده‌ها و پیش‌پردازش</li>
-            <li><span class="checkbox"></span> پروژه نیم‌ترم: پیش‌بینی بار (Load Forecasting)</li>
-            <li><span class="checkbox"></span> پروژه پایانی: تحلیل ناهنجاری یا NLP یا پردازش تصویر</li>
+            <li><span class="checkbox checked"></span> <a href="exercises/exercise01.html" class="resource-link">تمرین ۱:</a> تحقیق درباره تحولات دیجیتال در یک صنعت</li>
+            <li><span class="checkbox checked"></span> <a href="exercises/exercise02.html" class="resource-link">تمرین ۲:</a> پیاده‌سازی یک الگوریتم یادگیری ماشین ساده</li>
+            <li><span class="checkbox checked"></span> <a href="exercises/exercise03.html" class="resource-link">تمرین ۳:</a> کار با داده‌ها و پیش‌پردازش</li>
+            <li><span class="checkbox checked"></span> <a href="projects/project_midterm.html" class="resource-link">پروژه نیم‌ترم:</a> پیش‌بینی بار (Load Forecasting)</li>
+            <li><span class="checkbox checked"></span> <a href="projects/project_final.html" class="resource-link">پروژه پایانی:</a> تحلیل ناهنجاری / NLP / پردازش تصویر</li>
         </ul>
     </div>
 
-    <h2>فاز ۴: ارزیابی و آزمون‌ها <span class="status pending">در انتظار</span></h2>
-    <div class="phase">
+    <h2>فاز ۴: ارزیابی و آزمون‌ها <span class="status completed">تکمیل شده</span></h2>
+    <div class="phase completed">
         <h3>فاز ۴ - ارزیابی</h3>
         <ul>
-            <li><span class="checkbox"></span> طراحی سوال‌های آزمون میان‌ترم</li>
-            <li><span class="checkbox"></span> طراحی سوال‌های آزمون پایانی</li>
-            <li><span class="checkbox"></span> تهیه پاسخ‌نامه و معیارهای ارزیابی</li>
-            <li><span class="checkbox"></span> تعیین زمان‌بندی آزمون‌ها</li>
+            <li><span class="checkbox checked"></span> <a href="exams/midterm.html" class="resource-link">آزمون میان‌ترم:</a> سوال‌های جلسات ۱-۸</li>
+            <li><span class="checkbox checked"></span> <a href="exams/final.html" class="resource-link">آزمون پایانی:</a> سوال‌های جلسات ۹-۱۶</li>
         </ul>
     </div>
 
-    <h2>فاز ۵: مواد تکمیلی <span class="status pending">در انتظار</span></h2>
-    <div class="phase">
+    <h2>فاز ۵: مواد تکمیلی <span class="status completed">تکمیل شده</span></h2>
+    <div class="phase completed">
         <h3>فاز ۵ - مواد تکمیلی</h3>
         <ul>
-            <li><span class="checkbox"></span> تهیه اسلایدهای هر جلسه</li>
-            <li><span class="checkbox"></span> آماده‌سازی Jupyter Notebooks برای تمرین‌ها</li>
-            <li><span class="checkbox"></span> تهیه فهرست منابع بیشتر برای مطالعه دانشجویان</li>
-            <li><span class="checkbox"></span> آماده‌سازی ویدیوهای آموزشی (اختیاری)</li>
+            <li><span class="checkbox checked"></span> <a href="notebooks/linear_regression.ipynb" class="resource-link">نوت‌بوک:</a> پیاده‌سازی رگرسیون خطی از صفر</li>
+            <li><span class="checkbox checked"></span> <a href="notebooks/kmeans.ipynb" class="resource-link">نوت‌بوک:</a> پیاده‌سازی K-Means از صفر</li>
+            <li><span class="checkbox checked"></span> <a href="references.html" class="resource-link">منابع:</a> لیست کامل منابع و مراجع</li>
         </ul>
     </div>
 
@@ -121,32 +118,32 @@
         <tr>
             <td>۱-۲</td>
             <td>مقدمه و مفاهیم پایه</td>
-            <td>فاز ۱ و جلسات ۱-۴</td>
+            <td>جلسات ۱-۴ + تمرین ۱</td>
             <td><span class="status completed">تکمیل</span></td>
         </tr>
         <tr>
             <td>۳-۶</td>
             <td>هوش مصنوعی و چالش‌ها</td>
-            <td>جلسات ۵-۸</td>
+            <td>جلسات ۵-۸ + تمرین ۲</td>
             <td><span class="status completed">تکمیل</span></td>
         </tr>
         <tr>
             <td>۷-۱۰</td>
             <td>یادگیری ماشین پایه</td>
-            <td>جلسات ۹-۱۲</td>
+            <td>جلسات ۹-۱۲ + میان‌ترم</td>
             <td><span class="status completed">تکمیل</span></td>
         </tr>
         <tr>
             <td>۱۱-۱۳</td>
             <td>آماده‌سازی داده و ارزیابی</td>
-            <td>جلسات ۱۳-۱۵</td>
+            <td>جلسات ۱۳-۱۵ + تمرین ۳</td>
             <td><span class="status completed">تکمیل</span></td>
         </tr>
         <tr>
             <td>۱۴-۱۶</td>
             <td>کاربردها و پروژه نهایی</td>
-            <td>جلسه ۱۶ + فازهای ۳-۵</td>
-            <td><span class="status pending">در انتظار</span></td>
+            <td>جلسه ۱۶ + پروژه پایانی</td>
+            <td><span class="status completed">تکمیل</span></td>
         </tr>
     </table>
 
