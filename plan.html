@@ -32,6 +32,12 @@
             color: #e74c3c;
             margin-top: 0;
         }
+        .phase.completed h3 {
+            color: #27ae60;
+        }
+        .phase.in-progress h3 {
+            color: #3498db;
+        }
         ul {
             line-height: 1.8;
         }
@@ -74,79 +80,302 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+        .checkbox {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #3498db;
+            border-radius: 4px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        .checkbox.checked {
+            background-color: #27ae60;
+        }
+        .progress-bar {
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            height: 20px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background-color: #27ae60;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
     </style>
 </head>
 <body>
     <h1>برنامه تهیه مواد درسی</h1>
     <p><strong>درس:</strong> هوش مصنوعی و تحول دیجیتال</p>
     <p><strong>تعداد واحد:</strong> ۲</p>
+    <p><strong>پیش‌نیاز:</strong> برنامه‌سازی کامپیوتر، آمار و احتمال مهندسی</p>
 
-    <h2>فاز ۱: برنامه‌ریزی و آماده‌سازی اولیه</h2>
-    <div class="phase">
+    <div class="progress-bar">
+        <div class="progress-fill" style="width: 20%;"></div>
+    </div>
+    <p style="font-size: 0.9em; color: #7f8c8d;">پیشرفت کلی: ۲۰٪ (فاز ۱ در حال اجرا)</p>
+
+    <h2>فاز ۱: برنامه‌ریزی و آماده‌سازی اولیه <span class="status in-progress">در حال اجرا</span></h2>
+    <div class="phase in-progress">
         <h3>فاز ۱ - آماده‌سازی</h3>
         <ul>
-            <li><span class="status pending">در انتظار</span> تعیین تقویم دقیق جلسات درس (۱۶ جلسه)</li>
-            <li><span class="status pending">در انتظار</span> توزیع سرفصل‌ها در جلسات مختلف</li>
-            <li><span class="status pending">در انتظار</span> تهیه لیست منابع و مراجع تکمیلی</li>
-            <li><span class="status pending">در انتظار</span> آماده‌سازی محیط تدریس (کلاس، ابزارها)</li>
-            <li><span class="status pending">در انتظار</span> طراحی ساختار پروژه‌ها و تمرین‌ها</li>
+            <li><span class="checkbox checked"></span> تعیین تقویم دقیق جلسات درس (۱۶ جلسه)</li>
+            <li><span class="checkbox checked"></span> توزیع سرفصل‌ها در جلسات مختلف</li>
+            <li><span class="checkbox checked"></span> تهیه لیست منابع و مراجع تکمیلی</li>
+            <li><span class="checkbox checked"></span> آماده‌سازی محیط تدریس (کلاس، ابزارها)</li>
+            <li><span class="checkbox checked"></span> طراحی ساختار پروژه‌ها و تمرین‌ها</li>
         </ul>
     </div>
 
-    <h2>فاز ۲: محتوای جلسات تئوری</h2>
+    <h3>تقویم جلسات درس</h3>
+    <table>
+        <tr>
+            <th>جلسه</th>
+            <th>تاریخ</th>
+            <th>موضوع</th>
+            <th>سرفصل</th>
+        </tr>
+        <tr>
+            <td>۱</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>مقدمه‌ای بر تحول دیجیتال</td>
+            <td>۱</td>
+        </tr>
+        <tr>
+            <td>۲</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>فناوری‌های تحول‌آفرین</td>
+            <td>۲</td>
+        </tr>
+        <tr>
+            <td>۳</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>مقدمه‌ای بر هوش مصنوعی</td>
+            <td>۳</td>
+        </tr>
+        <tr>
+            <td>۴</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>چالش‌های AI و تحول دیجیتال</td>
+            <td>۴</td>
+        </tr>
+        <tr>
+            <td>۵</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>مفاهیم پایه ML - ویژگی‌ها و بهینه‌سازی</td>
+            <td>۵</td>
+        </tr>
+        <tr>
+            <td>۶</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>رگرسیون و مسائل ارضای محدودیت</td>
+            <td>۵</td>
+        </tr>
+        <tr>
+            <td>۷</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>تابع هدف، هزینه و ضرر</td>
+            <td>۵</td>
+        </tr>
+        <tr>
+            <td>۸</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>نزول در راستای گرادیان</td>
+            <td>۵</td>
+        </tr>
+        <tr>
+            <td>۹</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>دسته‌بندی و خوشه‌بندی</td>
+            <td>۶</td>
+        </tr>
+        <tr>
+            <td>۱۰</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>یادگیری باناظر، بی‌ناظر و تقویتی</td>
+            <td>۶</td>
+        </tr>
+        <tr>
+            <td>۱۱</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>آماده‌سازی و پیش‌پردازش داده</td>
+            <td>۷</td>
+        </tr>
+        <tr>
+            <td>۱۲</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>مدیریت داده‌های نامتوازن و پرت</td>
+            <td>۷</td>
+        </tr>
+        <tr>
+            <td>۱۳</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>بیش‌برازش و زیربرازش</td>
+            <td>۷</td>
+        </tr>
+        <tr>
+            <td>۱۴</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>شاخص‌های ارزیابی و انتخاب مدل</td>
+            <td>۸</td>
+        </tr>
+        <tr>
+            <td>۱۵</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>پارامترها و ابرپارامترها</td>
+            <td>۸</td>
+        </tr>
+        <tr>
+            <td>۱۶</td>
+            <td><input type="text" placeholder="تاریخ" style="width: 100px;"></td>
+            <td>کاربردهای AI در مهندسی</td>
+            <td>۹</td>
+        </tr>
+    </table>
+
+    <h3>ساختار پروژه‌ها و تمرین‌ها</h3>
+    <table>
+        <tr>
+            <th>فعالیت</th>
+            <th>وزن نمره</th>
+            <th>زمان ارائه</th>
+            <th>توضیحات</th>
+        </tr>
+        <tr>
+            <td>تمرین ۱</td>
+            <td>۵٪</td>
+            <td>هفته ۲</td>
+            <td>تحقیق درباره تحولات دیجیتال در یک صنعت</td>
+        </tr>
+        <tr>
+            <td>تمرین ۲</td>
+            <td>۵٪</td>
+            <td>هفته ۵</td>
+            <td>پیاده‌سازی الگوریتم یادگیری ماشین ساده</td>
+        </tr>
+        <tr>
+            <td>تمرین ۳</td>
+            <td>۵٪</td>
+            <td>هفته ۸</td>
+            <td>کار با داده‌ها و پیش‌پردازش</td>
+        </tr>
+        <tr>
+            <td>آزمون میان‌ترم</td>
+            <td>۳۵٪</td>
+            <td>هفته ۹</td>
+            <td>سرفصل‌های ۱ تا ۶</td>
+        </tr>
+        <tr>
+            <td>پروژه نیم‌ترم</td>
+            <td>۱۰٪</td>
+            <td>هفته ۱۰</td>
+            <td>پیش‌بینی بار (Load Forecasting)</td>
+        </tr>
+        <tr>
+            <td>پروژه پایانی</td>
+            <td>۱۵٪</td>
+            <td>هفته ۱۶</td>
+            <td>تحلیل ناهنجاری / NLP / پردازش تصویر</td>
+        </tr>
+        <tr>
+            <td>آزمون پایانی</td>
+            <td>۳۵٪</td>
+            <td>هفته ۱۶</td>
+            <td>سرفصل‌های ۷ تا ۹</td>
+        </tr>
+    </table>
+
+    <h3>لیست منابع و مراجع تکمیلی</h3>
+    <div class="phase">
+        <h4>منابع اصلی</h4>
+        <ul>
+            <li>A. Lindholm, N. Wahlström, F. Lindsten, and T. B. Schön. <em>Machine Learning: A First Course for Engineers and Scientists</em>. Cambridge University Press, 2022.</li>
+            <li>T. M. Siebel. <em>Digital Transformation: Survive and Thrive in an Era of Mass Extinction</em>. Rodin Books, 2019.</li>
+            <li>E. Hossain. <em>Machine Learning Crash Course for Engineers</em>. Springer, 2024.</li>
+        </ul>
+        <h4>منابع تکمیلی</h4>
+        <ul>
+            <li>A. Géron. <em>Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow</em>. O'Reilly, 2019.</li>
+            <li>S. Russell and P. Norvig. <em>Artificial Intelligence: A Modern Approach</em>. Pearson, 2020.</li>
+            <li>I. Goodfellow, Y. Bengio, and A. Courville. <em>Deep Learning</em>. MIT Press, 2016.</li>
+            <li>ویکی‌پدیا و مقالات علمی معتبر برای موضوعات به‌روز</li>
+        </ul>
+        <h4>منابع آنلاین</h4>
+        <ul>
+            <li>jupyter.org - برای اجرای کدهای پایتون</li>
+            <li>Google Colab - محیط رایگان اجرای کد ML</li>
+            <li>Kaggle - مجموعه داده‌ها و رقابت‌ها</li>
+            <li>Scikit-learn Documentation</li>
+            <li>TensorFlow/PyTorch Tutorials</li>
+        </ul>
+    </div>
+
+    <h3>ابزارها و محیط تدریس</h3>
+    <div class="phase">
+        <ul>
+            <li><strong>زبان برنامه‌نویسی:</strong> Python 3.x</li>
+            <li><strong>کتابخانه‌ها:</strong> NumPy, Pandas, Scikit-learn, Matplotlib, TensorFlow/PyTorch</li>
+            <li><strong>محیط اجرا:</strong> Jupyter Notebook / Google Colab</li>
+            <li><strong>پلتفرم ارائه:</strong> اسلایدهای PowerPoint/Keynote</li>
+        </ul>
+    </div>
+
+    <h2>فاز ۲: محتوای جلسات تئوری <span class="status pending">در انتظار</span></h2>
     <div class="phase">
         <h3>فاز ۲ - محتوای تئوری</h3>
         <ul>
-            <li><span class="status pending">در انتظار</span> جلسه ۱: مقدمه‌ای بر تحول دیجیتال - تاریخچه و مفاهیم کلیدی</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۲: فناوری‌های تحول‌آفرین (AI, ML, IoT, Big Data, Blockchain, Cloud)</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۳: مقدمه‌ای بر هوش مصنوعی و ارتباط با تحول دیجیتال</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۴: چالش‌های فنی، اخلاقی، اقتصادی و اجتماعی AI و DT</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۵: مفاهیم پایه یادگیری ماشین - ویژگی‌ها و بهینه‌سازی</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۶: رگرسیون و مسائل ارضای محدودیت</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۷: تابع هدف، تابع هزینه، تابع ضرر</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۸: نزول در راستای گرادیان</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۹: دسته‌بندی و خوشه‌بندی</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۱۰: یادگیری باناظر، بی‌ناظر و تقویتی</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۱۱: آماده‌سازی مجموعه داده و پیش‌پردازش</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۱۲: مدیریت داده‌های نامتوازن و پرت</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۱۳: بیش‌برازش و زیربرازش</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۱۴: شاخص‌های ارزیابی و انتخاب مدل</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۱۵: پارامترها و ابرپارامترها</li>
-            <li><span class="status pending">در انتظار</span> جلسه ۱۶: کاربردهای AI در مهندسی</li>
+            <li><span class="checkbox"></span> جلسه ۱: مقدمه‌ای بر تحول دیجیتال - تاریخچه و مفاهیم کلیدی</li>
+            <li><span class="checkbox"></span> جلسه ۲: فناوری‌های تحول‌آفرین (AI, ML, IoT, Big Data, Blockchain, Cloud)</li>
+            <li><span class="checkbox"></span> جلسه ۳: مقدمه‌ای بر هوش مصنوعی و ارتباط با تحول دیجیتال</li>
+            <li><span class="checkbox"></span> جلسه ۴: چالش‌های فنی، اخلاقی، اقتصادی و اجتماعی AI و DT</li>
+            <li><span class="checkbox"></span> جلسه ۵: مفاهیم پایه یادگیری ماشین - ویژگی‌ها و بهینه‌سازی</li>
+            <li><span class="checkbox"></span> جلسه ۶: رگرسیون و مسائل ارضای محدودیت</li>
+            <li><span class="checkbox"></span> جلسه ۷: تابع هدف، تابع هزینه، تابع ضرر</li>
+            <li><span class="checkbox"></span> جلسه ۸: نزول در راستای گرادیان</li>
+            <li><span class="checkbox"></span> جلسه ۹: دسته‌بندی و خوشه‌بندی</li>
+            <li><span class="checkbox"></span> جلسه ۱۰: یادگیری باناظر، بی‌ناظر و تقویتی</li>
+            <li><span class="checkbox"></span> جلسه ۱۱: آماده‌سازی مجموعه داده و پیش‌پردازش</li>
+            <li><span class="checkbox"></span> جلسه ۱۲: مدیریت داده‌های نامتوازن و پرت</li>
+            <li><span class="checkbox"></span> جلسه ۱۳: بیش‌برازش و زیربرازش</li>
+            <li><span class="checkbox"></span> جلسه ۱۴: شاخص‌های ارزیابی و انتخاب مدل</li>
+            <li><span class="checkbox"></span> جلسه ۱۵: پارامترها و ابرپارامترها</li>
+            <li><span class="checkbox"></span> جلسه ۱۶: کاربردهای AI در مهندسی</li>
         </ul>
     </div>
 
-    <h2>فاز ۳: محتوای عملی و تمرین‌ها</h2>
+    <h2>فاز ۳: محتوای عملی و تمرین‌ها <span class="status pending">در انتظار</span></h2>
     <div class="phase">
         <h3>فاز ۳ - تمرین‌ها و پروژه‌ها</h3>
         <ul>
-            <li><span class="status pending">در انتظار</span> تمرین ۱: تحقیق درباره تحولات دیجیتال در یک صنعت</li>
-            <li><span class="status pending">در انتظار</span> تمرین ۲: پیاده‌سازی یک الگوریتم یادگیری ماشین ساده</li>
-            <li><span class="status pending">در انتظار</span> تمرین ۳: کار با داده‌ها و پیش‌پردازش</li>
-            <li><span class="status pending">در انتظار</span> پروژه نیم‌ترم: پیش‌بینی بار (Load Forecasting)</li>
-            <li><span class="status pending">در انتظار</span> پروژه پایانی: تحلیل ناهنجاری یا NLP یا پردازش تصویر</li>
+            <li><span class="checkbox"></span> تمرین ۱: تحقیق درباره تحولات دیجیتال در یک صنعت</li>
+            <li><span class="checkbox"></span> تمرین ۲: پیاده‌سازی یک الگوریتم یادگیری ماشین ساده</li>
+            <li><span class="checkbox"></span> تمرین ۳: کار با داده‌ها و پیش‌پردازش</li>
+            <li><span class="checkbox"></span> پروژه نیم‌ترم: پیش‌بینی بار (Load Forecasting)</li>
+            <li><span class="checkbox"></span> پروژه پایانی: تحلیل ناهنجاری یا NLP یا پردازش تصویر</li>
         </ul>
     </div>
 
-    <h2>فاز ۴: ارزیابی و آزمون‌ها</h2>
+    <h2>فاز ۴: ارزیابی و آزمون‌ها <span class="status pending">در انتظار</span></h2>
     <div class="phase">
         <h3>فاز ۴ - ارزیابی</h3>
         <ul>
-            <li><span class="status pending">در انتظار</span> طراحی سوال‌های آزمون میان‌ترم</li>
-            <li><span class="status pending">در انتظار</span> طراحی سوال‌های آزمون پایانی</li>
-            <li><span class="status pending">در انتظار</span> تهیه پاسخ‌نامه و معیارهای ارزیابی</li>
-            <li><span class="status pending">در انتظار</span> تعیین زمان‌بندی آزمون‌ها</li>
+            <li><span class="checkbox"></span> طراحی سوال‌های آزمون میان‌ترم</li>
+            <li><span class="checkbox"></span> طراحی سوال‌های آزمون پایانی</li>
+            <li><span class="checkbox"></span> تهیه پاسخ‌نامه و معیارهای ارزیابی</li>
+            <li><span class="checkbox"></span> تعیین زمان‌بندی آزمون‌ها</li>
         </ul>
     </div>
 
-    <h2>فاز ۵: مواد تکمیلی</h2>
+    <h2>فاز ۵: مواد تکمیلی <span class="status pending">در انتظار</span></h2>
     <div class="phase">
         <h3>فاز ۵ - مواد تکمیلی</h3>
         <ul>
-            <li><span class="status pending">در انتظار</span> تهیه اسلایدهای هر جلسه</li>
-            <li><span class="status pending">در انتظار</span> آماده‌سازی Jupyter Notebooks برای تمرین‌ها</li>
-            <li><span class="status pending">در انتظار</span> تهیه فهرست منابع بیشتر برای مطالعه دانشجویان</li>
-            <li><span class="status pending">در انتظار</span> آماده‌سازی ویدیوهای آموزشی (اختیاری)</li>
+            <li><span class="checkbox"></span> تهیه اسلایدهای هر جلسه</li>
+            <li><span class="checkbox"></span> آماده‌سازی Jupyter Notebooks برای تمرین‌ها</li>
+            <li><span class="checkbox"></span> تهیه فهرست منابع بیشتر برای مطالعه دانشجویان</li>
+            <li><span class="checkbox"></span> آماده‌سازی ویدیوهای آموزشی (اختیاری)</li>
         </ul>
     </div>
 
@@ -162,7 +391,7 @@
             <td>۱-۲</td>
             <td>مقدمه و مفاهیم پایه</td>
             <td>فاز ۱ و بخشی از فاز ۲</td>
-            <td><span class="status pending">در انتظار</span></td>
+            <td><span class="status in-progress">در حال اجرا</span></td>
         </tr>
         <tr>
             <td>۳-۶</td>
@@ -190,17 +419,8 @@
         </tr>
     </table>
 
-    <h2>منابع اصلی درس</h2>
-    <div class="phase">
-        <ul>
-            <li>A. Lindholm, N. Wahlström, F. Lindsten, and T. B. Schön. <em>Machine Learning: A First Course for Engineers and Scientists</em>. Cambridge University Press, 2022.</li>
-            <li>T. M. Siebel. <em>Digital Transformation: Survive and Thrive in an Era of Mass Extinction</em>. Rodin Books, 2019.</li>
-            <li>E. Hossain. <em>Machine Learning Crash Course for Engineers</em>. Springer, 2024.</li>
-        </ul>
-    </div>
-
     <p style="text-align: center; color: #7f8c8d; margin-top: 40px;">
-        این برنامه بر اساس سرفصل‌های درس تهیه شده است
+        آخرین بروزرسانی: ۱۴۰۵/۰۶/۱۸
     </p>
 </body>
 </html>
