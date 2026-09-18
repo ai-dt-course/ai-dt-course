@@ -13,6 +13,7 @@
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
+        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
@@ -138,6 +139,34 @@
             <li>پردازش زبان طبیعی</li>
             <li>پردازش تصویر</li>
         </ul>
+    </div>
+
+    <button class="accordion">یادداشت‌های استاد</button>
+    <div class="panel">
+        <div class="instructor-note">
+            <strong>مقدمه و اهمیت کاربردها (۸ دقیقه):</strong>
+            <p>این جلسه آخرین جلسه تئوری است و باید دانشجویان را برای پروژه پایانی آماده کند. با یک سوال شروع کنید: «در طول این ترم چه چیزی یاد گرفتید؟». سپس بگویید که حالا می‌خواهیم ببینیم این مفاهیم در دنیای واقعی چطور استفاده می‌شوند. تأکید کنید که AI فقط یک درس نیست - یک مهارت کاربردی است که می‌تواند درآمدزا باشد.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>پیش‌بینی بار (۸ دقیقه):</strong>
+            <p>این یکی از رایج‌ترین کاربردها در ایران است. شرکت‌های برق باید بدانند که فردا چقدر برق مصرف می‌شود تا بتوانند تولید را تنظیم کنند. LSTM و GRU برای داده‌های زمانی عالی هستند. XGBoost هم خوب کار می‌کند. می‌توانید یک مثال عملی از داده‌های برق ایران بزنید.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>تحلیل ناهنجاری (۸ دقیقه):</strong>
+            <p>این برای صنعت خیلی مهم است. نگهداری پیشگیرانه یعنی قبل از اینکه دستگاه خراب شود، بفهمیم که دارد خراب می‌شود - این میلیاردها تومان صرفه‌جویی می‌کند. مثال: موتور هواپیما - اگر خراب شود جان انسان‌ها در خطر است. پس باید از قبل پیش‌بینی کنیم.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>پردازش زبان و تصویر (۸ دقیقه):</strong>
+            <p>NLP و بینایی ماشین پرکاربردترین حوزه‌ها هستند. چت‌بات‌ها که الان همه جا هستند، NLP هستند. تشخیص عیب در کارخانه‌ها با بینایی ماشین انجام می‌شود. در ایران هم شرکت‌های زیادی در این حوزه‌ها فعال هستند.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>پروژه پایانی (۱۰ دقیقه):</strong>
+            <p>توضیح دهید که پروژه پایانی چیست. هر دانشجو باید یکی از کاربردها را انتخاب کند و یک پروژه کوچک بسازد. باید شامل: جمع‌آوری داده، پیش‌پردازش، ساخت مدل، و ارزیابی باشد. می‌توانند از داده‌های آماده (Kaggle) استفاده کنند.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>جمع‌بندی کل ترم (۵ دقیقه):</strong>
+            <p>یک خلاصه کلی از همه جلسات بدهید: از مفهوم تحول دیجیتال شروع کردیم، رفتیم سراغ AI و ML، یاد گرفتیم چطور داده آماده کنیم، مدل بسازیم، ارزیابی کنیم. الآن دانشجویان باید بتوانند یک پروژه ML کوچک از صفر تا صد انجام دهند. این مهارت خیلی ارزشمند است.</p>
+        </div>
     </div>
 
     <script>
