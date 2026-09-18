@@ -13,6 +13,7 @@
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
+        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
         .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
@@ -202,6 +203,34 @@
             <p>→ Test نباید در آموزش استفاده شود!</p>
             <p>→ Validation برای تنظیم است</p>
             <p>→ Test برای ارزیابی نهایی</p>
+        </div>
+    </div>
+
+    <button class="accordion">یادداشت‌های استاد</button>
+    <div class="panel">
+        <div class="instructor-note">
+            <strong>مقدمه و مفهوم بیش‌برازش (۸ دقیقه):</strong>
+            <p>با یک تشبیه شروع کنید: بیش‌برازش مثل دانش‌آموزی است که حفظ می‌کند نه یاد می‌گیرد. امتحان را که عیناً سؤال‌های تمرین باشد می‌تواند جواب دهد، اما سؤال جدید را نه! مدل هم همین‌طور است - اگر داده‌های آموزش را حفظ کند، روی داده جدید شکست می‌خورد. مثال: اگر درخت تصمیم خیلی عمیق باشد، می‌تواند هر داده آموزت را درست分类 کند ولی داده جدید را نه.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>زیربرازش (۶ دقیقه):</strong>
+            <p>زیربرازش برعکس است - مدل خیلی ساده است. مثال: می‌خواهیم یک منحنی را با یک خط فیت کنیم - هر چقدر خط بکشیم نمی‌تواند منحنی را دنبال کند. این هم بد است چون مدل الگوهای اصلی را هم یاد نمی‌گیرد. تعادل: مدلی که به اندازه کافی پیچیده باشد (نه خیلی ساده، نه خیلی پیچیده) - این مهم‌ترین چالش در ML است.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>منحني یادگیری (۸ دقیقه):</strong>
+            <p>Learning Curves را روی تخته رسم کنید: محور x اندازه داده، محور y خطا. بیش‌برازش: خطای train پایین، خطای test بالا - فاصله زیاد. زیربرازش: هر دو خطا بالا. Good fit: هر دو خطا پایین و نزدیک به هم. این نمودار به شما می‌گوید که مشکل کجاست و چه کاری باید انجام دهید.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>روش‌های جلوگیری (۱۰ دقیقه):</strong>
+            <p>Regularization: مثل این است که به مدل بگوییم «ساده‌تر باش». L1 برخی وزن‌ها را صفر می‌کند (انتخاب ویژگی)، L2 همه را کوچک می‌کند. Dropout: در شبکه عصبی، هر بار نورون‌های تصادفی را خاموش کنیم - این باعث می‌شود شبکه یاد نگیرد به یک نورون خاص وابسته باشد. Early Stopping: وقتی خطای validation شروع به زیاد شدن کرد، آموزش را متوقف کنیم - این خیلی مهم است!</p>
+        </div>
+        <div class="instructor-note">
+            <strong>اعتبارسنجی (۸ دقیقه):</strong>
+            <p>K-Fold Cross-Validation را توضیح دهید: داده را به ۵ قسمت تقسیم کن، ۴ تا را آموزش بده، ۱ تا را تست کن، ۵ بار تکرار کن، میانگین بگیر. مزیت: همه داده‌ها هم train هم test می‌بینند - تخمین بهتری از عملکرد واقعی می‌دهد. معمولاً K=5 یا K=10 استفاده می‌شود. Stratified K-Fold برای داده نامتوازن مهم است.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>جمع‌بندی (۵ دقیقه):</strong>
+            <p>خلاصه: بیش‌برازش = مدل پیچیده، زیربرازش = مدل ساده. از Learning Curves برای تشخیص استفاده کنید. راه‌حل‌ها: Regularization، Dropout، Early Stopping، داده بیشتر. از Cross-Validation برای ارزیابی بهتر استفاده کنید. تکلیف: دانشجویان باید یک مثال بسازند و نشان دهند که چطور با تغییر پیچیدگی مدل، بیش‌برازش یا زیربرازش ایجاد می‌شود.</p>
         </div>
     </div>
 
