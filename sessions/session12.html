@@ -13,6 +13,7 @@
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
+        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
         .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
@@ -187,6 +188,34 @@
             <p>گاهی داده پرت اطلاعات ارزشمندی دارد!</p>
             <p>مثلاً در تشخیص تقلب</p>
             <p>→ حذف نکنید، با دقت بررسی کنید</p>
+        </div>
+    </div>
+
+    <button class="accordion">یادداشت‌های استاد</button>
+    <div class="panel">
+        <div class="instructor-note">
+            <strong>مقدمه و معرفی مشکل (۸ دقیقه):</strong>
+            <p>با یک مثال شروع کنید: «فرض کنید می‌خواهیم مدلی بسازیم که تقلب در تراکنش‌های بانکی را تشخیص دهد. اگر از ۱۰۰۰ تراکنش، فقط ۱۰ تا تقلبی باشد، مدل می‌تواند همیشه بگوید تقلب نیست و ۹۹٪ دقت داشته باشد!». این مشکل داده نامتوازن است. تأکید کنید که دقت بالا همیشه خوب نیست - باید به کلاس اقلیت توجه کنیم.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>تکنیک‌های مواجهه (۱۲ دقیقه):</strong>
+            <p>Undersampling را با کاهش کلاس اکثریت توضیح دهید: مثلاً از ۱۰۰۰ نمونه سالم، فقط ۱۰۰ تا نگه داریم. عیب: از دست دادن اطلاعات. Oversampling: از ۱۰ نمونه تقلبی، ۱۰۰ تا بسازیم. SMOTE: نقطه جدید بین نقاط اقلیت تولید می‌کند - نه دقیقاً کپی. این بهتر از کپی کردن است چینتنوع ایجاد می‌کند.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>SMOTE جزئیات (۸ دقیقه):</strong>
+            <p>SMOTE را با یک مثال گرافیکی توضیح دهید: دو نقطه اقلیت داریم، SMOTE یک نقطه جدید بین آنها قرار می‌دهد. این مثل «插值» است. مزیت: داده جدید واقعی نیست ولی واقعی به نظر می‌رسد. انواع: Borderline-SMOTE فقط روی نقاط مرزی کار می‌کند که مهم‌ترند.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>داده‌های پرت (۸ دقیقه):</strong>
+            <p>پرت‌ها می‌توانند مهم باشند! مثال: در تشخیص تقلب، یک تراکنش خیلی بزرگ ممکن است تقلب باشد - نباید حذف شود. انواع: Global (از کل داده‌ها دور)، Contextual (در یک موقعیت خاص عجیب)، Collective (گروهی که با هم عجیب‌اند). مثلاً در یک بازار سهام، یک نقطه پرت ممکن است crash باشد.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>تشخیص و مدیریت پرت (۸ دقیقه):</strong>
+            <p>Z-Score: اگر نقطه‌ای بیشتر از ۳ انحراف معیار از میانگین فاصله داشته باشد، پرت است. IQR: برای داده‌های غیرنرمال بهتر است - از چارک‌ها استفاده می‌کند. Winsorization: به جای حذف، مقدار را به آستانه محدود کنیم. تأکید کنید: قبل از حذف پرت، دلیلش را پیدا کنید!</p>
+        </div>
+        <div class="instructor-note">
+            <strong>جمع‌بندی (۴ دقیقه):</strong>
+            <p>خلاصه: داده نامتوازن مشکل رایجی است - از SMOTE یا وزن‌دهی استفاده کنیم. داده‌های پرت را با دقت بررسی کنیم - گاهی اطلاعات مهمی دارند. همیشه معیارهای مناسب (Precision, Recall, F1) را به جای Accuracy استفاده کنیم. تکلیف: دانشجویان باید یک دیتاست نامتوازن پیدا کنند و راه‌حل پیشنهاد دهند.</p>
         </div>
     </div>
 
