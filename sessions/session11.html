@@ -13,6 +13,7 @@
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
+        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
         .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
@@ -224,6 +225,34 @@
         <div class="example">
             <p>ویژگی‌های اولیه: قد، وزن</p>
             <p>ویژگی جدید: BMI = وزن / قد²</p>
+        </div>
+    </div>
+
+    <button class="accordion">یادداشت‌های استاد</button>
+    <div class="panel">
+        <div class="instructor-note">
+            <strong>مقدمه و اهمیت داده (۱۰ دقیقه):</strong>
+            <p>با آمار شروع کنید: «۸۰٪ زمان پروژه‌های ML صرف آماده‌سازی داده می‌شود!» این خیلی مهم است. تأکید کنید که بهترین مدل هم اگر داده بد داشته باشد، نتیجه بد می‌دهد - این مثل این است که با ماشین معیوب مسابقه بدهید. مثال: اگر داده‌های آموزشی تبعیض داشته باشند (مثلاً فقط مردان)، مدل هم تبعیض یاد می‌گیرد.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>پاکسازی داده (۸ دقیقه):</strong>
+            <p>با مثال مقادیر از دست رفته شروع کنید: فرض کنید در یک فرم، خیلی‌ها شماره تماس را پر نکرده‌اند. چه کنیم؟ روش‌ها: حذف (اگر تعداد کم بود)، جایگزینی با میانگین (برای عدد)، یا پیش‌بینی با مدل (اگر داده مهم باشد). تأکید کنید که روش انتخابی به نوع داده و مقدار از دست رفته بستگی دارد.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>مقیاس‌گذاری (۱۰ دقیقه):</strong>
+            <p>با یک مثال ملموس: قد افراد ۱۵۰-۲۰۰ سانتی‌متر است، درآمد ۱-۱۰۰ میلیون تومان. اگر مدلی داشته باشیم، فکر می‌کند درآمد خیلی مهم‌تر است چون اعداد بزرگ‌تری دارد. مقیاس‌گذاری این را درست می‌کند. تفاوت استانداردسازی (میانگین ۰) و نرمال‌سازی (محدوده ۰-۱) را توضیح دهید. کدام را کی استفاده کنیم؟ نرمال‌سازی وقتی محدوده مشخص داریم، استانداردسازی وقتی توزیع نرمال می‌خواهیم.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>کدگذاری (۶ دقیقه):</strong>
+            <p>مثال رنگ‌ها: اگر بگوییم قرمز=۰، سبز=۱، آبی=۲، مدل فکر می‌کند قرمز < سبز < آبی - این اشتباه است. One-Hot Encoding این مشکل را حل می‌کند. اما اگر ترتیب معنادار داشته باشیم (کم=۰، متوسط=۱، زیاد=۲) می‌توانیم از Ordinal Encoding استفاده کنیم.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>تقسیم داده (۶ دقیقه):</strong>
+            <p>خیلی مهم: داده Test را کنار بگذارید و فقط در انتها استفاده کنید! مثال: دانش‌آموزی که تمام سؤال‌های امتحان را قبلاً دیده، نمی‌تواند نشان دهد که یاد گرفته. Validation برای تنظیم مدل است، Test برای ارزیابی نهایی. Stratified Split را توضیح دهید: وقتی کلاس‌های نامتعادل داریم (مثلاً ۹۵٪ منفی، ۵٪ مثبت)، باید توزیع را حفظ کنیم.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>جمع‌بندی (۵ دقیقه):</strong>
+            <p>خلاصه: داده خوب = مدل خوب. پاکسازی، مقیاس‌گذاری، کدگذاری، و تقسیم درست مراحل آماده‌سازی هستند. این مهارت با تمرین بهتر می‌شود. تکلیف: دانشجویان باید یک دیتاست پیدا کنند (مثلاً از Kaggle) و مراحل پیش‌پردازش را روی آن اجرا کنند.</p>
         </div>
     </div>
 
