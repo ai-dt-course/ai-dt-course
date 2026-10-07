@@ -14,6 +14,7 @@
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
         .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 10px; margin: 10px 0; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
@@ -166,6 +167,132 @@
         <div class="instructor-note">
             <strong>جمع‌بندی کل ترم (۵ دقیقه):</strong>
             <p>یک خلاصه کلی از همه جلسات بدهید: از مفهوم تحول دیجیتال شروع کردیم، رفتیم سراغ AI و ML، یاد گرفتیم چطور داده آماده کنیم، مدل بسازیم، ارزیابی کنیم. الآن دانشجویان باید بتوانند یک پروژه ML کوچک از صفر تا صد انجام دهند. این مهارت خیلی ارزشمند است.</p>
+        </div>
+    </div>
+
+    <button class="accordion">مطالعه شخصی (Self-Read)</button>
+    <div class="panel">
+        <div class="self-read">
+            <h2>فصل شانزدهم: کاربردهای هوش مصنوعی در مهندسی</h2>
+
+            <h3>۱۶.۱ پیش‌بینی بار (Load Forecasting)</h3>
+
+            <p>پیش‌بینی مصرف برق و انرژی برای برنامه‌ریزی شبکه برق.</p>
+
+            <h4>انواع پیش‌بینی:</h4>
+            <ul>
+                <li>پیش‌بینی کوتاه‌مدت (ساعتی)</li>
+                <li>پیش‌بینی میان‌مدت (روزانه)</li>
+                <li>پیش‌بینی بلندمدت (سالانه)</li>
+            </ul>
+
+            <h4>الگوریتم‌های رایج:</h4>
+            <ul>
+                <li>LSTM (Long Short-Term Memory)</li>
+                <li>GRU (Gated Recurrent Unit)</li>
+                <li>XGBoost</li>
+                <li>Prophet (Facebook)</li>
+            </ul>
+
+            <h3>۱۶.۲ تحلیل خطا و ناهنجاری</h3>
+
+            <p>تشخیص خودکار خطاها و ناهنجاری‌ها در سیستم‌های صنعتی.</p>
+
+            <h4>کاربردها:</h4>
+            <ul>
+                <li>تشخیص خطا در تجهیزات</li>
+                <li>پایش سلامت سازه‌ها</li>
+                <li>نگهداری پیشگیرانه (Predictive Maintenance)</li>
+                <li>تشخیص خطا در موتور هواپیما</li>
+                <li>پایش پل‌ها و سدها</li>
+                <li>تشخیص نشتی در لوله‌های نفت</li>
+            </ul>
+
+            <h3>۱۶.۳ پردازش زبان طبیعی (NLP)</h3>
+
+            <h4>کاربردها:</h4>
+            <ul>
+                <li>چت‌بات‌های پشتیبانی</li>
+                <li>تحلیل احساسات</li>
+                <li>خلاصه‌سازی اسناد</li>
+                <li>ترجمه ماشینی</li>
+                <li>تشخیص گفتار</li>
+            </ul>
+
+            <h4>ابزارها:</h4>
+            <ul>
+                <li>Transformers (BERT, GPT)</li>
+                <li>NLTK, spaCy</li>
+                <li>Speech Recognition APIs</li>
+            </ul>
+
+            <h3>۱۶.۴ پردازش تصویر</h3>
+
+            <h4>کاربردها:</h4>
+            <ul>
+                <li>بینایی ماشین در صنعت</li>
+                <li>تشخیص عیب</li>
+                <li>خودروهای خودران</li>
+                <li>پزشکی (تشخیص بیماری)</li>
+                <li>تشخیص چهره</li>
+            </ul>
+
+            <h4>شبکه‌های رایج:</h4>
+            <ul>
+                <li>CNN (Convolutional Neural Network)</li>
+                <li>YOLO</li>
+                <li>ResNet</li>
+                <li>VGG</li>
+            </ul>
+
+            <h3>۱۶.۵ سایر کاربردها</h3>
+
+            <ul>
+                <li>بهینه‌سازی زنجیره تأمین</li>
+                <li>پیش‌بینی تقاضا</li>
+                <li>سیستم‌های توصیه‌گر</li>
+                <li>کنترل فرآیندها</li>
+                <li>بهینه‌سازی انرژی</li>
+                <li>طراحی به کمک کامپیوتر (CAD)</li>
+            </ul>
+
+            <h3>۱۶.۶ پروژه پایانی</h3>
+
+            <p>در پروژه پایانی، دانشجویان باید یکی از کاربردهای زیر را پیاده‌سازی کنند:</p>
+            <ul>
+                <li>پیش‌بینی بار (Load Forecasting)</li>
+                <li>تحلیل ناهنجاری (Anomaly Detection)</li>
+                <li>پردازش زبان طبیعی</li>
+                <li>پردازش تصویر</li>
+            </ul>
+
+            <h4>مراحل پروژه:</h4>
+            <ol>
+                <li>جمع‌آوری داده</li>
+                <li>پیش‌پردازش داده</li>
+                <li>ساخت و آموزش مدل</li>
+                <li>ارزیابی مدل</li>
+            </ol>
+
+            <h3>خلاصه فصل:</h3>
+            <ol>
+                <li>AI کاربردهای گسترده‌ای در مهندسی دارد</li>
+                <li>پیش‌بینی بار برای برنامه‌ریزی انرژی ضروری است</li>
+                <li>تشخیص ناهنجاری در نگهداری پیشگیرانه مهم است</li>
+                <li>NLP و بینایی ماشین پرکاربردترین حوزه‌ها هستند</li>
+                <li>پروژه پایانی فرصتی برای تمرین مفاهیم است</li>
+            </ol>
+
+            <h3>تمرین‌های خودآزمایی:</h3>
+            <ol>
+                <li>یک مثال از کاربرد AI در صنعت بزنید</li>
+                <li>چرا پیش‌بینی بار مهم است؟</li>
+                <li>نگهداری پیشگیرانه چیست؟</li>
+                <li>یک کاربرد NLP در زندگی روزمره نام ببرید</li>
+                <li>چه مراحلی برای یک پروژه ML نیاز است؟</li>
+            </ol>
+
+            <p><strong>زمان پیشنهادی مطالعه:</strong> ۹۰ دقیقه</p>
         </div>
     </div>
 

@@ -5,86 +5,198 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جلسه ۹ - دسته‌بندی و خوشه‌بندی</title>
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; line-height: 1.9; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
         h3 { color: #16a085; margin-top: 20px; }
+        h4 { color: #34495e; margin-top: 15px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
         .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
-        code { background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
-        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 15px; margin: 10px 0; }
+        .warning { background: #fdecea; border-right: 4px solid #e74c3c; padding: 10px; margin: 10px 0; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
-
+        .stat-box { background: #f4ecf7; border-right: 4px solid #8e44ad; padding: 10px; margin: 10px 0; }
+        .quote { background: #fdf2e9; border-right: 4px solid #e67e22; padding: 10px; margin: 10px 0; font-style: italic; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: monospace; color: #c0392b; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
         .accordion.active { background-color: #3498db; color: white; }
         .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
-
         .math { font-family: "Times New Roman", serif; font-size: 1.2em; }
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
         th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
     </style>
 </head>
 <body>
     <a href="../plan.html" class="back-link">← بازگشت به برنامه درسی</a>
 
-    <h1>جلسه ۹: دسته‌بندی و خوشه‌بندی</h1>
+    <h1>جلسه ۹: دسته‌بندی و خوشه‌بندی (Classification & Clustering)</h1>
 
     <div class="phase">
         <h2>اهداف یادگیری</h2>
+        <p>در پایان این جلسه، دانشجو باید بتواند:</p>
         <ul>
-            <li>درک تفاوت دسته‌بندی و خوشه‌بندی</li>
-            <li>آشنایی با الگوریتم‌های دسته‌بندی</li>
-            <li>شناخت الگوریتم‌های خوشه‌بندی</li>
+            <li>تفاوت بنیادی یادگیری باناظر (Supervised) و بی‌ناظر (Unsupervised) را توضیح دهد</li>
+            <li>چهار الگوریتم اصلی دسته‌بندی (KNN, Logistic Regression, SVM, Decision Tree) را با فرمول بیان کند</li>
+            <li>معیارهای ارزیابی دسته‌بندی (Accuracy, Precision, Recall, F1) را محاسبه کند</li>
+            <li>الگوریتم‌های K-Means و DBSCAN را با هم مقایسه کند</li>
+            <li>مسئله تعیین تعداد خوشه‌ها را با روش Elbow حل کند</li>
+            <li>کاربرد هر روش را در مسائل واقعی تشخیص دهد</li>
+            <li>مسائل multi-class و multi-label را از یکدیگر تفکیک کند</li>
+        </ul>
+
+        <h2>پیش‌نیازهای جلسه</h2>
+        <ul>
+            <li>تسلط بر مفاهیم Gradient Descent (جلسه ۸)</li>
+            <li>درک تابع هزینه Cross-Entropy (جلسه ۷)</li>
+            <li>آشنایی با رگرسیون (جلسه ۶)</li>
+            <li>دانش پایه‌ای از فاصله اقلیدسی</li>
         </ul>
     </div>
 
-    <button class="accordion">دسته‌بندی (Classification) چیست؟</button>
+    <button class="accordion">بخش ۹.۱ — دسته‌بندی (Classification): پیش‌بینی برچسب</button>
     <div class="panel">
         <div class="key-concept">
-            <strong>دسته‌بندی:</strong> پیش‌بینی یک برچسب (کلاس) برای هر نمونه بر اساس ویژگی‌های آن.
+            <strong>دسته‌بندی (Classification):</strong> نوعی از یادگیری باناظر که در آن هدف پیش‌بینی یک برچسب گسسته (کلاس) برای نمونه‌های جدید بر اساس ویژگی‌هایشان است.
         </div>
 
-        <h3>انواع دسته‌بندی:</h3>
+        <h3>۹.۱.۱ تعریف رسمی</h3>
+        <p>با داشتن مجموعه داده آموزشی D = {(x<sub>i</sub>, y<sub>i</sub>)} که در آن y<sub>i</sub> ∈ {1, 2, ..., K}، هدف یادگیری تابع f: X → Y است که برای نمونه‌های جدید، برچسب صحیح را پیش‌بینی کند.</p>
+
+        <h3>۹.۱.۲ سه نوع اصلی دسته‌بندی</h3>
+        <table>
+            <tr>
+                <th>نوع</th>
+                <th>توضیح</th>
+                <th>مثال ایرانی</th>
+                <th>روش‌های معمول</th>
+            </tr>
+            <tr>
+                <td><strong>Binary</strong></td>
+                <td>دو کلاس (0 یا 1)</td>
+                <td>تشخیص اسپم بودن/نبودن ایمیل، تأیید/رد وام بانکی</td>
+                <td>Logistic Regression، SVM</td>
+            </tr>
+            <tr>
+                <td><strong>Multi-class</strong></td>
+                <td>بیش از دو کلاس، هر نمونه فقط یک برچسب دارد</td>
+                <td>تشخیص رقم دست‌نویس (۰ تا ۹)، نوع بیمه (سوم، شخص ثالث، بدنه)</td>
+                <td>Softmax Regression، Random Forest</td>
+            </tr>
+            <tr>
+                <td><strong>Multi-label</strong></td>
+                <td>هر نمونه می‌تواند چند برچسب داشته باشد</td>
+                <td>برچسب‌گذاری عکس در اینستاگرام (گربه + خانگی + خوابیده)</td>
+                <td>Binary Relevance، Classifier Chains</td>
+            </tr>
+        </table>
+
+        <h3>۹.۱.۳ کاربردهای واقعی در ایران و جهان</h3>
         <ul>
-            <li><strong>دو کلاسه (Binary):</strong> بله/خیر، spam/not spam</li>
-            <li><strong>چند کلاسه (Multi-class):</strong> گربه/سگ/پرنده</li>
-            <li><strong>چند برچسبه (Multi-label):</strong> یک نمونه چند برچسب دارد</li>
+            <li><strong>تشخیص ایمیل اسپم:</strong> فیلتر کردن پیام‌های تبلیغاتی در جیمیل یا ایمیل‌های ایرانی</li>
+            <li><strong>تشخیص چهره:</strong> باز کردن قفل گوشی، تگ‌گذاری خودکار در فیس‌بوک</li>
+            <li><strong>تشخیص بیماری:</strong> تحلیل تصاویر پزشکی (مثلاً تشخیص تومور از MRI)</li>
+            <li><strong>پیش‌بینی ریزش مشتری (Churn):</strong> در اپراتورهای همراه اول و ایرانسل</li>
+            <li><strong>تشخیص احساسات (Sentiment Analysis):</strong> تحلیل نظرات کاربران در دیجی‌کالا</li>
+            <li><strong>تشخیص تقلب بانکی:</strong> در تراکنش‌های اینترنتی</li>
+            <li><strong>طبقه‌بندی خبر:</strong> ورزشی، سیاسی، اقتصادی در خبرگزاری‌ها</li>
         </ul>
 
-        <h3>مثال‌های کاربردی:</h3>
-        <ul>
-            <li>تشخیص ایمیل اسپم</li>
-            <li>تشخیص بیماری از علائم</li>
-            <li>تشخیص چهره</li>
-            <li>پیش‌بینی ریزش مشتریان</li>
-        </ul>
+        <h3>۹.۱.۴ مقایسه با رگرسیون</h3>
+        <table>
+            <tr>
+                <th>ویژگی</th>
+                <th>دسته‌بندی</th>
+                <th>رگرسیون</th>
+            </tr>
+            <tr>
+                <td>نوع خروجی</td>
+                <td>گسسته (کلاس)</td>
+                <td>پیوسته (عدد)</td>
+            </tr>
+            <tr>
+                <td>مثال</td>
+                <td>ایمیل اسپم است یا نه؟</td>
+                <td>قیمت خانه چند است؟</td>
+            </tr>
+            <tr>
+                <td>ارزیابی</td>
+                <td>Accuracy, F1, AUC</td>
+                <td>MSE, MAE, R²</td>
+            </tr>
+            <tr>
+                <td>تابع هزینه</td>
+                <td>Cross-Entropy</td>
+                <td>MSE, MAE</td>
+            </tr>
+        </table>
     </div>
 
-    <button class="accordion">الگوریتم‌های دسته‌بندی - KNN</button>
+    <button class="accordion">بخش ۹.۲ — الگوریتم KNN: ساده‌ترین دسته‌بند</button>
     <div class="panel">
-        <h3>K-Nearest Neighbors (KNN)</h3>
         <div class="key-concept">
-            "به همسایه‌هایت نگاه کن" - برچسب نمونه را طبق اکثریت همسایه‌های نزدیک تعیین می‌کنیم.
+            <strong>K-Nearest Neighbors (KNN):</strong> الگوریتم تنبل (Lazy) که بدون مدل‌سازی صریح، در زمان پیش‌بینی، K همسایه نزدیک‌ترین نمونه آموزشی را بررسی می‌کند و برچسب اکثریت را انتخاب می‌کند.
         </div>
 
-        <h3>الگوریتم:</h3>
+        <h3>۹.۲.۱ ایده اصلی</h3>
+        <div class="example">
+            <p>اگر بخواهیم تشخیص دهیم یک خانه متعلق به منطقه شمال تهران است یا جنوب، به ۵ خانه نزدیک آن نگاه می‌کنیم. اگر ۴ تا از آنها در شمال هستند، می‌گوییم این خانه هم شمال است.</p>
+            <p>این منطق همان "نشاندن همان‌ها در کنار هم" است.</p>
+        </div>
+
+        <h3>۹.۲.۲ الگوریتم</h3>
         <ol>
-            <li>فاصله نمونه جدید را با همه نمونه‌های آموزش محاسبه کن</li>
-            <li>K همسایه نزدیک را پیدا کن</li>
-            <li>برچسب اکثریت را به نمونه جدید بده</li>
+            <li>داده‌های آموزشی را ذخیره کن (هیچ مدلی ساخته نمی‌شود!)</li>
+            <li>برای هر نمونه جدید x:
+                <ul>
+                    <li>فاصله آن را با همه نمونه‌های آموزشی محاسبه کن</li>
+                    <li>K نزدیک‌ترین نمونه را پیدا کن</li>
+                    <li>برچسب اکثریت (یا میانگین وزنی) را به x بده</li>
+                </ul>
+            </li>
         </ol>
 
-        <h3>فرمول فاصله اقلیدسی:</h3>
+        <h3>۹.۲.۳ معیارهای فاصله</h3>
+
+        <h4>الف) فاصله اقلیدسی (پیش‌فرض)</h4>
         <div class="formula">
-            d(x, y) = √Σ(x<sub>i</sub> - y<sub>i</sub>)²
+            d(x, y) = √Σ(x<sub>i</sub> − y<sub>i</sub>)²
         </div>
 
-        <h3>مزایا و معایب:</h3>
+        <h4>ب) فاصله منهتن (Manhattan)</h4>
+        <div class="formula">
+            d(x, y) = Σ|x<sub>i</sub> − y<sub>i</sub>|
+        </div>
+
+        <h4>ج) فاصله کوسینوس (Cosine)</h4>
+        <div class="formula">
+            d(x, y) = 1 − (x · y) / (||x|| × ||y||)
+        </div>
+
+        <h4>د) فاصله ماهالانوبیس (Mahalanobis)</h4>
+        <p>فاصله‌ای که همبستگی ویژگی‌ها را در نظر می‌گیرد.</p>
+
+        <h3>۹.۲.۴ انتخاب K مناسب</h3>
+        <div class="stat-box">
+            <p><strong>K خیلی کوچک (مثلاً K=1):</strong> مدل به نویز حساس می‌شود (overfitting)</p>
+            <p><strong>K خیلی بزرگ (مثلاً K=n):</strong> مدل همیشه اکثریت کلی را پیش‌بینی می‌کند (underfitting)</p>
+            <p><strong>قاعده تجربی:</strong> K = √n یا از Cross-Validation استفاده کنید</p>
+            <p><strong>K فرد:</strong> در مسائل دو کلاسه K فرد انتخاب کنید تا تساوی پیش نیاید</p>
+        </div>
+
+        <h3>۹.۲.۵ وزن‌دهی بر اساس فاصله</h3>
+        <p>به جای رأی‌گیری ساده، به همسایه‌های نزدیک‌تر وزن بیشتر بدهید:</p>
+        <div class="formula">
+            w<sub>i</sub> = 1 / d(x, x<sub>i</sub>)
+        </div>
+
+        <h3>۹.۲.۶ مزایا و معایب</h3>
         <table>
             <tr>
                 <th>مزایا</th>
@@ -92,274 +204,932 @@
             </tr>
             <tr>
                 <td>ساده و قابل فهم</td>
-                <td>کند در زمان پیش‌بینی</td>
+                <td>کند در زمان پیش‌بینی (O(n) برای هر نمونه)</td>
             </tr>
             <tr>
-                <td>ندارد مرحله آموزش</td>
-                <td>حساس به مقیاس ویژگی‌ها</td>
+                <td>بدون مرحله آموزش (Lazy Learning)</td>
+                <td>حساس به مقیاس ویژگی‌ها (نیاز به Normalization)</td>
             </tr>
             <tr>
-                <td>طبیعی</td>
-                <td>نیاز به تعیین K</td>
+                <td>طبیعی و non-parametric</td>
+                <td>نیاز به تعیین K و معیار فاصله</td>
+            </tr>
+            <tr>
+                <td>مناسب داده‌های کوچک</td>
+                <td>در داده‌های با ابعاد بالا عملکرد بد (Curse of Dimensionality)</td>
+            </tr>
+            <tr>
+                <td>قابل استفاده برای رگرسیون و دسته‌بندی</td>
+                <td>حافظه زیاد (همه داده‌ها ذخیره می‌شوند)</td>
             </tr>
         </table>
-    </div>
 
-    <button class="accordion">الگوریتم‌های دسته‌بندی - Logistic Regression</button>
-    <div class="panel">
-        <h3>رگرسیون لجستیک</h3>
-        <div class="key-concept">
-            استفاده از تابع لجستیک برای تبدیل خروجی خطی به احتمال
-        </div>
-
-        <h3>تابع لجستیک (Sigmoid):</h3>
-        <div class="formula">
-            σ(z) = 1 / (1 + e<sup>-z</sup>)
-        </div>
-
-        <h3>مدل:</h3>
-        <div class="formula">
-            P(y=1|x) = σ(wx + b) = 1 / (1 + e<sup>-(wx+b)</sup>)
-        </div>
-
-        <h3>مرز تصمیم:</h3>
-        <p>وقتی P > 0.5 → کلاس 1</p>
-        <p>وقتی P ≤ 0.5 → کلاس 0</p>
-
+        <h3>۹.۲.۷ مثال عملی: تشخیص بیماری دیابت</h3>
         <div class="example">
-            <p>مثال: تشخیص اسپم</p>
-            <p>x = تعداد کلمات مشکوک</p>
-            <p>اگر wx + b = 2 → P = 0.88 → اسپم</p>
-            <p>اگر wx + b = -1 → P = 0.27 → اسپم نیست</p>
+            <p>فرض کنید می‌خواهیم با استفاده از سن، BMI و قند خون، پیش‌بینی کنیم فرد دیابت دارد یا نه:</p>
+            <ol>
+                <li>۱۰۰ نمونه آموزشی داریم که می‌دانیم دیابت دارند/ندارند</li>
+                <li>بیمار جدیدی مراجعه می‌کند: سن=۵۵، BMI=۳۲، قند=۱۸۰</li>
+                <li>فاصله این بیمار را با ۱۰۰ نمونه محاسبه می‌کنیم</li>
+                <li>نزدیک‌ترین K=۵ نمونه را پیدا می‌کنیم</li>
+                <li>اگر ۴ تا از آنها دیابت دارند، تشخیص: "مبتلا به دیابت"</li>
+            </ol>
         </div>
     </div>
 
-    <button class="accordion">الگوریتم‌های دسته‌بندی - SVM</button>
+    <button class="accordion">بخش ۹.۳ — رگرسیون لجستیک (Logistic Regression)</button>
     <div class="panel">
-        <h3>Support Vector Machine (SVM)</h3>
         <div class="key-concept">
-            پیدا کردن ابرصفحه‌ای که بیشترین فاصله را بین کلاس‌ها دارد.
+            <strong>Logistic Regression:</strong> باوجود نام «رگرسیون»، یک مدل دسته‌بندی است که احتمال تعلق نمونه به کلاس مثبت را با تابع Sigmoid تخمین می‌زند.
         </div>
 
-        <h3>مفاهیم کلیدی:</h3>
+        <h3>۹.۳.۱ چرا رگرسیون خطی برای دسته‌بندی مناسب نیست؟</h3>
+        <p>اگر y را با 0 و 1 کدگذاری کنیم و رگرسیون خطی بزنیم:</p>
         <ul>
-            <li><strong>Support Vectors:</strong> نمونه‌هایی که روی مرز هستند</li>
-            <li><strong>Maximum Margin:</strong> بیشترین فاصله بین کلاس‌ها</li>
-            <li><strong>Hyperplane:</strong> مرز تصمیم در فضای چند بعدی</li>
+            <li>خروجی ممکن است بزرگ‌تر از 1 یا کوچک‌تر از 0 شود (احتمال نامعتبر)</li>
+            <li>تابع هزینه MSE برای مسائل باینری غیرconvex است (مینیمم‌های محلی فراوان)</li>
+            <li>تفسیر خروجی به‌عنوان "احتمال" منطقی نیست</li>
         </ul>
 
-        <h3>فرمول:</h3>
+        <h3>۹.۳.۲ تابع Sigmoid (لجستیک)</h3>
+        <div class="formula">
+            σ(z) = 1 / (1 + e<sup>−z</sup>)
+        </div>
+
+        <p>ویژگی‌های کلیدی:</p>
+        <ul>
+            <li>خروجی همواره بین 0 و 1 است (می‌توان آن را احتمال تفسیر کرد)</li>
+            <li>σ(0) = 0.5 (نقطه میانی)</li>
+            <li>σ(z) → 1 وقتی z → +∞ (کلاس 1)</li>
+            <li>σ(z) → 0 وقتی z → −∞ (کلاس 0)</li>
+            <li>مشتق: σ'(z) = σ(z) × (1 − σ(z))</li>
+        </ul>
+
+        <h3>۹.۳.۳ مدل Logistic Regression</h3>
+        <div class="formula">
+            z = w · x + b<br>
+            P(y=1|x) = σ(z) = 1 / (1 + e<sup>−(w·x+b)</sup>)
+        </div>
+
+        <h3>۹.۳.۴ مرز تصمیم (Decision Boundary)</h3>
+        <ul>
+            <li><strong>P(y=1|x) ≥ 0.5:</strong> پیش‌بینی کلاس 1</li>
+            <li><strong>P(y=1|x) &lt; 0.5:</strong> پیش‌بینی کلاس 0</li>
+            <li>P = 0.5 معادل w·x + b = 0 (خط/صفحه‌ای که دو کلاس را جدا می‌کند)</li>
+            <li>می‌توان آستانه را تغییر داد (مثلاً 0.3 برای کاربردهای حساس)</li>
+        </ul>
+
+        <h3>۹.۳.۵ تابع هزینه: Log Loss (Cross-Entropy)</h3>
+        <p>برای هر نمونه:</p>
+        <div class="formula">
+            L = −[y × log(ŷ) + (1−y) × log(1−ŷ)]
+        </div>
+
+        <p>برای کل داده:</p>
+        <div class="formula">
+            J = −(1/n) × Σ [y<sub>i</sub> × log(ŷ<sub>i</sub>) + (1−y<sub>i</sub>) × log(1−ŷ<sub>i</sub>)]
+        </div>
+
+        <p>چرا Log Loss؟ به‌جای MSE، این تابع:</p>
+        <ul>
+            <li>در محدوده [0, 1] منطقی رفتار می‌کند</li>
+            <li>convex است (مینیمم سراسری تضمین می‌شود)</li>
+            <li>وقتی پیش‌بینی اشتباه باشد، جریمه سنگین می‌دهد (log(0) → −∞)</li>
+        </ul>
+
+        <h3>۹.۳.۶ گرادیان و آموزش</h3>
+        <p>با Gradient Descent، پارامترها به‌روزرسانی می‌شوند:</p>
+        <div class="formula">
+            ∂J/∂w = (1/n) × Σ (ŷ<sub>i</sub> − y<sub>i</sub>) × x<sub>i</sub><br>
+            ∂J/∂b = (1/n) × Σ (ŷ<sub>i</sub> − y<sub>i</sub>)
+        </div>
+        <p>جالب اینکه فرمول گرادیان Logistic Regression <strong>دقیقاً مشابه Linear Regression</strong> است، فقط ŷ = σ(w·x+b) به جای wx+b ساده.</p>
+
+        <h3>۹.۳.۷ توسعه به Multi-class: Softmax Regression</h3>
+        <p>برای K کلاس، از تابع Softmax استفاده می‌شود:</p>
+        <div class="formula">
+            P(y=k|x) = e<sup>z<sub>k</sub></sup> / Σ e<sup>z<sub>j</sub></sup>
+        </div>
+        <p>خروجی: برداری از K احتمال که مجموعش 1 است.</p>
+
+        <div class="example">
+            <p><strong>مثال: تشخیص اسپم</strong></p>
+            <p>x = [تعداد کلمات مشکوک، داشتن لینک، فرستنده ناشناس]</p>
+            <p>z = 0.5×x<sub>1</sub> + 1.2×x<sub>2</sub> + 0.8×x<sub>3</sub> − 2.5</p>
+            <p>اگر z = 2 → P = σ(2) ≈ 0.88 → ۸۸٪ احتمال اسپم → پیش‌بینی: اسپم</p>
+            <p>اگر z = −1 → P = σ(−1) ≈ 0.27 → ۲۷٪ احتمال اسپم → پیش‌بینی: عادی</p>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۹.۴ — Support Vector Machine (SVM)</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>SVM:</strong> الگوریتم دسته‌بندی که بهترین ابرصفحه (Hyperplane) را پیدا می‌کند — یعنی صفحه‌ای که بیشترین فاصله (Maximum Margin) را بین دو کلاس دارد.
+        </div>
+
+        <h3>۹.۴.۱ ایده اصلی</h3>
+        <p>در حالت دو کلاسه، بی‌نهایت خط می‌تواند دو گروه را جدا کند. SVM خطی را انتخاب می‌کند که <strong>بیشترین فاصله</strong> را از نزدیک‌ترین نمونه‌های هر دو کلاس داشته باشد.</p>
+
+        <div class="example">
+            <p>فرض کنید می‌خواهید خطی بین دو گروه از نقاط بکشید. هر خطی کار می‌کند، ولی SVM خطی را انتخاب می‌کند که اگر نقطه جدیدی اضافه شود (حتی اشتباه)، احتمال اشتباه کمتر شود. این یعنی خط وسط "خیابان" است.</p>
+        </div>
+
+        <h3>۹.۴.۲ مفاهیم کلیدی</h3>
+        <ul>
+            <li><strong>ابرصفحه (Hyperplane):</strong> مرز تصمیم در فضای d بعدی. در 2D خط، در 3D صفحه، در dD فرمول w · x + b = 0</li>
+            <li><strong>Support Vectors:</strong> نمونه‌های آموزشی که دقیقاً روی مرز (یا نزدیک آن) قرار دارند — تنها نمونه‌هایی که اهمیت دارند!</li>
+            <li><strong>Margin:</strong> فاصله ابرصفحه تا نزدیک‌ترین نمونه</li>
+            <li><strong>Maximum Margin Hyperplane:</strong> ابرصفحه‌ای با بیشترین Margin</li>
+        </ul>
+
+        <h3>۹.۴.۳ فرمول‌بندی ریاضی</h3>
+
+        <h4>الف) ابرصفحه</h4>
         <div class="formula">
             w · x + b = 0
         </div>
 
-        <h3>Kernel Trick:</h3>
-        <p>استفاده از توابع هسته برای تبدیل فضا به فضای با بُعد بالاتر:</p>
-        <ul>
-            <li>Linear Kernel</li>
-            <li>Polynomial Kernel</li>
-            <li>RBF (Gaussian) Kernel</li>
-        </ul>
+        <h4>ب) شرط جدایی</h4>
+        <p>برای هر نمونه آموزشی:</p>
+        <div class="formula">
+            w · x<sub>i</sub> + b ≥ +1  (اگر y<sub>i</sub> = +1)<br>
+            w · x<sub>i</sub> + b ≤ −1  (اگر y<sub>i</sub> = −1)
+        </div>
+
+        <h4>ج) بیشینه‌سازی Margin</h4>
+        <p>Margin = 2/||w||. معادل آن، کمینه‌سازی ||w||² است:</p>
+        <div class="formula">
+            min (1/2) ||w||²<br>
+            s.t. y<sub>i</sub>(w · x<sub>i</sub> + b) ≥ 1
+        </div>
+
+        <h3>۹.۴.۴ Soft Margin (حالت غیرخطی‌جداپذیر)</h3>
+        <p>در عمل، داده‌ها کاملاً جداپذیر نیستند. SVM با متغیر Slack ε اجازه می‌دهد بعضی نمونه‌ها اشتباه شوند:</p>
+        <div class="formula">
+            min (1/2) ||w||² + C × Σ ε<sub>i</sub><br>
+            s.t. y<sub>i</sub>(w · x<sub>i</sub> + b) ≥ 1 − ε<sub>i</sub>,  ε<sub>i</sub> ≥ 0
+        </div>
+        <p><strong>C:</strong> پارامتر تنظیم. C بزرگ = جریمه سنگین اشتباه، C کوچک = margin بزرگ‌تر ولی اشتباهات بیشتر.</p>
+
+        <h3>۹.۴.۵ Kernel Trick (ترفند هسته)</h3>
+        <div class="key-concept">
+            <strong>ایده جادویی:</strong> اگر داده‌ها در فضای فعلی با خط قابل جدا شدن نیستند، آنها را با تابع φ به فضای با ابعاد بالاتر ببریم که در آنجا جداپذیر شوند. بدون محاسبه صریح φ (که ممکن است ناممکن باشد)، از Kernel استفاده می‌کنیم.
+        </div>
+
+        <table>
+            <tr>
+                <th>Kernel</th>
+                <th>فرمول</th>
+                <th>کاربرد</th>
+            </tr>
+            <tr>
+                <td>Linear</td>
+                <td>K(x,y) = x · y</td>
+                <td>داده‌های خطی، متن، با ابعاد بالا</td>
+            </tr>
+            <tr>
+                <td>Polynomial</td>
+                <td>K(x,y) = (x · y + c)<sup>d</sup></td>
+                <td>مرزهای منحنی چندجمله‌ای</td>
+            </tr>
+            <tr>
+                <td>RBF (Gaussian)</td>
+                <td>K(x,y) = exp(−γ||x−y||²)</td>
+                <td>پیش‌فرض، مرزهای دایره‌ای پیچیده، اکثر مواقع</td>
+            </tr>
+            <tr>
+                <td>Sigmoid</td>
+                <td>K(x,y) = tanh(κx·y + c)</td>
+                <td>شبیه شبکه عصبی</td>
+            </tr>
+        </table>
 
         <div class="example">
-            <p>مثال: تفکیک دایره‌ای از نقاط</p>
-            <p>با RBF Kernel می‌توان مرز دایره‌ای ایجاد کرد</p>
-        </div>
-    </div>
-
-    <button class="accordion">الگوریتم‌های دسته‌بندی - Decision Tree</button>
-    <div class="panel">
-        <h3>درخت تصمیم</h3>
-        <div class="key-concept">
-            استفاده از قوانین if-then برای دسته‌بندی
+            <p>تشبیه: تصور کنید نقاط قرمز و آبی روی یک کاغذ دارید که با هیچ خطی جدا نمی‌شوند. کاغذ را خم می‌کنید — حالا در فضای 3 بعدی، یک صفحه آنها را جدا می‌کند. Kernel RBF دقیقاً این کار را انجام می‌دهد.</p>
         </div>
 
-        <h3>مفاهیم:</h3>
-        <ul>
-            <li><strong>Root:</strong> ریشه - اولین سوال</li>
-            <li><strong>Node:</strong> هر سوال</li>
-            <li><strong>Leaf:</strong> برگ - نتیجه نهایی</li>
-            <li><strong>Split:</strong> تقسیم بر اساس یک ویژگی</li>
-        </ul>
-
-        <h3>معیارهای تقسیم:</h3>
-        <ul>
-            <li><strong>Gini Impurity:</strong></li>
-            <div class="formula">
-                Gini = 1 - Σp<sub>i</sub>²
-            </div>
-            <li><strong>Entropy:</strong></li>
-            <div class="formula">
-                Entropy = -Σp<sub>i</sub> × log₂(p<sub>i</sub>)
-            </div>
-            <li><strong>Information Gain:</strong></li>
-            <div class="formula">
-                IG = Entropy(parent) - Weighted_Avg(Entropy(children))
-            </div>
-        </ul>
-
-        <h3>مزایا و معایب:</h3>
+        <h3>۹.۴.۶ مزایا و معایب</h3>
         <table>
             <tr>
                 <th>مزایا</th>
                 <th>معایب</th>
             </tr>
             <tr>
-                <td>قابل تفسیر</td>
-                <td>مستعد بیش‌برازش</td>
+                <td>در داده‌های با ابعاد بالا عالی عمل می‌کند</td>
+                <td>کند در داده‌های بزرگ (O(n²) تا O(n³))</td>
             </tr>
             <tr>
-                <td>نیازی به مقیاس داده نیست</td>
-                <td>ناپایدار (تغییر کم داده → تغییر زیاد درخت)</td>
+                <td>با Kernel Trick بسیار انعطاف‌پذیر</td>
+                <td>نتایج سخت تفسیر می‌شوند</td>
+            </tr>
+            <tr>
+                <td>مقاوم در برابر overfitting (با Margin بزرگ)</td>
+                <td>نیاز به تنظیم C و γ</td>
+            </tr>
+            <tr>
+                <td>در مسائل دو کلاسه بسیار قوی</td>
+                <td>برای multi-class نیاز به One-vs-Rest یا One-vs-One</td>
             </tr>
         </table>
+
+        <h3>۹.۴.۷ مثال ایرانی: تشخیص هرزنامه در پیام‌رسان‌ها</h3>
+        <p>در تشخیص پیام‌های تبلیغاتی در تلگرام یا واتس‌اپ:</p>
+        <ul>
+            <li>ویژگی‌ها: تعداد لینک، کلمات کلیدی (مثل "تخفیف"، "فقط امروز")، تعداد مخاطبین</li>
+            <li>Kernel RBF برای مرز غیرخطی بین "تبلیغاتی" و "عادی"</li>
+            <li>C و γ با Cross-Validation بهینه می‌شوند</li>
+        </ul>
     </div>
 
-    <button class="accordion">خوشه‌بندی (Clustering) چیست؟</button>
+    <button class="accordion">بخش ۹.۵ — درخت تصمیم (Decision Tree)</button>
     <div class="panel">
         <div class="key-concept">
-            <strong>خوشه‌بندی:</strong> گروه‌بندی داده‌های مشابه بدون برچسب اولیه
+            <strong>درخت تصمیم (Decision Tree):</strong> مدلی که داده‌ها را با سلسله‌مراتبی از سؤالات if-then به زیرمجموعه‌های خالص‌تر تقسیم می‌کند تا در نهایت به برگ‌ها (نتایج) برسد.
         </div>
 
-        <h3>تفاوت با دسته‌بندی:</h3>
+        <h3>۹.۵.۱ ساختار درخت</h3>
         <table>
             <tr>
+                <th>جزء</th>
+                <th>توضیح</th>
+                <th>مثال</th>
+            </tr>
+            <tr>
+                <td><strong>Root Node</strong></td>
+                <td>اولین سؤال، بهترین ویژگی برای جداسازی</td>
+                <td>"آیا درآمد ماهانه > ۵ میلیون تومان؟"</td>
+            </tr>
+            <tr>
+                <td><strong>Internal Node</strong></td>
+                <td>سؤالات میانی</td>
+                <td>"آیا سن > ۳۰؟"</td>
+            </tr>
+            <tr>
+                <td><strong>Leaf Node</strong></td>
+                <td>نتیجه نهایی (برچسب یا مقدار)</td>
+                <td>"بله - وام می‌گیرد"</td>
+            </tr>
+            <tr>
+                <td><strong>Branch</strong></td>
+                <td>پاسخ به سؤال (بله/خیر)</td>
+                <td>"بله" → شاخه راست، "خیر" → شاخه چپ</td>
+            </tr>
+        </table>
+
+        <h3>۹.۵.۲ معیارهای تقسیم (Splitting Criteria)</h3>
+
+        <h4>الف) Gini Impurity</h4>
+        <div class="formula">
+            Gini = 1 − Σ p<sub>i</sub>²
+        </div>
+        <p>که p<sub>i</sub> نسبت نمونه‌های کلاس i در گره است.</p>
+        <ul>
+            <li>حداقل: 0 (گره خالص، همه یک کلاس)</li>
+            <li>حداکثر: 1 − 1/K (K کلاس)</li>
+            <li>مثال: ۵ گربه و ۵ سگ → Gini = 1 − (0.5² + 0.5²) = 0.5</li>
+        </ul>
+
+        <h4>ب) Entropy</h4>
+        <div class="formula">
+            Entropy = −Σ p<sub>i</sub> × log<sub>2</sub>(p<sub>i</sub>)
+        </div>
+        <ul>
+            <li>حداقل: 0 (گره خالص)</li>
+            <li>حداکثر: log<sub>2</sub>(K)</li>
+            <li>مثال: نیمی گربه، نیمی سگ → Entropy = 1</li>
+        </ul>
+
+        <h4>ج) Information Gain</h4>
+        <div class="formula">
+            IG = Entropy(parent) − Σ w<sub>i</sub> × Entropy(child<sub>i</sub>)
+        </div>
+        <p>که w<sub>i</sub> نسبت نمونه‌های فرزند i به کل است.</p>
+
+        <h3>۹.۵.۳ الگوریتم ساخت درخت (Greedy)</h3>
+        <ol>
+            <li>اگر همه نمونه‌های یک گره هم‌کلاس هستند → برگ شو</li>
+            <li>همه ویژگی‌ها و همه آستانه‌های ممکن را امتحان کن</li>
+            <li>بهترین تقسیم (بیشترین IG یا کمترین Gini) را انتخاب کن</li>
+            <li>به هر شاخه برو و تکرار کن</li>
+        </ol>
+
+        <h3>۹.۵.۴ جلوگیری از Overfitting</h3>
+        <ul>
+            <li><strong>حداکثر عمق (max_depth):</strong> معمولاً ۵ تا ۲۰</li>
+            <li><strong>حداقل نمونه برای تقسیم (min_samples_split):</strong> مثلاً حداقل ۱۰ نمونه</li>
+            <li><strong>حداقل نمونه در برگ (min_samples_leaf):</strong> مثلاً ۵</li>
+            <li><strong>Pruning (هرس):</strong> بعد از ساخت، شاخه‌های بی‌فایده را حذف کن</li>
+        </ul>
+
+        <h3>۹.۵.۵ مزایا و معایب</h3>
+        <table>
+            <tr>
+                <th>مزایا</th>
+                <th>معایب</th>
+            </tr>
+            <tr>
+                <td>قابل تفسیر (می‌توان قوانین را خواند)</td>
+                <td>مستعد overfitting (درخت خیلی عمیق)</td>
+            </tr>
+            <tr>
+                <td>نیازی به مقیاس‌بندی ویژگی‌ها نیست</td>
+                <td>ناپایدار (تغییر کوچک داده → تغییر بزرگ درخت)</td>
+            </tr>
+            <tr>
+                <td>هر دو ویژگی categorical و numerical را پشتیبانی می‌کند</td>
+                <td>گرایش به کلاس اکثریت در مسائل imbalance</td>
+            </tr>
+            <tr>
+                <td>بدون نیاز به فرضیه آماری</td>
+                <td>در مسائل با ابعاد بالا کارایی کمتر</td>
+            </tr>
+        </table>
+
+        <h3>۹.۵.۶ Random Forest: بهبود درخت</h3>
+        <div class="key-concept">
+            ایده: چندین درخت تصمیم مستقل بساز (هر کدام با زیرمجموعه‌ای از داده‌ها و ویژگی‌ها)، سپس خروجی‌ها را با رأی‌گیری ترکیب کن. نتیجه: مدلی پایدار، قوی و با overfitting کمتر.
+        </div>
+
+        <h3>۹.۵.۷ مثال: درخت تشخیص بیماری</h3>
+        <div class="example">
+            <p>فرض کنید می‌خواهیم بیماری آنفلوآنزا را تشخیص دهیم:</p>
+            <ul>
+                <li>سؤال ۱: آیا تب > ۳۸ درجه؟ خیر → سالم. بله → سؤال ۲</li>
+                <li>سؤال ۲: آیا سردرد دارد؟ خیر → سرماخوردگی ساده. بله → سؤال ۳</li>
+                <li>سؤال ۳: آیا درد عضلانی شدید دارد؟ خیر → سرماخوردگی شدید. بله → آنفلوآنزا</li>
+            </ul>
+            <p>این درخت کاملاً قابل تفسیر است و پزشک می‌تواند منطق آن را بفهمد.</p>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۹.۶ — خوشه‌بندی (Clustering): یادگیری بی‌ناظر</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>خوشه‌بندی (Clustering):</strong> گروه‌بندی داده‌ها بدون داشتن برچسب اولیه، به‌طوری‌که نمونه‌های درون یک گروه شبیه هم و نمونه‌های گروه‌های مختلف متفاوت باشند.
+        </div>
+
+        <h3>۹.۶.۱ تفاوت بنیادی با دسته‌بندی</h3>
+        <table>
+            <tr>
+                <th>ویژگی</th>
                 <th>دسته‌بندی</th>
                 <th>خوشه‌بندی</th>
             </tr>
             <tr>
-                <td>یادگیری باناظر</td>
-                <td>یادگیری بی‌ناظر</td>
+                <td>نوع یادگیری</td>
+                <td>باناظر (Supervised)</td>
+                <td>بی‌ناظر (Unsupervised)</td>
             </tr>
             <tr>
-                <td>برچسب‌ها مشخص</td>
-                <td>برچسب‌ها نامشخص</td>
+                <td>برچسب‌ها</td>
+                <td>مشخص و معلوم</td>
+                <td>نامشخص (باید توسط الگوریتم کشف شوند)</td>
             </tr>
             <tr>
-                <td>داده‌های برچسب‌گذاری شده</td>
-                <td>فقط داده‌های خام</td>
+                <td>ارزیابی</td>
+                <td>Accuracy, F1, Recall</td>
+                <td>Silhouette, Davies-Bouldin (دشوارتر)</td>
+            </tr>
+            <tr>
+                <td>هدف</td>
+                <td>پیش‌بینی برچسب نمونه جدید</td>
+                <td>کشف ساختار پنهان در داده</td>
+            </tr>
+            <tr>
+                <td>مثال</td>
+                <td>تشخیص اسپم</td>
+                <td>سگمنت‌بندی مشتریان</td>
             </tr>
         </table>
 
-        <h3>کاربردها:</h3>
+        <h3>۹.۶.۲ کاربردها</h3>
         <ul>
-            <li>سگمان‌بندی مشتریان</li>
-            <li>فشرده‌سازی تصویر</li>
-            <li>تشخیص ناهنجاری</li>
-            <li>تحلیل شبکه‌های اجتماعی</li>
+            <li><strong>سگمنت‌بندی مشتریان:</strong> گروه‌بندی بر اساس رفتار خرید (اسنپ، دیجی‌کالا)</li>
+            <li><strong>فشرده‌سازی تصویر:</strong> جایگزینی پیکسل‌های مشابه با یک مقدار</li>
+            <li><strong>تشخیص ناهنجاری (Anomaly Detection):</strong> نقاط دور از خوشه‌ها</li>
+            <li><strong>تحلیل شبکه‌های اجتماعی:</strong> یافتن جوامع (Communities)</li>
+            <li><strong>خوشه‌بندی اسناد:</strong> گروه‌بندی مقالات مشابه</li>
+            <li><strong>کاهش ابعاد:</strong> به‌عنوان پیش‌پردازش برای visualization</li>
         </ul>
-    </div>
 
-    <button class="accordion">الگوریتم K-Means</button>
-    <div class="panel">
-        <h3>K-Means</h3>
-        <div class="key-concept">
-            تقسیم داده‌ها به K خوشه بر اساس فاصله از مراکز
-        </div>
-
-        <h3>الگوریتم:</h3>
-        <ol>
-            <li>K نقطه تصادفی به عنوان مراکز (Centroids) انتخاب کن</li>
-            <li>هر داده را به نزدیک‌ترین مرکز اختصاص بده</li>
-            <li>مراکز را دوباره محاسبه کن (میانگین هر خوشه)</li>
-            <li>تکرار ۲ و ۳ تا همگرایی</li>
-        </ol>
-
-        <h3>فرمول:</h3>
-        <div class="formula">
-            J = Σ<sub>k</sub> Σ<sub>i∈C_k</sub> ||x<sub>i</sub> - μ<sub>k</sub>||²
-        </div>
-        <p>که μ<sub>k</sub> مرکز خوشه k است.</p>
-
-        <h3>مزایا و معایب:</h3>
+        <h3>۹.۶.۳ انواع الگوریتم‌های خوشه‌بندی</h3>
         <table>
             <tr>
-                <th>مزایا</th>
-                <th>معایب</th>
+                <th>دسته‌بندی</th>
+                <th>الگوریتم‌ها</th>
+                <th>اصل کار</th>
             </tr>
             <tr>
-                <td>ساده و سریع</td>
-                <td>نیاز به تعیین K</td>
+                <td>مبتنی بر مرکز</td>
+                <td>K-Means, K-Medoids</td>
+                <td>هر خوشه یک مرکز دارد</td>
             </tr>
             <tr>
-                <td>مقیاس‌پذیر</td>
-                <td>حساس به نقطه اولیه</td>
+                <td>مبتنی بر چگالی</td>
+                <td>DBSCAN, OPTICS</td>
+                <td>خوشه‌ها مناطق پرچگال</td>
             </tr>
             <tr>
-                <td></td>
-                <td>فرض کروی بودن خوشه‌ها</td>
+                <td>سلسله‌مراتبی</td>
+                <td>Agglomerative, Divisive</td>
+                <td>درختی از خوشه‌ها</td>
+            </tr>
+            <tr>
+                <td>مبتنی بر توزیع</td>
+                <td>Gaussian Mixture</td>
+                <td>فرض توزیع آماری</td>
+            </tr>
+            <tr>
+                <td>طیفی</td>
+                <td>Spectral Clustering</td>
+                <td>بر اساس گراف شباهت</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">بخش ۹.۷ — الگوریتم K-Means</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>K-Means:</strong> محبوب‌ترین الگوریتم خوشه‌بندی. در هر تکرار، هر نمونه به نزدیک‌ترین مرکز (Centroid) اختصاص می‌یابد و سپس مراکز به‌روزرسانی می‌شوند.
+        </div>
+
+        <h3>۹.۷.۱ الگوریتم</h3>
+        <ol>
+            <li><strong>مقداردهی اولیه:</strong> K نقطه تصادفی به‌عنوان مراکز اولیه انتخاب کن</li>
+            <li><strong>تخصیص:</strong> هر داده را به نزدیک‌ترین مرکز نسبت بده</li>
+            <li><strong>به‌روزرسانی:</strong> میانگین هر خوشه را محاسبه کن و مرکز جدید را آنجا قرار بده</li>
+            <li><strong>تکرار:</strong> گام‌های ۲ و ۳ را تا همگرایی ادامه بده (مراکز تغییر نکنند)</li>
+        </ol>
+
+        <h3>۹.۷.۲ تابع هدف</h3>
+        <div class="formula">
+            J = Σ<sub>k=1..K</sub> Σ<sub>x<sub>i</sub> ∈ C<sub>k</sub></sub> ||x<sub>i</sub> − μ<sub>k</sub>||²
+        </div>
+        <p>که μ<sub>k</sub> مرکز خوشه k و C<sub>k</sub> مجموعه نمونه‌های آن خوشه است.</p>
+
+        <h3>۹.۷.۳ مقداردهی اولیه هوشمندانه: K-Means++</h3>
+        <p>K-Means ساده به مقدار اولیه حساس است. K-Means++ با این روش بهتر عمل می‌کند:</p>
+        <ol>
+            <li>اولین مرکز را تصادفی انتخاب کن</li>
+            <li>هر مرکز بعدی با احتمال متناسب با فاصله مربع از نزدیک‌ترین مرکز انتخاب شود</li>
+            <li>بقیه الگوریتم مثل K-Means عادی</li>
+        </ol>
+        <p>نتیجه: همگرایی به جواب بهتر، تضمین تقریبی O(log k).</p>
+
+        <h3>۹.۷.۴ تعیین تعداد خوشه‌ها (K)</h3>
+
+        <h4>الف) روش Elbow (آرنج)</h4>
+        <div class="example">
+            <p>برای K=1 تا K=10، مقدار J (مجموع مربعات فاصله) را محاسبه کنید. نمودار J برحسب K را رسم کنید. نقطه‌ای که کاهش J شروع به کند شدن می‌کند (شبیه آرنج)، K بهینه است.</p>
+            <p>مثال: اگر برای K=1: J=100, K=2: J=45, K=3: J=30, K=4: J=25, K=5: J=22، آنگاه K=3 بهینه است چون بعد از آن کاهش کم است.</p>
+        </div>
+
+        <h4>ب) Silhouette Score</h4>
+        <p>سنجشی برای کیفیت خوشه‌بندی:</p>
+        <div class="formula">
+            s(i) = (b(i) − a(i)) / max(a(i), b(i))
+        </div>
+        <p>که a(i) فاصله متوسط i از هم‌خوشه‌ای‌ها و b(i) فاصله متوسط از نزدیک‌ترین خوشه دیگر است.</p>
+        <ul>
+            <li>s ≈ +1: خوشه‌بندی خوب</li>
+            <li>s ≈ 0: مرزی</li>
+            <li>s ≈ −1: احتمالاً به خوشه اشتباه اختصاص یافته</li>
+        </ul>
+
+        <h3>۹.۷.۵ محدودیت‌های K-Means</h3>
+        <div class="warning">
+            <strong>هشدار:</strong> K-Means فرض می‌کند خوشه‌ها کروی‌شکل و هم‌اندازه هستند. اگر خوشه‌ها شکل نامنظم داشته باشند، K-Means ضعیف عمل می‌کند.
+        </div>
+
+        <ul>
+            <li>نیاز به تعیین K از قبل</li>
+            <li>حساس به مقدار اولیه (حتی با K-Means++)</li>
+            <li>فرض کروی بودن خوشه‌ها</li>
+            <li>حساس به Outliers (آنها مرکز را جابه‌جا می‌کنند — راه‌حل: K-Medoids)</li>
+            <li>در ابعاد بالا (Curse of Dimensionality) ضعیف</li>
+        </ul>
+
+        <h3>۹.۷.۶ مثال: سگمنت‌بندی مشتریان فروشگاه</h3>
+        <div class="example">
+            <p>فروشگاه آنلاین می‌خواهد مشتریان را به ۴ گروه تقسیم کند:</p>
+            <ul>
+                <li><strong>ویژگی‌ها:</strong> تعداد خرید ماهانه، میانگین سبد خرید، سن</li>
+                <li><strong>K-Means با K=4:</strong></li>
+                <li>گروه ۱ (خریداران کم): ۱ خرید، سبد کوچک</li>
+                <li>گروه ۲ (خریداران متوسط): ۳ خرید، سبد متوسط</li>
+                <li>گروه ۳ (VIP): ۱۰ خرید، سبد بزرگ</li>
+                <li>گروه ۴ (جوانان): ۲ خرید، محصولات ارزان</li>
+            </ul>
+            <p>سپس برای هر گروه استراتژی بازاریابی متفاوت طراحی می‌شود.</p>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۹.۸ — DBSCAN: خوشه‌بندی بر اساس چگالی</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>DBSCAN (Density-Based Spatial Clustering of Applications with Noise):</strong> خوشه‌ها را به‌عنوان مناطقی با چگالی بالا تعریف می‌کند و نقاط با چگالی کم را به‌عنوان نویز (Outlier) مشخص می‌کند.
+        </div>
+
+        <h3>۹.۸.۱ مفاهیم کلیدی</h3>
+
+        <h4>پارامترها</h4>
+        <ul>
+            <li><strong>ε (eps):</strong> شعاع همسایگی (مثلاً ۰.۵)</li>
+            <li><strong>MinPts:</strong> حداقل تعداد نقاط در یک همسایگی ε برای تشکیل خوشه (مثلاً ۵)</li>
+        </ul>
+
+        <h4>انواع نقاط</h4>
+        <table>
+            <tr>
+                <th>نوع</th>
+                <th>تعریف</th>
+                <th>پیامد</th>
+            </tr>
+            <tr>
+                <td><strong>Core Point</strong></td>
+                <td>حداقل MinPts همسایه در شعاع ε دارد</td>
+                <td>هسته خوشه، در خوشه باقی می‌ماند</td>
+            </tr>
+            <tr>
+                <td><strong>Border Point</strong></td>
+                <td>Core نیست ولی در همسایگی ε یک Core قرار دارد</td>
+                <td>به خوشه Core ملحق می‌شود</td>
+            </tr>
+            <tr>
+                <td><strong>Noise Point (Outlier)</strong></td>
+                <td>نه Core و نه Border</td>
+                <td>در هیچ خوشه‌ای قرار نمی‌گیرد</td>
             </tr>
         </table>
 
-        <h3>روش Elbow:</h3>
-        <p>برای پیدا کردن K بهینه، مجموع فاصله‌های درون‌خوشه‌ای را برای Kهای مختلف رسم کنید. نقطه‌ای که کاهش آهسته می‌شود (آرنج) را انتخاب کنید.</p>
+        <h3>۹.۸.۲ الگوریتم</h3>
+        <ol>
+            <li>یک نقطه تصادفی انتخاب کن</li>
+            <li>اگر Core باشد، خوشه جدیدی شروع کن و همه نقاط Density-Reachable را اضافه کن</li>
+            <li>اگر Core نباشد، علامت‌گذاری کن (بعداً ممکن است Border تشخیص داده شود)</li>
+            <li>تکرار تا همه نقاط بررسی شوند</li>
+        </ol>
+
+        <h3>۹.۸.۳ مزایای کلیدی DBSCAN</h3>
+        <ul>
+            <li><strong>تعداد خوشه‌ها خودکار:</strong> نیازی به تعیین K نیست</li>
+            <li><strong>شکل‌های دلخواه:</strong> خوشه‌های دایره‌ای، کشیده، نامنظم را پیدا می‌کند</li>
+            <li><strong>تشخیص Outlier:</strong> نقاط نویز را به‌صراحت مشخص می‌کند</li>
+            <li><strong>پایدار:</strong> با چندین اجرا نتیجه یکسان می‌دهد</li>
+        </ul>
+
+        <h3>۹.۸.۴ معایب DBSCAN</h3>
+        <ul>
+            <li>در داده‌هایی با چگالی متفاوت بین خوشه‌ها مشکل دارد</li>
+            <li>در ابعاد بالا کارایی کم (Curse of Dimensionality)</li>
+            <li>انتخاب ε و MinPts دشوار است (با Heuristic یا K-Distance Plot)</li>
+        </ul>
+
+        <h3>۹.۸.۵ مقایسه K-Means و DBSCAN</h3>
+        <table>
+            <tr>
+                <th>ویژگی</th>
+                <th>K-Means</th>
+                <th>DBSCAN</th>
+            </tr>
+            <tr>
+                <td>تعیین K</td>
+                <td>باید از قبل بدانیم</td>
+                <td>خودکار</td>
+            </tr>
+            <tr>
+                <td>شکل خوشه</td>
+                <td>فقط کروی</td>
+                <td>هر شکلی</td>
+            </tr>
+            <tr>
+                <td>تشخیص Outlier</td>
+                <td>خیر</td>
+                <td>بله</td>
+            </tr>
+            <tr>
+                <td>چگالی متفاوت</td>
+                <td>ضعیف</td>
+                <td>مشکل‌دار</td>
+            </tr>
+            <tr>
+                <td>پارامترها</td>
+                <td>K</td>
+                <td>ε, MinPts</td>
+            </tr>
+            <tr>
+                <td>سرعت</td>
+                <td>سریع (O(n))</td>
+                <td>کندتر (O(n log n) با Index)</td>
+            </tr>
+        </table>
+
+        <h3>۹.۸.۶ مثال ایرانی: تشخیص مناطق پرترافیک تهران</h3>
+        <div class="example">
+            <p>با داده‌های GPS تاکسی‌های اسنپ در یک روز:</p>
+            <ul>
+            <li>ε = 500 متر، MinPts = 10</li>
+            <li>DBSCAN خوشه‌هایی کشف می‌کند که مناطق شلوغ هستند (میدان ولیعصر، تجریش، صادقیه)</li>
+            <li>خوشه‌های کوچک و پراکنده به‌عنوان مناطق کم‌ترافیک علامت‌گذاری می‌شوند</li>
+            </ul>
+        </div>
     </div>
 
-    <button class="accordion">الگوریتم DBSCAN</button>
+    <button class="accordion">بخش ۹.۹ — سلسله‌مراتبی (Hierarchical) و تکنیک‌های دیگر</button>
     <div class="panel">
-        <h3>DBSCAN</h3>
-        <div class="key-concept">
-            خوشه‌بندی بر اساس چگالی - خوشه‌ها مناطق با چگالی بالا هستند
+        <h3>۹.۹.۱ خوشه‌بندی سلسله‌مراتبی</h3>
+        <p>درختی از خوشه‌ها می‌سازد (دندروگرام). دو رویکرد:</p>
+
+        <h4>الف) Agglomerative (تجمعی — پایین به بالا)</h4>
+        <table>
+            <tr><th>گام</th><th>عمل</th></tr>
+            <tr><td>۱</td><td>هر نمونه = یک خوشه (n خوشه)</td></tr>
+            <tr><td>۲</td><td>دو نزدیک‌ترین خوشه را ادغام کن</td></tr>
+            <tr><td>۳</td><td>اگر به تعداد دلخواه رسیدیم، توقف</td></tr>
+            <tr><td>۴</td><td>گام ۲ را تکرار کن</td></tr>
+        </table>
+
+        <h4>ب) Linkage Criteria (معیار فاصله بین خوشه‌ها)</h4>
+        <ul>
+            <li><strong>Single:</strong> فاصله نزدیک‌ترین دو نقطه از دو خوشه</li>
+            <li><strong>Complete:</strong> فاصله دورترین دو نقطه</li>
+            <li><strong>Average:</strong> میانگین فواصل جفت‌ها</li>
+            <li><strong>Ward's:</strong> کمینه‌سازی افزایش واریانس</li>
+        </ul>
+
+        <h3>۹.۹.۲ Gaussian Mixture Models (GMM)</h3>
+        <p>فرض می‌کند هر خوشه از یک توزیع نرمال چندبعدی تولید شده. "خوشه‌بندی نرم" است — هر نمونه به همه خوشه‌ها با احتمال خاص تعلق دارد.</p>
+
+        <h3>۹.۹.۳ Mini-Batch K-Means</h3>
+        <p>برای داده‌های بزرگ، در هر تکرار فقط بخشی از داده استفاده می‌شود. سرعت بیشتر، کیفیت نزدیک به K-Means کامل.</p>
+    </div>
+
+    <button class="accordion">بخش ۹.۱۰ — معیارهای ارزیابی (Evaluation Metrics)</button>
+    <div class="panel">
+        <h3>۹.۱۰.۱ ماتریس Confusion</h3>
+        <p>جدول ۲×۲ برای مسائل باینری:</p>
+        <table>
+            <tr>
+                <th></th>
+                <th>پیش‌بینی: مثبت</th>
+                <th>پیش‌بینی: منفی</th>
+            </tr>
+            <tr>
+                <td><strong>واقعی: مثبت</strong></td>
+                <td>TP (True Positive)</td>
+                <td>FN (False Negative)</td>
+            </tr>
+            <tr>
+                <td><strong>واقعی: منفی</strong></td>
+                <td>FP (False Positive)</td>
+                <td>TN (True Negative)</td>
+            </tr>
+        </table>
+
+        <h3>۹.۱۰.۲ چهار معیار اصلی</h3>
+        <table>
+            <tr>
+                <th>معیار</th>
+                <th>فرمول</th>
+                <th>تفسیر</th>
+            </tr>
+            <tr>
+                <td><strong>Accuracy</strong></td>
+                <td>(TP + TN) / (TP + TN + FP + FN)</td>
+                <td>درصد پیش‌بینی‌های صحیح</td>
+            </tr>
+            <tr>
+                <td><strong>Precision</strong></td>
+                <td>TP / (TP + FP)</td>
+                <td>از پیش‌بینی‌های مثبت، چند درصد واقعاً مثبت؟</td>
+            </tr>
+            <tr>
+                <td><strong>Recall (Sensitivity)</strong></td>
+                <td>TP / (TP + FN)</td>
+                <td>از نمونه‌های واقعی مثبت، چند درصد شناسایی شد؟</td>
+            </tr>
+            <tr>
+                <td><strong>F1-Score</strong></td>
+                <td>2 × (P × R) / (P + R)</td>
+                <td>میانگین هارمونیک Precision و Recall</td>
+            </tr>
+        </table>
+
+        <h3>۹.۱۰.۳ تعارض Precision و Recall</h3>
+        <div class="example">
+            <p>تشخیص بیماری سرطان:</p>
+            <ul>
+                <li><strong>Recall بالا ضروری:</strong> می‌خواهیم هیچ بیماری را از قلم نیندازیم (FN کم)</li>
+                <li><strong>Precision پایین قابل‌قبول:</strong> بهتر است چند نفر سالم اضافه آزمایش بدهند تا یک بیمار شناسایی نشود</li>
+            </ul>
+            <p>تشخیص اسپم:</p>
+            <ul>
+                <li><strong>Precision بالا ضروری:</strong> نمی‌خواهیم ایمیل کاری به اسپم تبدیل شود (FP کم)</li>
+                <li><strong>Recall پایین‌تر قابل‌قبول:</strong> اگر چند اسپم از قلم بیفتد مهم نیست</li>
+            </ul>
         </div>
 
-        <h3>مفاهیم:</h3>
+        <h3>۹.۱۰.۴ AUC-ROC</h3>
+        <div class="key-concept">
+            مساحت زیر منحنی ROC. مقدار 1 = عالی، 0.5 = حدس تصادفی. معیاری مستقل از آستانه (Threshold) برای ارزیابی مدل.
+        </div>
+
+        <h3>۹.۱۰.۵ معیارهای ارزیابی خوشه‌بندی</h3>
+        <table>
+            <tr>
+                <th>معیار</th>
+                <th>ویژگی</th>
+                <th>مقدار ایده‌آل</th>
+            </tr>
+            <tr>
+                <td>Silhouette Score</td>
+                <td>فاصله درون‌خوشه‌ای کم + بین‌خوشه‌ای زیاد</td>
+                <td>نزدیک +1</td>
+            </tr>
+            <tr>
+                <td>Davies-Bouldin Index</td>
+                <td>نسبت پراکندگی داخلی به فاصله مراکز</td>
+                <td>نزدیک 0</td>
+            </tr>
+            <tr>
+                <td>Calinski-Harabasz</td>
+                <td>نسبت واریانس بین‌خوشه‌ای به درون‌خوشه‌ای</td>
+                <td>بیشتر = بهتر</td>
+            </tr>
+            <tr>
+                <td>Inertia (WCSS)</td>
+                <td>مجموع مربعات فاصله از مرکز</td>
+                <td>برای Elbow استفاده می‌شود</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">بخش ۹.۱۱ — کاربردها در صنایع ایرانی</button>
+    <div class="panel">
+        <h3>۹.۱۱.۱ اسنپ (Snapp) – پیشنهاد سفر با دسته‌بندی کاربران</h3>
+        <p>کاربران اسنپ به چند دسته تقسیم می‌شوند:</p>
         <ul>
-            <li><strong>Core Point:</strong> نقطه‌ای با حداقل MinPts همسایه در شعاع ε</li>
-            <li><strong>Border Point:</strong> نقطه‌ای که هسته نیست ولی در همسایگی هسته است</li>
-            <li><strong>Noise Point:</strong> نقطه‌ای که در هیچ خوشه‌ای نیست</li>
+            <li>کاربران صبحگاهی (سفرهای ثابت به محل کار)</li>
+            <li>کاربران تفریحی (عصر و آخر هفته)</li>
+            <li>مسافران بین‌شهری</li>
+        </ul>
+        <p>سپس برای هر دسته پیشنهاد متفاوت ارائه می‌شود.</p>
+
+        <h3>۹.۱۱.۲ دیجی‌کالا (Digikala) – سگمنت‌بندی خریداران</h3>
+        <p>با K-Means مشتریان به گروه‌هایی تقسیم می‌شوند:</p>
+        <ul>
+            <li>خریداران الکترونیک</li>
+            <li>خریداران مد و پوشاک</li>
+            <li>خریداران کتاب و فرهنگ</li>
+            <li>خریداران خانگی و آشپزخانه</li>
+        </ul>
+        <p>برای هر گروه بنرها و پیشنهاد ویژه متفاوت نمایش داده می‌شود.</p>
+
+        <h3>۹.۱۱.۳ بانکداری – تشخیص تقلب</h3>
+        <p>در بانک پاسارگاد یا ملت، هر تراکنش توسط مدل SVM یا Random Forest دسته‌بندی می‌شود:</p>
+        <ul>
+            <li>ویژگی‌ها: مبلغ، زمان، مکان، نوع فروشگاه، سابقه مشتری</li>
+            <li>خروجی: تراکنش عادی / مشکوک / تقلب</li>
+                <li>در صورت مشکوک بودن، تراکنش مسدود و با مشتری تماس گرفته می‌شود</li>
         </ul>
 
-        <h3>پارامترها:</h3>
+        <h3>۹.۱۱.۴ آموزش – پیش‌بینی عملکرد دانش‌آموزان</h3>
+        <p>در سیستم آموزش هوشمند:</p>
         <ul>
-            <li><strong>ε (eps):</strong> شعاع همسایگی</li>
-            <li><strong>MinPts:</strong> حداقل نقاط برای هسته شدن</li>
+            <li>ویژگی‌ها: زمان مطالعه، نمرات قبلی، شرکت در کلاس</li>
+            <li>Decision Tree قوانینی استخراج می‌کند: "اگر زمان مطالعه > ۵ ساعت و نمره قبلی > ۱۵، قبول می‌شود"</li>
+            <li>معلم می‌تواند قوانین را ببیند و به دانش‌آموز کمک کند</li>
         </ul>
 
-        <h3>مزایا:</h3>
+        <h3>۹.۱۱.۵ پزشکی – تشخیص تومور بدخیم</h3>
+        <p>با Logistic Regression روی داده‌های بیمارستان‌های ایران:</p>
         <ul>
-            <li>تعداد خوشه‌ها خودکار تعیین می‌شود</li>
-            <li>می‌تواند خوشه‌های شکل‌های مختلف را پیدا کند</li>
-            <li>نقاط نویز را تشخیص می‌دهد</li>
+            <li>ویژگی‌ها: اندازه تومور، سن بیمار، جنسیت، نوع بافت</li>
+            <li>خروجی: احتمال بدخیم بودن (P)</li>
+            <li>P > 0.7 → فوراً جراحی، 0.3 < P < 0.7 → آزمایش بیشتر، P < 0.3 → پیگیری دوره‌ای</li>
         </ul>
     </div>
 
-    <button class="accordion">یادداشت‌های استاد</button>
+    <button class="accordion">یادداشت‌های استاد (Instructor Notes)</button>
     <div class="panel">
         <div class="instructor-note">
             <strong>مقدمه و تمایز (۸ دقیقه):</strong>
-            <p>با یک سوال شروع کنید: «تفاوت بین اینکه به کسی بگوییم گربه است (دسته‌بندی) و اینکه بگوییم این با آنها شبیه است (خوشه‌بندی) چیست؟». تأکید کنید که دسته‌بندی نیاز به برچسب دارد (یادگیری باناظر)، ولی خوشه‌بندی نه (یادگیری بی‌ناظر). مثال: اگر عکس‌های حیوانات را داشته باشیم و بگوییم اینها گربه و آنها سگ است، دسته‌بندی است. اگر فقط بگوییم این عکس‌ها به هم شبیه‌اند، خوشه‌بندی است.</p>
+            <p>با یک سؤال شروع کنید: «تفاوت بین اینکه به کسی بگوییم گربه است (دسته‌بندی) و اینکه بگوییم این با آنها شبیه است (خوشه‌بندی) چیست؟». تأکید کنید که دسته‌بندی نیاز به برچسب دارد (یادگیری باناظر)، ولی خوشه‌بندی نه (یادگیری بی‌ناظر).</p>
         </div>
         <div class="instructor-note">
             <strong>دسته‌بندی - KNN (۸ دقیقه):</strong>
-            <p>KNN را با تشبیه «همانندی» توضیح دهید: آدم‌هایی که شبیه هم هستند، در کنار هم قرار می‌گیرند. اگر ببینیم ۵ نفر از ۷ همسایه نزدیک فلان شخص گربه‌دوست هستند، نتیجه می‌گیریم که این شخص هم گربه‌دوست است. این منطق خیلی انسانی است. مزیت بزرگ: نیازی به آموزش ندارد - فقط داده‌ها را ذخیره می‌کند. عیب: در زمان پیش‌بینی کند است چون باید فاصله با همه را حساب کند.</p>
+            <p>KNN را با تشبیه «همسایگی» توضیح دهید: آدم‌هایی که شبیه هم هستند، در کنار هم قرار می‌گیرند. اگر ببینیم ۵ نفر از ۷ همسایه نزدیک فلان شخص گربه‌دوست هستند، نتیجه می‌گیریم که این شخص هم گربه‌دوست است. این منطق خیلی انسانی است.</p>
+            <p><strong>نکته عملی:</strong> بگویید «KNN برای شروع کار عالی است — هیچ آموزشی لازم نیست، فقط داده‌ها را ذخیره کنید. ولی برای production به علت کندی مناسب نیست.»</p>
         </div>
         <div class="instructor-note">
             <strong>دسته‌بندی - Logistic Regression (۸ دقیقه):</strong>
-            <p>نامش گمراه‌کننده است - برای دسته‌بندی است نه رگرسیون! تابع سیگموئید را توضیح دهید: یک عدد می‌گیرد و بین ۰ و ۱ برمی‌گرداند - مثل احتمال. مثال: اگر مدل بگوید ۸۰٪ احتمال اسپم است، پس اسپم است. این ساده‌ترین مدل دسته‌بندی است و خیلی استفاده می‌شود چون خروجی آن احتمال است - می‌فهمیم چقدر مطمئن هستیم.</p>
+            <p>نامش گمراه‌کننده است — برای دسته‌بندی است نه رگرسیون! تابع سیگموئید را توضیح دهید: یک عدد می‌گیرد و بین ۰ و ۱ برمی‌گرداند — مثل احتمال. مثال: اگر مدل بگوید ۸۰٪ احتمال اسپم است، پس اسپم است. این ساده‌ترین مدل دسته‌بندی است و خیلی استفاده می‌شود چون خروجی آن احتمال است — می‌فهمیم چقدر مطمئن هستیم.</p>
         </div>
         <div class="instructor-note">
             <strong>دسته‌بندی - SVM (۸ دقیقه):</strong>
-            <p>SVM را با تصویر خطی که دو گروه را جدا می‌کند توضیح دهید. نکته کلیدی: ما خط را نمی‌خواهیم - ما می‌خواهیم خطی که بیشترین فاصله را بین دو گروه داشته باشد (Maximum Margin). این باعث می‌شود مدل قوی‌تر باشد. Kernel Trick را به عنوان جادویی توضیح دهید که می‌تواند داده‌های غیرقابل تفکیک خطی را در فضای جدید تفکیک کند - مثل اینکه کاغذ را خم کنیم تا نقاط جدا شوند.</p>
+            <p>SVM را با تصویر خطی که دو گروه را جدا می‌کند توضیح دهید. نکته کلیدی: ما خط وسط «خیابان» را می‌خواهیم — یعنی خطی که بیشترین فاصله را بین دو گروه داشته باشد (Maximum Margin). این باعث می‌شود مدل قوی‌تر باشد.</p>
+            <p>Kernel Trick را به‌عنوان جادو توضیح دهید: «اگر داده‌ها در 2D جدا نمی‌شوند، آنها را به فضای 3D می‌بریم که در آنجا جداپذیر شوند — بدون محاسبه صریح.»</p>
         </div>
         <div class="instructor-note">
             <strong>دسته‌بندی - Decision Tree (۶ دقیقه):</strong>
-            <p>این مدل را مثل یک flowchart تصویر کنید: اول می‌پرسد: آیا پوست دارد؟ اگر نه → میوه. اگر بله → می‌پرسد: رنگ سبز دارد؟ و الی آخر. مزیت بزرگ: قابل تفسیر - می‌توانید قوانین را بخوانید. درخت تصمیم پزشکی عالی است چون پزشک می‌فهمد چرا این تشخیص داده شده. عیب: مستعد بیش‌برازش است - برای همین معمولاً از Random Forest استفاده می‌شود.</p>
+            <p>این مدل را مثل یک flowchart تصویر کنید: اول می‌پرسد: آیا پوست دارد؟ اگر نه → میوه. اگر بله → می‌پرسد: رنگ سبز دارد؟ مزیت بزرگ: قابل تفسیر. درخت تصمیم پزشکی عالی است چون پزشک می‌فهمد چرا این تشخیص داده شده.</p>
+            <p><strong>نکته:</strong> Random Forest = چندین درخت + رأی‌گیری. معمولاً برای مسائل جدی، Random Forest اولین انتخاب است.</p>
         </div>
         <div class="instructor-note">
             <strong>خوشه‌بندی - تفاوت (۳ دقیقه):</strong>
-            <p>خوشه‌بندی مثل گروه‌بندی دانش‌آموزان بر اساس قد بدون اینکه از قبل بدانیم چند گروه داریم. ما فقط می‌بینیم که عده‌ای قد بلند، عده‌ای متوسط و عده‌ای کوتاه‌اند - خودشان گروه‌بندی می‌شوند. این یادگیری بی‌ناظر است.</p>
+            <p>خوشه‌بندی مثل گروه‌بندی دانش‌آموزان بر اساس قد بدون اینکه از قبل بدانیم چند گروه داریم. ما فقط می‌بینیم که عده‌ای قد بلند، عده‌ای متوسط و عده‌ای کوتاه‌اند — خودشان گروه‌بندی می‌شوند.</p>
         </div>
         <div class="instructor-note">
             <strong>خوشه‌بندی - K-Means (۶ دقیقه):</strong>
-            <p>الگوریتم را با مثال روی تخته توضیح دهید: ۱) ۳ نقطه تصادفی بذار. ۲) هر داده را به نزدیک‌ترین نقطه بده. �3) میانگین هر گروه را حساب کن و نقطه را آنجا بذار. تکرار کن. روش Elbow را توضیح دهید: وقتی تعداد خوشه‌ها را زیاد می‌کنیم، فاصله کم می‌شود اما از جایی به بعد تغییر کم است - آنجا آرنج است. عیب K-Means: باید K را از قبل بدانیم و به نقطه اولیه حساس است.</p>
+            <p>الگوریتم را با مثال روی تخته توضیح دهید: ۱) ۳ نقطه تصادفی بگذار. ۲) هر داده را به نزدیک‌ترین نقطه بده. ۳) میانگین هر گروه را حساب کن و نقطه را آنجا بگذار. تکرار کن. روش Elbow را توضیح دهید.</p>
         </div>
         <div class="instructor-note">
             <strong>خوشه‌بندی - DBSCAN (۴ دقیقه):</strong>
-            <p>DBSCAN برعکس K-Means تعداد خوشه را خودش پیدا می‌کند. با مفهوم چگالی کار می‌کند: نقاطی که نزدیک هم هستند یک خوشه می‌شوند. مزیت بزرگ: نقاط نویز (Outliers) را خودش تشخیص می‌دهد - آنها را در هیچ خوشه‌ای نمی‌گذارد. این خیلی مهم است چون در داده‌های واقعی همیشه نقاط عجیب وجود دارند.</p>
+            <p>DBSCAN برعکس K-Means تعداد خوشه را خودش پیدا می‌کند. با مفهوم چگالی کار می‌کند: نقاطی که نزدیک هم هستند یک خوشه می‌شوند. مزیت بزرگ: نقاط نویز (Outliers) را خودش تشخیص می‌دهد — در K-Means همه نقاط مجبور به خوشه‌ای تعلق دارند حتی اگر جایی نباشند.</p>
         </div>
         <div class="instructor-note">
             <strong>جمع‌بندی (۴ دقیقه):</strong>
-            <p>خلاصه: دسته‌بندی برای پیش‌بینی برچسب است (با ناظر)، خوشه‌بندی برای گروه‌بندی بدون برچسب (بی‌ناظر). الگوریتم‌های دسته‌بندی: KNN، Logistic Regression، SVM، Decision Tree. الگوریتم‌های خوشه‌بندی: K-Means، DBSCAN. تکلیف: دانشجویان باید یک مثال از هر کدام در زندگی روزمره پیدا کنند.</p>
+            <p>خلاصه: دسته‌بندی برای پیش‌بینی برچسب است (با ناظر)، خوشه‌بندی برای گروه‌بندی بدون برچسب (بی‌ناظر). الگوریتم‌های دسته‌بندی: KNN، Logistic Regression، SVM، Decision Tree. الگوریتم‌های خوشه‌بندی: K-Means، DBSCAN، Hierarchical.</p>
+            <p>تکلیف: دانشجویان باید یک مثال از هر کدام در زندگی روزمره پیدا کنند و در کلاس ارائه دهند.</p>
+        </div>
+    </div>
+
+    <button class="accordion">مطالعه شخصی (Self-Read)</button>
+    <div class="panel">
+        <div class="self-read">
+            <h2>فصل نهم: دسته‌بندی و خوشه‌بندی</h2>
+
+            <h3>۹.۱ دسته‌بندی چیست؟</h3>
+            <p>دسته‌بندی پیش‌بینی یک برچسب (کلاس) برای هر نمونه بر اساس ویژگی‌های آن است. سه نوع: Binary، Multi-class، Multi-label.</p>
+
+            <h3>۹.۲ الگوریتم‌های دسته‌بندی</h3>
+            <p><strong>KNN:</strong> رأی‌گیری از K همسایه نزدیک. ساده ولی کند در پیش‌بینی. حساس به K و مقیاس ویژگی‌ها.</p>
+            <p><strong>Logistic Regression:</strong> احتمال تعلق به کلاس مثبت را با Sigmoid محاسبه می‌کند. تابع هزینه Cross-Entropy.</p>
+            <p><strong>SVM:</strong> ابرصفحه با بیشترین Margin. Kernel Trick برای داده‌های غیرخطی. C و γ ابرپارامتر.</p>
+            <p><strong>Decision Tree:</strong> تقسیم‌بندی سلسله‌مراتبی بر اساس ویژگی‌ها. معیارها: Gini، Entropy، Information Gain. Random Forest = ترکیب چند درخت.</p>
+
+            <h3>۹.۳ معیارهای ارزیابی دسته‌بندی</h3>
+            <p>Accuracy، Precision، Recall، F1، AUC-ROC. در مسائل imbalance (مثل تشخیص بیماری نادر)، Accuracy گمراه‌کننده است — از F1 استفاده کنید.</p>
+
+            <h3>۹.۴ خوشه‌بندی چیست؟</h3>
+            <p>گروه‌بندی داده‌های بدون برچسب. یادگیری بی‌ناظر. دشوارتر از دسته‌بندی برای ارزیابی.</p>
+
+            <h3>۹.۵ الگوریتم K-Means</h3>
+            <p>K مرکز اولیه → تخصیص → به‌روزرسانی → تکرار. تعداد K با روش Elbow. فرض کروی بودن خوشه‌ها.</p>
+
+            <h3>۹.۶ الگوریتم DBSCAN</h3>
+            <p>بر اساس چگالی. Core/Border/Noise Points. تعداد خوشه خودکار. تشخیص Outlier. مشکل در چگالی‌های متفاوت.</p>
+
+            <h3>۹.۷ مقایسه</h3>
+            <table>
+                <tr><th></th><th>دسته‌بندی</th><th>خوشه‌بندی</th></tr>
+                <tr><td>نوع</td><td>باناظر</td><td>بی‌ناظر</td></tr>
+                <tr><td>برچسب</td><td>دارد</td><td>ندارد</td></tr>
+                <tr><td>هدف</td><td>پیش‌بینی</td><td>کشف ساختار</td></tr>
+                <tr><td>ارزیابی</td><td>دقیق</td><td>نادقیق</td></tr>
+            </table>
+
+            <h3>خلاصه فصل:</h3>
+            <ol>
+                <li>دسته‌بندی پیش‌بینی برچسب است (یادگیری باناظر)</li>
+                <li>خوشه‌بندی کشف ساختار است (یادگیری بی‌ناظر)</li>
+                <li>KNN، Logistic Regression، SVM، Decision Tree الگوریتم‌های اصلی دسته‌بندی هستند</li>
+                <li>K-Means و DBSCAN الگوریتم‌های اصلی خوشه‌بندی هستند</li>
+                <li>F1 و AUC-ROC معیارهای دقیق‌تر از Accuracy هستند</li>
+                <li>DBSCAN برای تشخیص Outlier مناسب است</li>
+            </ol>
+
+            <h3>تمرین‌های خودآزمایی:</h3>
+            <ol>
+                <li>پنج مثال از دسته‌بندی در زندگی روزمره بنویسید و نوع آن (binary/multi-class/multi-label) را مشخص کنید</li>
+                <li>پنج مثال از خوشه‌بندی بنویسید</li>
+                <li>چرا K = √n قاعده تجربی خوبی برای KNN است؟</li>
+                <li>چرا Logistic Regression با وجود نامش، رگرسیون نیست؟</li>
+                <li>تفاوت K-Means و DBSCAN را در ۵ مورد بنویسید</li>
+                <li>اگر در تشخیص سرطان، Recall برابر ۱ ولی Precision برابر ۰.۱ باشد، معنایش چیست؟</li>
+                <li>Kernel Trick را به زبان ساده توضیح دهید</li>
+                <li>چرا Random Forest بهتر از Decision Tree عمل می‌کند؟</li>
+            </ol>
+
+            <h3>پروژه عملی پیشنهادی:</h3>
+            <p>روی داده‌های Iris:</p>
+            <ul>
+                <li>Decision Tree آموزش دهید و دقت را گزارش کنید</li>
+                <li>KNN با K=3, 5, 7 را امتحان کنید</li>
+                <li>Logistic Regression برازش کنید و ماتریس Confusion را رسم کنید</li>
+                <li>SVM با kernel RBF آموزش دهید</li>
+                <li>مقایسه کنید: کدام مدل بهترین دقت را دارد؟ کدام سریع‌تر است؟ کدام تفسیرپذیرتر است؟</li>
+            </ul>
+
+            <h3>منابع پیشنهادی برای مطالعه بیشتر:</h3>
+            <ul>
+                <li>کتاب «Pattern Recognition and Machine Learning» نوشته Christopher Bishop — فصل‌های ۴ و ۹</li>
+                <li>کتاب «Hands-On Machine Learning» نوشته Aurélien Géron — فصل‌های ۳، ۴، ۵</li>
+                <li>Andrew Ng — دوره Machine Learning در Coursera (هفته‌های ۶، ۷، ۸)</li>
+                <li>مستندات scikit-learn: <code>scikit-learn.org/stable/supervised_learning.html</code></li>
+            </ul>
+
+            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۸۰ دقیقه</p>
         </div>
     </div>
 

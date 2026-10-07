@@ -14,6 +14,7 @@
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
         .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 10px; margin: 10px 0; }
         .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
@@ -232,6 +233,174 @@
         <div class="instructor-note">
             <strong>جمع‌بندی (۴ دقیقه):</strong>
             <p>خلاصه: پارامترها از داده یاد می‌گیرند، ابرپارامترها را ما تنظیم می‌کنیم. نرخ یادگیری مهم‌ترین است. Grid Search، Random Search، Bayesian Optimization روش‌های تنظیم هستند. Early Stopping کمک می‌کند. همیشه با پیش‌فرض شروع کنید و یک چیز را در یک زمان تغییر دهید. تکلیف: دانشجویان باید یک مدل ساده بسازند و ابرپارامترهای آن را تنظیم کنند.</p>
+        </div>
+    </div>
+
+    <button class="accordion">مطالعه شخصی (Self-Read)</button>
+    <div class="panel">
+        <div class="self-read">
+            <h2>فصل پانزدهم: پارامترها و ابرپارامترها</h2>
+
+            <h3>۱۵.۱ تفاوت پارامتر و ابرپارامتر</h3>
+
+            <h4>پارامتر (Parameter):</h4>
+            <p>مقداری که مدل از داده یاد می‌گیرد.</p>
+            <ul>
+                <li>وزن‌ها در رگرسیون خطی</li>
+                <li>مراکز خوشه‌ها در K-Means</li>
+                <li>weights در شبکه عصبی</li>
+            </ul>
+
+            <h4>ابرپارامتر (Hyperparameter):</h4>
+            <p>مقداری که قبل از آموزش تنظیم می‌شود و از داده یاد نمی‌گیرد.</p>
+            <ul>
+                <li>نرخ یادگیری</li>
+                <li>تعداد لایه‌ها</li>
+                <li>تعداد همسایه‌ها در KNN</li>
+            </ul>
+
+            <h4>تفاوت کلیدی:</h4>
+            <table>
+                <tr>
+                    <th>پارامتر</th>
+                    <th>ابرپارامتر</th>
+                </tr>
+                <tr>
+                    <td>از داده یاد می‌گیرد</td>
+                    <td>توسط انسان تنظیم می‌شود</td>
+                </tr>
+                <tr>
+                    <td>در مدل ذخیره می‌شود</td>
+                    <td>قبل از آموزش تعیین می‌شود</td>
+                </tr>
+            </table>
+
+            <h3>۱۵.۲ روش‌های تنظیم ابرپارامتر</h3>
+
+            <h4>۱. Grid Search (جستجوی شبکه‌ای):</h4>
+            <p>جستجوی تمام ترکیبات ممکن از ابرپارامترها.</p>
+            <ul>
+                <li>✓ جامع و کامل</li>
+                <li>✗ زمان‌بر برای فضای بزرگ</li>
+            </ul>
+
+            <h4>۲. Random Search (جستجوی تصادفی):</h4>
+            <p>جستجوی تصادفی از فضای ابرپارامتر.</p>
+            <ul>
+                <li>✓ سریع‌تر از Grid Search</li>
+                <li>✓ گاهی نتایج بهتر</li>
+                <li>✗ ممکن است بهینه را از دست بدهد</li>
+            </ul>
+
+            <h4>۳. Bayesian Optimization:</h4>
+            <p>استفاده از مدل احتمالی برای هدایت جستجو.</p>
+            <ul>
+                <li>✓ هوشمند</li>
+                <li>✓ کمترین تکرار</li>
+                <li>✗ پیچیده‌تر</li>
+            </ul>
+
+            <h3>۱۵.۳ نرخ یادگیری (Learning Rate)</h3>
+
+            <p>نرخ یادگیری مهم‌ترین ابرپارامتر است - اندازه قدم در هر تکرار بهینه‌سازی.</p>
+
+            <h4>مقادیر رایج:</h4>
+            <p>0.001, 0.01, 0.1, 1</p>
+
+            <h4>Learning Rate Schedules:</h4>
+            <ul>
+                <li><strong>Step Decay:</strong> هر n اپoch نرخ را نصف کن</li>
+                <li><strong>Exponential Decay:</strong> نرخ به صورت نمایی کم شود</li>
+                <li><strong>Cosine Annealing:</strong> نرخ به صورت کسینوسی تغییر کند</li>
+                <li><strong>Reduce on Plateau:</strong> وقتی بهبود متوقف شد، نرخ را کم کن</li>
+            </ul>
+
+            <h3>۱۵.۴ ابرپارامترهای شبکه عصبی</h3>
+
+            <h4>مهم‌ترین ابرپارامترها:</h4>
+            <ul>
+                <li><strong>Learning Rate:</strong> نرخ یادگیری</li>
+                <li><strong>Batch Size:</strong> اندازه دسته</li>
+                <li><strong>Number of Epochs:</strong> تعداد تکرار آموزش</li>
+                <li><strong>Hidden Layers:</strong> تعداد لایه‌های پنهان</li>
+                <li><strong>Hidden Units:</strong> تعداد نورون‌ها در هر لایه</li>
+                <li><strong>Activation Function:</strong> تابع فعال‌سازی</li>
+                <li><strong>Dropout Rate:</strong> نرخ حذف تصادفی</li>
+                <li><strong>Weight Initialization:</strong> نحوه مقداردهی اولیه</li>
+            </ul>
+
+            <h4>Batch Size:</h4>
+            <table>
+                <tr>
+                    <th>کوچک (32, 64, 128)</th>
+                    <th>بزرگ (256, 512, 1024)</th>
+                </tr>
+                <tr>
+                    <td>نویزدار</td>
+                    <td>همگرایی صاف</td>
+                </tr>
+                <tr>
+                    <td>معمولاً بهتر generalizes</td>
+                    <td>سریع‌تر</td>
+                </tr>
+            </table>
+
+            <h3>۱۵.۵ Early Stopping</h3>
+
+            <p>توقف زودهنگام آموزش وقتی عملکرد روی validation بهتر نشود.</p>
+
+            <h4>پارامترها:</h4>
+            <ul>
+                <li><strong>Patience:</strong> چند epoch صبر کنیم</li>
+                <li><strong>Min Delta:</strong> چقدر بهبود مهم است</li>
+                <li><strong>Monitor:</strong> کدام معیار را监控 کنیم</li>
+            </ul>
+
+            <h4>مزایا:</h4>
+            <ul>
+                <li>جلوگیری از بیش‌برازش</li>
+                <li>کاهش زمان آموزش</li>
+                <li>انتخاب خودکار تعداد epochs</li>
+            </ul>
+
+            <h3>۱۵.۶ بهترین عملکردها</h3>
+
+            <h4>پیشنهادات کلی:</h4>
+            <ul>
+                <li>با مقادیر پیش‌فرض شروع کنید</li>
+                <li>یک ابرپارامتر را در یک زمان تغییر دهید</li>
+                <li>از Grid Search کوچک شروع کنید</li>
+                <li>از validation set برای تنظیم استفاده کنید</li>
+                <li>نتایج را ثبت کنید</li>
+            </ul>
+
+            <h4>ابزارها:</h4>
+            <ul>
+                <li>Optuna</li>
+                <li>Hyperopt</li>
+                <li>Ray Tune</li>
+                <li>Scikit-learn GridSearchCV, RandomizedSearchCV</li>
+            </ul>
+
+            <h3>خلاصه فصل:</h3>
+            <ol>
+                <li>پارامترها از داده یاد می‌گیرند، ابرپارامترها را ما تنظیم می‌کنیم</li>
+                <li>نرخ یادگیری مهم‌ترین ابرپارامتر است</li>
+                <li>Grid Search، Random Search، Bayesian Optimization روش‌های تنظیم هستند</li>
+                <li>Early Stopping از بیش‌برازش جلوگیری می‌کند</li>
+                <li>همیشه با پیش‌فرض شروع کنید</li>
+            </ol>
+
+            <h3>تمرین‌های خودآزمایی:</h3>
+            <ol>
+                <li>تفاوت پارامتر و ابرپارامتر چیست؟</li>
+                <li>چرا نرخ یادگیری مهم‌ترین ابرپارامتر است؟</li>
+                <li>Grid Search چگونه کار می‌کند؟</li>
+                <li>Early Stopping چه مزیتی دارد؟</li>
+                <li>یک مثال از ابرپارامتر بزنید</li>
+            </ol>
+
+            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۲۰ دقیقه</p>
         </div>
     </div>
 

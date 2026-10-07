@@ -14,6 +14,7 @@
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
         .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 10px; margin: 10px 0; }
         .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
@@ -231,6 +232,175 @@
         <div class="instructor-note">
             <strong>جمع‌بندی (۵ دقیقه):</strong>
             <p>خلاصه: بیش‌برازش = مدل پیچیده، زیربرازش = مدل ساده. از Learning Curves برای تشخیص استفاده کنید. راه‌حل‌ها: Regularization، Dropout، Early Stopping، داده بیشتر. از Cross-Validation برای ارزیابی بهتر استفاده کنید. تکلیف: دانشجویان باید یک مثال بسازند و نشان دهند که چطور با تغییر پیچیدگی مدل، بیش‌برازش یا زیربرازش ایجاد می‌شود.</p>
+        </div>
+    </div>
+
+    <button class="accordion">مطالعه شخصی (Self-Read)</button>
+    <div class="panel">
+        <div class="self-read">
+            <h2>فصل سیزدهم: بیش‌برازش و زیربرازش</h2>
+
+            <h3>۱۳.۱ بیش‌برازش (Overfitting)</h3>
+            <p>بیش‌برازش زمانی رخ می‌دهد که مدل داده‌های آموزش را حفظ می‌کند ولی روی داده‌های جدید ضعیف عمل می‌کند.</p>
+
+            <h4>علل بیش‌برازش:</h4>
+            <ul>
+                <li>مدل خیلی پیچیده است</li>
+                <li>مدل به نویز داده‌ها دسترسی پیدا می‌کند</li>
+                <li>داده آموزش کم است</li>
+                <li>آموزش بیش از حد (بیش از حد epochs)</li>
+            </ul>
+
+            <h4>علائم بیش‌برازش:</h4>
+            <ul>
+                <li>دقت روی داده آموزش بالا، روی داده تست پایین</li>
+                <li>مدل جزئیات ریز داده‌ها را یاد می‌گیرد</li>
+            </ul>
+
+            <h4>مثال:</h4>
+            <p>در طبقه‌بندی، مدل مرز پیچیده‌ای رسم می‌کند که نقاط آموزش را کاملاً جدا می‌کند، اما روی داده جدید شکست می‌خورد.</p>
+
+            <h3>۱۳.۲ زیربرازش (Underfitting)</h3>
+            <p>زیربرازش زمانی رخ می‌دهد که مدل خیلی ساده است و الگوهای مهم را هم یاد نمی‌گیرد.</p>
+
+            <h4>علل زیربرازش:</h4>
+            <ul>
+                <li>مدل خیلی ساده است</li>
+                <li>آموزش کافی نیست</li>
+                <li>ویژگی‌های ناکافی</li>
+            </ul>
+
+            <h4>علائم زیربرازش:</h4>
+            <ul>
+                <li>دقت روی داده آموزش و تست هر دو پایین</li>
+                <li>مدل الگوهای اصلی را یاد نمی‌گیرد</li>
+            </ul>
+
+            <h4>مثال:</h4>
+            <p>استفاده از یک خط برای داده‌های منحنی - مدل توانایی کافی ندارد.</p>
+
+            <h3>۱۳.۳ منحنی یادگیری (Learning Curves)</h3>
+            <p>منحنی یادگیری نمودار خطا بر حسب اندازه داده آموزش است.</p>
+
+            <h4>تحلیل منحنی یادگیری:</h4>
+            <table>
+                <tr>
+                    <th>حالت</th>
+                    <th>خطای Train</th>
+                    <th>خطای Test</th>
+                    <th>راه‌حل</th>
+                </tr>
+                <tr>
+                    <td>بیش‌برازش</td>
+                    <td>پایین</td>
+                    <td>بالا</td>
+                    <td>منظم‌سازی، داده بیشتر</td>
+                </tr>
+                <tr>
+                    <td>زیربرازش</td>
+                    <td>بالا</td>
+                    <td>بالا</td>
+                    <td>مدل پیچیده‌تر، ویژگی بیشتر</td>
+                </tr>
+                <tr>
+                    <td>برازش خوب</td>
+                    <td>پایین</td>
+                    <td>پایین</td>
+                    <td>✓</td>
+                </tr>
+            </table>
+
+            <h3>۱۳.۴ روش‌های جلوگیری از بیش‌برازش</h3>
+
+            <h4>۱. منظم‌سازی (Regularization):</h4>
+            <ul>
+                <li>L1 (Lasso): جریمه جمع قدرمطلق وزن‌ها</li>
+                <li>L2 (Ridge): جریمه مجذور وزن‌ها</li>
+                <li>Elastic Net: ترکیب L1 و L2</li>
+            </ul>
+
+            <h4>۲. Dropout:</h4>
+            <p>در شبکه‌های عصبی: غیرفعال کردن تصادفی نورون‌ها در هنگام آموزش.</p>
+
+            <h4>۳. Early Stopping:</h4>
+            <p>توقف آموزش وقتی خطای validation افزایش یافت.</p>
+
+            <h4>۴. افزایش داده (Data Augmentation):</h4>
+            <ul>
+                <li>چرخش، برش، تغییر رنگ تصاویر</li>
+                <li>جایگزینی مترادف در متن</li>
+            </ul>
+
+            <h4>۵. کاهش پیچیدگی مدل:</h4>
+            <ul>
+                <li>کم کردن عمق درخت در Decision Tree</li>
+                <li>کم کردن تعداد نورون‌ها در شبکه عصبی</li>
+            </ul>
+
+            <h3>۱۳.۵ اعتبارسنجی متقاطع (Cross-Validation)</h3>
+
+            <p>اعتبارسنجی متقاطع روشی برای ارزیابی عملکرد مدل با تقسیم داده به چند بخش است.</p>
+
+            <h4>K-Fold Cross-Validation:</h4>
+            <ol>
+                <li>داده را به K قسمت تقسیم کن</li>
+                <li>K-1 قسمت برای آموزش</li>
+                <li>۱ قسمت برای تست</li>
+                <li>این کار را K بار تکرار کن</li>
+                <li>میانگین نتایج را بگیر</li>
+            </ol>
+
+            <h4>مزایا:</h4>
+            <ul>
+                <li>استفاده بهینه از داده</li>
+                <li>تخمین بهتر عملکرد واقعی</li>
+                <li>کاهش واریانس تخمین</li>
+            </ul>
+
+            <h4>انواع:</h4>
+            <ul>
+                <li>Stratified K-Fold: حفظ توزیع کلاس</li>
+                <li>Time Series Split: برای داده‌های زمانی</li>
+                <li>Leave-One-Out: K = n</li>
+            </ul>
+
+            <h3>۱۳.۶ اعتبارسنجی (Validation)</h3>
+
+            <p>اعتبارسنجی بخشی از داده است که برای تنظیم هایپرپارامترها و انتخاب مدل استفاده می‌شود.</p>
+
+            <h4>روش‌های اعتبارسنجی:</h4>
+            <ul>
+                <li><strong>Holdout:</strong> تقسیم ساده (مثلاً 60/20/20)</li>
+                <li><strong>K-Fold:</strong> تقسیم به K بخش</li>
+                <li><strong>Stratified:</strong> حفظ توزیع کلاس</li>
+            </ul>
+
+            <h4>نکته مهم:</h4>
+            <ul>
+                <li>داده Test نباید در آموزش استفاده شود!</li>
+                <li>داده Validation برای تنظیم مدل استفاده می‌شود</li>
+                <li>داده Test برای ارزیابی نهایی است</li>
+            </ul>
+
+            <h3>خلاصه فصل:</h3>
+            <ol>
+                <li>بیش‌برازش = مدل پیچیده، زیربرازش = مدل ساده</li>
+                <li>از Learning Curves برای تشخیص مشکل استفاده کنید</li>
+                <li>راه‌حل‌ها: منظم‌سازی، Dropout، Early Stopping، داده بیشتر</li>
+                <li>Cross-Validation تخمین بهتری از عملکرد واقعی می‌دهد</li>
+                <li>داده Test فقط برای ارزیابی نهایی است</li>
+            </ol>
+
+            <h3>تمرین‌های خودآزمایی:</h3>
+            <ol>
+                <li>بیش‌برازش چیست و چه عللی دارد؟</li>
+                <li>چگونه می‌توان بیش‌برازش را تشخیص داد؟</li>
+                <li>تفاوت L1 و L2 regularization چیست؟</li>
+                <li>چرا Early Stopping مهم است؟</li>
+                <li>یک مثال از زیربرازش بزنید</li>
+            </ol>
+
+            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۲۰ دقیقه</p>
         </div>
     </div>
 

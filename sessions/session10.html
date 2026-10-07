@@ -5,301 +5,834 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جلسه ۱۰ - یادگیری باناظر، بی‌ناظر و تقویتی</title>
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; line-height: 1.9; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
         h3 { color: #16a085; margin-top: 20px; }
+        h4 { color: #34495e; margin-top: 15px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
         .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
-        code { background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
-        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 15px; margin: 10px 0; }
+        .warning { background: #fdecea; border-right: 4px solid #e74c3c; padding: 10px; margin: 10px 0; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
-
+        .stat-box { background: #f4ecf7; border-right: 4px solid #8e44ad; padding: 10px; margin: 10px 0; }
+        .quote { background: #fdf2e9; border-right: 4px solid #e67e22; padding: 10px; margin: 10px 0; font-style: italic; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: monospace; color: #c0392b; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
         .accordion.active { background-color: #3498db; color: white; }
         .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
-
         .math { font-family: "Times New Roman", serif; font-size: 1.2em; }
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
         th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
     </style>
 </head>
 <body>
     <a href="../plan.html" class="back-link">← بازگشت به برنامه درسی</a>
 
-    <h1>جلسه ۱۰: یادگیری باناظر، بی‌ناظر و تقویتی</h1>
+    <h1>جلسه ۱۰: انواع یادگیری ماشین (Types of Machine Learning)</h1>
 
     <div class="phase">
         <h2>اهداف یادگیری</h2>
+        <p>در پایان این جلسه، دانشجو باید بتواند:</p>
         <ul>
-            <li>درک تفاوت انواع یادگیری</li>
-            <li>آشنایی با الگوریتم‌های هر نوع</li>
-            <li>شناخت کاربردهای مناسب هر کدام</li>
+            <li>چهار نوع اصلی یادگیری ماشین (Supervised, Unsupervised, Reinforcement, Semi-Supervised) را تشخیص دهد</li>
+            <li>تفاوت‌های بنیادی آنها را در قالب یک جدول مقایسه‌ای بیان کند</li>
+            <li>برای هر مسئله واقعی، نوع مناسب یادگیری را انتخاب کند</li>
+            <li>اجزای اصلی Reinforcement Learning را تعریف کند</li>
+            <li>مفاهیم Self-Supervised و Self-Supervised Learning را درک کند</li>
+            <li>الگوریتم‌های مهم هر نوع را نام ببرد</li>
+            <li>نقش Self-Supervised Learning در مدل‌های زبانی بزرگ (LLM) را تحلیل کند</li>
+        </ul>
+
+        <h2>پیش‌نیازهای جلسه</h2>
+        <ul>
+            <li>آشنایی با رگرسیون و دسته‌بندی (جلسات ۶، ۹)</li>
+            <li>درک Gradient Descent (جلسه ۸)</li>
+            <li>آشنایی با خوشه‌بندی (جلسه ۹)</li>
         </ul>
     </div>
 
-    <button class="accordion">یادگیری باناظر (Supervised Learning)</button>
+    <button class="accordion">بخش ۱۰.۱ — نگاشت کلی انواع یادگیری</button>
     <div class="panel">
         <div class="key-concept">
-            یادگیری با داده‌های برچسب‌گذاری شده - مدل از جفت‌های (ورودی، خروجی) یاد می‌گیرد.
+            <strong>یادگیری ماشین (Machine Learning):</strong> شاخه‌ای از هوش مصنوعی که به سیستم‌ها اجازه می‌دهد بدون برنامه‌نویسی صریح، از داده‌ها یاد بگیرند و عملکرد خود را بهبود دهند.
         </div>
 
-        <h3>ساختار داده:</h3>
-        <div class="formula">
-            D = {(x₁, y₁), (x₂, y₂), ..., (xₙ, yₙ)}
-        </div>
-        <p>که x ورودی و y برچسب (خروجی) است.</p>
+        <p>یادگیری ماشین به چهار دسته اصلی تقسیم می‌شود (به‌علاوه تعدادی زیرشاخه):</p>
 
-        <h3>دو دسته اصلی:</h3>
-        <ul>
-            <li><strong>رگرسیون:</strong> خروجی پیوسته (عدد)</li>
-            <li><strong>طبقه‌بندی:</strong> خروجی گسسته (برچسب)</li>
-        </ul>
-
-        <h3>الگوریتم‌های رایج:</h3>
         <table>
             <tr>
+                <th>نوع</th>
+                <th>ناظر</th>
+                <th>داده</th>
+                <th>هدف</th>
+            </tr>
+            <tr>
+                <td><strong>Supervised (باناظر)</strong></td>
+                <td>دارد (برچسب)</td>
+                <td>(x, y)</td>
+                <td>یادگیری نگاشت x → y</td>
+            </tr>
+            <tr>
+                <td><strong>Unsupervised (بی‌ناظر)</strong></td>
+                <td>ندارد</td>
+                <td>فقط x</td>
+                <td>کشف ساختار پنهان</td>
+            </tr>
+            <tr>
+                <td><strong>Reinforcement (تقویتی)</strong></td>
+                <td>پاداش</td>
+                <td>(s, a, r, s')</td>
+                <td>یادگیری سیاست بهینه</td>
+            </tr>
+            <tr>
+                <td><strong>Semi-Supervised (نیمه‌ناظر)</strong></td>
+                <td>ترکیبی</td>
+                <td>مخلوط</td>
+                <td>استفاده از هر دو نوع</td>
+            </tr>
+            <tr>
+                <td><strong>Self-Supervised (خودآموز)</strong></td>
+                <td>خودساخته</td>
+                <td>x</td>
+                <td>برچسب‌سازی خودکار</td>
+            </tr>
+        </table>
+
+        <div class="example">
+            <p><strong>تشبیه آموزش به کودک:</strong></p>
+            <ul>
+                <li><strong>Supervised:</strong> معلم به کودک می‌گوید «این سگ است»، «این گربه است» — یادگیری با راهنما</li>
+                <li><strong>Unsupervised:</strong> کودک خودش عکس‌ها را گروه‌بندی می‌کند — یادگیری خودکار بدون راهنما</li>
+                <li><strong>Reinforcement:</strong> کودک با بازی کردن یاد می‌گیرد — وقتی درست بازی کند پاداش می‌گیرد</li>
+                <li><strong>Self-Supervised:</strong> کودک یک پازل را می‌بیند و خودش قسمت‌های گم‌شده را حدس می‌زند</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۱۰.۲ — یادگیری باناظر (Supervised Learning)</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>یادگیری باناظر:</strong> مدل از جفت‌های (ورودی، خروجی صحیح) یاد می‌گیرد. حتماً برچسب‌های صحیح (Labels) در داده آموزشی وجود دارند.
+        </div>
+
+        <h3>۱۰.۲.۱ ساختار داده</h3>
+        <div class="formula">
+            D = {(x<sub>1</sub>, y<sub>1</sub>), (x<sub>2</sub>, y<sub>2</sub>), ..., (x<sub>n</sub>, y<sub>n</sub>)}
+        </div>
+        <p>که x بردار ویژگی‌ها (Features) و y برچسب هدف (Target/Label).</p>
+
+        <h3>۱۰.۲.۲ دو دسته اصلی</h3>
+
+        <h4>الف) رگرسیون (Regression) — خروجی پیوسته</h4>
+        <p>پیش‌بینی یک عدد پیوسته:</p>
+        <ul>
+            <li>قیمت خانه (میلیون تومان)</li>
+            <li>دمای فردا (درجه سانتی‌گراد)</li>
+            <li>تعداد فروش ماه آینده</li>
+            <li>سن بیمار از تصویر MRI</li>
+        </ul>
+
+        <h4>ب) دسته‌بندی (Classification) — خروجی گسسته</h4>
+        <p>پیش‌بینی یک برچسب کلاس:</p>
+        <ul>
+            <li>ایمیل اسپم / عادی</li>
+            <li>تومور خوش‌خیم / بدخیم</li>
+            <li>نوع حیوان در تصویر</li>
+        </ul>
+
+        <h3>۱۰.۲.۳ الگوریتم‌های رایج</h3>
+        <table>
+            <tr>
+                <th>الگوریتم</th>
                 <th>رگرسیون</th>
-                <th>طبقه‌بندی</th>
+                <th>دسته‌بندی</th>
+                <th>ویژگی بارز</th>
             </tr>
             <tr>
                 <td>Linear Regression</td>
-                <td>Logistic Regression</td>
+                <td>✓</td>
+                <td>—</td>
+                <td>ساده‌ترین، تفسیرپذیر</td>
             </tr>
             <tr>
                 <td>Polynomial Regression</td>
-                <td>K-Nearest Neighbors</td>
+                <td>✓</td>
+                <td>—</td>
+                <td>رابطه غیرخطی</td>
+            </tr>
+            <tr>
+                <td>Ridge / Lasso</td>
+                <td>✓</td>
+                <td>—</td>
+                <td>Regularization برای جلوگیری از Overfitting</td>
             </tr>
             <tr>
                 <td>Decision Tree</td>
-                <td>Decision Tree</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>قابل تفسیر</td>
             </tr>
             <tr>
                 <td>Random Forest</td>
-                <td>Random Forest</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>مقاوم، بدون overfitting</td>
             </tr>
             <tr>
-                <td>SVR</td>
+                <td>KNN</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>بدون آموزش، ساده</td>
+            </tr>
+            <tr>
                 <td>SVM</td>
+                <td>✓ (SVR)</td>
+                <td>✓</td>
+                <td>Maximum Margin</td>
             </tr>
             <tr>
                 <td>Neural Networks</td>
-                <td>Neural Networks</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>قوی، مناسب داده پیچیده</td>
             </tr>
         </table>
 
-        <h3>مثال:</h3>
+        <h3>۱۰.۲.۴ چالش اصلی: تأمین داده برچسب‌دار</h3>
+        <div class="warning">
+            <strong>هشدار:</strong> بزرگ‌ترین هزینه در یادگیری باناظر، برچسب‌گذاری داده‌هاست. در پروژه‌های واقعی، ۷۰-۸۰ درصد زمان صرف جمع‌آوری و برچسب‌زنی داده می‌شود.
+        </div>
+
+        <p><strong>مثال هزینه:</strong></p>
+        <ul>
+            <li>۱۰۰٬۰۰۰ تصویر پزشکی برای برچسب‌گذاری، هر کدام ۵ دقیقه زمان پزشک متخصص → ۸٬۳۰۰ ساعت ≈ <strong>۴ سال کار یک پزشک تمام‌وقت</strong></li>
+            <li>هزینه: چند صد میلیون تومان</li>
+        </ul>
+
+        <h3>۱۰.۲.۵ فرایند کار (Pipeline)</h3>
         <div class="example">
-            <p>آموزش مدل تشخیص گربه:</p>
+            <ol>
+                <li><strong>جمع‌آوری داده:</strong> به‌دست آوردن نمونه‌های خام</li>
+                <li><strong>برچسب‌گذاری:</strong> تخصیص خروجی صحیح به هر نمونه</li>
+                <li><strong>پیش‌پردازش:</strong> تمیز کردن، نرمال‌سازی، تبدیل</li>
+                <li><strong>تقسیم داده:</strong> Train (۷۰٪)، Validation (۱۵٪)، Test (۱۵٪)</li>
+                <li><strong>انتخاب مدل:</strong> از بین الگوریتم‌های بالا</li>
+                <li><strong>آموزش:</strong> تنظیم پارامترها با Gradient Descent</li>
+                <li><strong>ارزیابی:</strong> محاسبه Accuracy، F1، MSE</li>
+                <li><strong>تنظیم ابرپارامترها:</strong> Grid Search، Random Search</li>
+                <li><strong>استقرار (Deployment):</strong> استفاده در محیط واقعی</li>
+            </ol>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۱۰.۳ — یادگیری بی‌ناظر (Unsupervised Learning)</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>یادگیری بی‌ناظر:</strong> مدل بدون برچسب، باید ساختار پنهان در داده‌ها را کشف کند. هیچ «پاسخ صحیح» از قبل مشخص نیست.
+        </div>
+
+        <h3>۱۰.۳.۱ چهار وظیفه اصلی</h3>
+
+        <h4>الف) خوشه‌بندی (Clustering)</h4>
+        <p>گروه‌بندی داده‌های مشابه:</p>
+        <ul>
+            <li>K-Means (پرکاربرد، سریع)</li>
+            <li>DBSCAN (تشخیص Outlier)</li>
+            <li>Hierarchical (دندروگرام)</li>
+            <li>Gaussian Mixture (احتمالاتی)</li>
+        </ul>
+
+        <h4>ب) کاهش بُعد (Dimensionality Reduction)</h4>
+        <p>فشرده‌سازی داده‌ها با حفظ اطلاعات مهم:</p>
+        <ul>
+            <li><strong>PCA (Principal Component Analysis):</strong> خطی، سریع، تفسیرپذیر</li>
+            <li><strong>t-SNE:</strong> غیرخطی، برای Visualization عالی</li>
+            <li><strong>UMAP:</strong> سریع‌تر از t-SNE، حفظ ساختار全局ی</li>
+            <li><strong>Autoencoder:</strong> شبکه عصبی برای کاهش بُعد</li>
+        </ul>
+
+        <h4>ج) تشخیص ناهنجاری (Anomaly Detection)</h4>
+        <p>پیدا کردن نقاط غیرعادی:</p>
+        <ul>
+            <li>Isolation Forest</li>
+            <li>One-Class SVM</li>
+            <li>Local Outlier Factor (LOF)</li>
+            <li>Autoencoder (با reconstruction error)</li>
+        </ul>
+
+        <h4>د) یادگیری قانون انجمنی (Association Rule Learning)</h4>
+        <p>کشف روابط «اگر X پس Y» در داده‌ها:</p>
+        <ul>
+            <li>Apriori</li>
+            <li>FP-Growth</li>
+            <li>ECLAT</li>
+        </ul>
+
+        <p><strong>کاربرد معروف:</strong> Market Basket Analysis — در فروشگاه‌ها، اگر مشتری نان و شیر بخرد، ۶۰٪ احتمال دارد پنیر هم بخرد.</p>
+
+        <h3>۱۰.۳.۲ کاربردهای واقعی</h3>
+        <div class="example">
             <ul>
-                <li>تصویر (ورودی) → برچسب "گربه" (خروجی)</li>
-                <li>با هزاران مثال، مدل یاد می‌گیرد</li>
-                <li>سپس برای تصویر جدید، برچسب پیش‌بینی می‌کند</li>
+                <li><strong>سگمنت‌بندی مشتریان:</strong> در اسنپ، دیجی‌کالا، بانک‌ها</li>
+                <li><strong>تشخیص تراکنش‌های مشکوک:</strong> بدون برچسب، الگوهای غیرعادی کشف می‌شوند</li>
+                <li><strong>سیستم توصیه‌گر:</strong> کاربران مشابه در رفتار، کالاهای مشابه خواهند پسندید</li>
+                <li><strong>فشرده‌سازی تصویر:</strong> PCA روی پیکسل‌ها</li>
+                <li><strong>تحلیل شبکه‌های اجتماعی:</strong> یافتن Communities</li>
+                <li><strong>کاهش بُعد برای Visualization:</strong> t-SNE برای نمایش داده‌های ۱۰۰ بعدی در ۲ بعد</li>
+            </ul>
+        </div>
+
+        <h3>۱۰.۳.۳ چالش‌های یادگیری بی‌ناظر</h3>
+        <ul>
+            <li>ارزیابی کیفیت سخت‌تر (چون برچسب نداریم)</li>
+            <li>نتایج ممکن است غیرمنتظره یا بی‌معنا باشند</li>
+            <li>نیاز به تفسیر انسانی برای استخراج Insight</li>
+            <li>عملکرد بسیار وابسته به کیفیت ویژگی‌ها</li>
+        </ul>
+
+        <h3>۱۰.۳.۴ مثال: Market Basket در دیجی‌کالا</h3>
+        <div class="example">
+            <p>تحلیل ۱۰ میلیون تراکنش:</p>
+            <ul>
+                <li>قانون ۱: کسانی که «پوشک بچه» می‌خرند، ۷۰٪ شیر خشک هم می‌خرند</li>
+                <li>قانون ۲: کسانی که «هدفون بلوتوث» می‌خرند، ۴۵٪ اسپیکر هم می‌خرند</li>
+                <li>قانون ۳: کسانی که «کتاب آشپزی» می‌خرند، ۳۵٪ مواد اولیه خاص هم می‌خرند</li>
+            </ul>
+            <p>سپس:</p>
+            <ul>
+                <li>سفارش‌های پیشنهادی «کسانی که این را خریده‌اند، آن را هم خریده‌اند»</li>
+                <li>چیدمان فروشگاه فیزیکی (شیر خشک نزدیک پوشک)</li>
+                <li>تخفیف ترکیبی (پوشک + شیر خشک = ۱۵٪ تخفیف)</li>
             </ul>
         </div>
     </div>
 
-    <button class="accordion">یادگیری بی‌ناظر (Unsupervised Learning)</button>
+    <button class="accordion">بخش ۱۰.۴ — یادگیری تقویتی (Reinforcement Learning)</button>
     <div class="panel">
         <div class="key-concept">
-            یادگیری بدون داده‌های برچسب‌گذاری شده - مدل باید ساختار پنهان در داده‌ها را کشف کند.
+            <strong>یادگیری تقویتی (RL):</strong> یک عامل (Agent) با تعامل در محیط (Environment)، از طریق آزمون‌وخطا و دریافت پاداش (Reward) یا جریمه، سیاست (Policy) بهینه را یاد می‌گیرد.
         </div>
 
-        <h3>دسته‌های اصلی:</h3>
-        <ul>
-            <li><strong>خوشه‌بندی:</strong> گروه‌بندی داده‌های مشابه</li>
-            <li><strong>کاهش بُعد:</strong> فشرده‌سازی داده‌ها</li>
-            <li><strong>تشخیص ناهنجاری:</strong> پیدا کردن نقاط غیرعادی</li>
-            <li><strong>یادگیری قانون:</strong> استخراج قوانین انجمنی</li>
-        </ul>
-
-        <h3>الگوریتم‌های رایج:</h3>
+        <h3>۱۰.۴.۱ پنج جزء اصلی</h3>
         <table>
             <tr>
-                <th>خوشه‌بندی</th>
-                <th>کاهش بُعد</th>
+                <th>جزء</th>
+                <th>نماد</th>
+                <th>توضیح</th>
             </tr>
             <tr>
-                <td>K-Means</td>
-                <td>PCA</td>
+                <td><strong>Agent (عامل)</strong></td>
+                <td>—</td>
+                <td>برنامه‌ای که یاد می‌گیرد (مثلاً برنامه شطرنج)</td>
             </tr>
             <tr>
-                <td>Hierarchical</td>
-                <td>t-SNE</td>
+                <td><strong>Environment (محیط)</strong></td>
+                <td>E</td>
+                <td>جهانی که عامل در آن عمل می‌کند</td>
             </tr>
             <tr>
-                <td>DBSCAN</td>
-                <td>UMAP</td>
+                <td><strong>State (وضعیت)</strong></td>
+                <td>s</td>
+                <td>وضعیت فعلی محیط از دید عامل</td>
             </tr>
             <tr>
-                <td>Gaussian Mixture</td>
-                <td>Autoencoder</td>
+                <td><strong>Action (عمل)</strong></td>
+                <td>a</td>
+                <td>تصمیم عامل در هر وضعیت</td>
+            </tr>
+            <tr>
+                <td><strong>Reward (پاداش)</strong></td>
+                <td>r</td>
+                <td>بازخورد مثبت (+) یا منفی (−) از محیط</td>
             </tr>
         </table>
 
-        <h3>مثال:</h3>
+        <h3>۱۰.۴.۲ فرایند یادگیری</h3>
+        <div class="formula">
+            s<sub>t</sub> → a<sub>t</sub> → r<sub>t+1</sub> → s<sub>t+1</sub> → a<sub>t+1</sub> → ...
+        </div>
+
+        <p>عامل در هر گام:</p>
+        <ol>
+            <li>وضعیت فعلی s را می‌بیند</li>
+            <li>عمل a را انتخاب می‌کند</li>
+            <li>پاداش r را دریافت می‌کند</li>
+            <li>به وضعیت جدید s' می‌رود</li>
+            <li>از این تجربه یاد می‌گیرد</li>
+        </ol>
+
+        <h3>۱۰.۴.۳ مفاهیم کلیدی</h3>
+
+        <h4>الف) Policy (سیاست): π(s)</h4>
+        <p>تابعی که در هر وضعیت، عمل بهینه را مشخص می‌کند. هدف RL یادگیری π* است.</p>
+
+        <h4>ب) Value Function (تابع ارزش): V(s)</h4>
+        <p>انتظار پاداش آینده از وضعیت s:</p>
+        <div class="formula">
+            V(s) = E[Σ<sub>t≥0</sub> γ<sup>t</sup> × R(s<sub>t</sub>)]
+        </div>
+        <p>γ (discount factor) معمولاً ۰.۹۹ — پاداش‌های دورتر اهمیت کمتری دارند.</p>
+
+        <h4>ج) Q-Value: Q(s, a)</h4>
+        <p>انتظار پاداش آینده از عمل a در وضعیت s:</p>
+        <div class="formula">
+            Q(s, a) = E[Σ<sub>t≥0</sub> γ<sup>t</sup> × R(s<sub>t</sub>) | s<sub>0</sub>=s, a<sub>0</sub>=a]
+        </div>
+
+        <h3>۱۰.۴.۴ تعادل Exploration و Exploitation</h3>
+        <div class="key-concept">
+            <strong>معضل RL:</strong> عامل باید بین «کشف راه‌های جدید (Exploration)» و «استفاده از بهترین راه شناخته‌شده (Exploitation)» تعادل برقرار کند.
+        </div>
+        <ul>
+            <li>اگر فقط Exploitation: ممکن است در بهینه محلی گیر کند</li>
+            <li>اگر فقط Exploration: پاداش کم می‌گیرد، یاد نمی‌گیرد</li>
+            <li>راه‌حل: ε-greedy، Upper Confidence Bound (UCB)، Thompson Sampling</li>
+        </ul>
+
+        <h3>۱۰.۴.۵ الگوریتم‌های اصلی</h3>
+
+        <h4>الف) Q-Learning (بدون مدل)</h4>
+        <p>Q-Tab را به‌روزرسانی می‌کند:</p>
+        <div class="formula">
+            Q(s, a) ← Q(s, a) + α × [r + γ × max<sub>a'</sub> Q(s', a') − Q(s, a)]
+        </div>
+
+        <h4>ب) Deep Q-Network (DQN)</h4>
+        <p>جایگزینی Q-Table با شبکه عصبی برای فضاهای با ابعاد بالا. موفقیت در بازی‌های Atari.</p>
+
+        <h4>ج) Policy Gradient</h4>
+        <p>مستقیماً Policy را بهینه می‌کند (نه Q-Value). مناسب فضاهای عمل پیوسته.</p>
+
+        <h4>د) Actor-Critic</h4>
+        <p>دو شبکه: Actor (انتخاب عمل) + Critic (ارزیابی عمل).</p>
+
+        <h4>ه) PPO (Proximal Policy Optimization)</h4>
+        <p>الگوریتم پیشرفته و پایدار، محبوب‌ترین روش امروزی. OpenAI و DeepMind از آن استفاده می‌کنند.</p>
+
+        <h3>۱۰.۴.۶ کاربردهای معروف</h3>
         <div class="example">
-            <p>سگمان‌بندی مشتریان:</p>
             <ul>
-                <li>ورودی: اطلاعات خرید مشتریان</li>
-                <li>بدون برچسب!</li>
-                <li>مدل مشتریان مشابه را گروه‌بندی می‌کند</li>
-                <li>مثلاً: گروه "خریداران منظم"، "خریداران گاه‌به‌گاه"</li>
+                <li><strong>AlphaGo (DeepMind):</strong> اولین برنامه‌ای که قهرمان Go را شکست داد</li>
+                <li><strong>OpenAI Five:</strong> بازی Dota 2 در سطح قهرمان جهان</li>
+                <li><strong>ربات‌های صنعتی:</strong> یادگیری مونتاژ، راه رفتن</li>
+                <li><strong>ماشین‌های خودران:</strong> تصمیم‌گیری در تقاطع‌ها</li>
+                <li><strong>پیشنهاد تبلیغات:</strong> سیستم‌های Realtime Bidding</li>
+                <li><strong>کنترل انرژی:</strong> گوگل ۴۰٪ هزینه سرمایش دیتاسنتر خود را با RL کاهش داد</li>
+                <li><strong>معاملات الگوریتمی:</strong> در بازارهای مالی</li>
+                <li><strong>ربات‌های چت:</strong> بهینه‌سازی دیالوگ بلند</li>
             </ul>
         </div>
+
+        <h3>۱۰.۴.۷ RL در ایران</h3>
+        <ul>
+            <li><strong>اسنپ:</strong> تخصیص بهینه سفر به رانندگان (کاهش زمان انتظار)</li>
+            <li><strong>تپسو:</strong> مسیریابی پویا</li>
+            <li><strong>بازی‌های رایانه‌ای ایرانی:</strong> شخصیت‌های NPC هوشمند</li>
+            <li><strong>رباتیک:</strong> پژوهشکده‌های دانشگاهی (شریف، تهران، صنعتی اصفهان)</li>
+        </ul>
     </div>
 
-    <button class="accordion">یادگیری تقویتی (Reinforcement Learning)</button>
+    <button class="accordion">بخش ۱۰.۵ — یادگیری نیمه‌ناظر (Semi-Supervised)</button>
     <div class="panel">
         <div class="key-concept">
-            یادگیری از طریق تعامل با محیط و دریافت پاداش یا جریمه
+            <strong>یادگیری نیمه‌ناظر:</strong> ترکیب داده‌های برچسب‌دار کم (مثلاً ۱۰۰ نمونه) و بدون برچسب زیاد (مثلاً ۱۰۰٬۰۰۰ نمونه) برای بهبود عملکرد.
         </div>
 
-        <h3>ساختار:</h3>
-        <ul>
-            <li><strong>Agent (عامل):</strong> یادگیرنده</li>
-            <li><strong>Environment (محیط):</strong> جایی که عامل در آن عمل می‌کند</li>
-            <li><strong>Action (عمل):</strong> تصمیم عامل</li>
-            <li><strong>State (وضعیت):</strong> وضعیت فعلی محیط</li>
-            <li><strong>Reward (پاداش):</strong> بازخورد از محیط</li>
-        </ul>
-
-        <h3>فرآیند:</h3>
-        <div class="formula">
-            State → Action → Reward → New State → ...
-        </div>
-
-        <h3>مفاهیم کلیدی:</h3>
-        <ul>
-            <li><strong>Policy (سیاست):</strong> استراتژی انتخاب عمل</li>
-            <li><strong>Value Function:</strong> ارزش انتظاری هر وضعیت</li>
-            <li><strong>Q-Value:</strong> ارزش انتظاری عمل در وضعیت</li>
-        </ul>
-
-        <h3>الگوریتم‌های رایج:</h3>
-        <ul>
-            <li>Q-Learning</li>
-            <li>Deep Q-Network (DQN)</li>
-            <li>Policy Gradient</li>
-            <li>Actor-Critic</li>
-            <li>Proximal Policy Optimization (PPO)</li>
-        </ul>
-
-        <h3>مثال:</h3>
-        <div class="example">
-            <p>بازی شطرنج:</p>
+        <h3>۱۰.۵.۱ چرا نیمه‌ناظر مهم است؟</h3>
+        <div class="stat-box">
+            <p><strong>واقعیت تلخ:</strong> در بسیاری از حوزه‌ها، داده‌های بدون برچسب فراوان ولی برچسب‌گذاری بسیار گران است.</p>
+            <p><strong>مثال‌ها:</strong></p>
             <ul>
-                <li>عامل: برنامه شطرنج</li>
-                <li>عمل: حرکت مهره</li>
-                <li>پاداش: +۱ برد، -۱ باخت، ۰ مساوی</li>
-                <li>مدل یاد می‌گیرد کدام حرکات برد را افزایش می‌دهند</li>
+                <li>میلیون‌ها تصویر پزشکی بدون برچسب در بیمارستان‌ها</li>
+                <li>میلیاردها ایمیل بدون اینکه برچسب بخورد</li>
+                <li>میلیون‌ها گزارش تراکنش بانکی بدون برچسب «مشروع/تقلب»</li>
             </ul>
+            <p>در یادگیری نیمه‌ناظر، از هر دو نوع داده با هم استفاده می‌شود.</p>
+        </div>
+
+        <h3>۱۰.۵.۲ روش‌های اصلی</h3>
+
+        <h4>الف) Self-Training</h4>
+        <ol>
+            <li>مدل را روی داده برچسب‌دار آموزش بده</li>
+            <li>مدل را روی داده بدون برچسب اجرا کن و برچسب‌هایی با اطمینان بالا تولید کن</li>
+            <li>این برچسب‌ها را به مجموعه آموزشی اضافه کن</li>
+            <li>مدل را دوباره آموزش بده</li>
+            <li>تکرار تا همگرایی</li>
+        </ol>
+
+        <h4>ب) Co-Training</h4>
+        <p>دو مدل مستقل روی دو نمای مختلف از داده آموزش می‌بینند و برچسب‌های مطمئن یکدیگر را تأیید می‌کنند.</p>
+
+        <h4>ج) Graph-Based Methods</h4>
+        <p>داده‌ها را به‌صورت گراف (شباهت بین نمونه‌ها) نمایش می‌دهند و برچسب‌ها را در گراف منتشر می‌کنند.</p>
+
+        <h3>۱۰.۵.۳ مثال عملی: تشخیص هرزنامه</h3>
+        <div class="example">
+            <p>فرض کنید:</p>
+            <ul>
+                <li>۱٬۰۰۰ ایمیل برچسب‌خورده (اسپم/عادی)</li>
+                <li>۱٬۰۰۰٬۰۰۰ ایمیل بدون برچسب</li>
+            </ul>
+            <p>رویکرد فقط Supervised: فقط با ۱٬۰۰۰ نمونه آموزش می‌بینیم → دقت پایین.</p>
+            <p>رویکرد Semi-Supervised: ابتدا با ۱٬۰۰۰ نمونه مدل می‌سازیم، سپس از ۱ میلیون نمونه بدون برچسب، آنهایی که مدل با اطمینان بالا (مثلاً ۹۹٪) اسپم یا عادی تشخیص داد، به مجموعه آموزشی اضافه می‌کنیم. این کار را چند بار تکرار می‌کنیم.</p>
+            <p>نتیجه: دقت مدل از ۸۵٪ به ۹۴٪ افزایش می‌یابد.</p>
         </div>
     </div>
 
-    <button class="accordion">مقایسه انواع یادگیری</button>
+    <button class="accordion">بخش ۱۰.۶ — یادگیری خودآموز (Self-Supervised)</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>یادگیری خودآموز (SSL):</strong> مدل از خودِ داده‌ها، برچسب تولید می‌کند (بدون نیاز به انسان). پایه مدل‌های زبانی بزرگ (BERT، GPT) و بینایی ماشین پیشرفته.
+        </div>
+
+        <h3>۱۰.۶.۱ ایده اصلی</h3>
+        <p>به‌جای نیاز به برچسب انسانی، ساختار درونی داده، برچسب تولید می‌کند:</p>
+        <ul>
+                <li>در متن: کلمه بعدی چیست؟ کلمه پوشیده‌شده چه کلمه‌ای است؟</li>
+                <li>در تصویر: اگر تکه‌ای از تصویر بریده شود، مدل باید آن را بازسازی کند</li>
+                <li>در صوت: بخش بعدی صوت چه صدایی است؟</li>
+        </ul>
+
+        <h3>۱۰.۶.۲ مثال‌های معروف</h3>
+
+        <h4>الف) Word2Vec (2013، Tomas Mikolov)</h4>
+        <p>وظیفه: پیش‌بینی کلمه بر اساس متن اطراف (CBOW) یا بالعکس (Skip-gram).</p>
+        <p>خروجی: بردار (Embedding) که معنی کلمه را رمزگذاری می‌کند.</p>
+        <div class="example">
+            <p>king − man + woman ≈ queen</p>
+            <p>ایران − تهران + بغداد ≈ عراق</p>
+        </div>
+
+        <h4>ب) BERT (2018، Google)</h4>
+        <p>وظیفه: کلمه مخفی‌شده در جمله (Masked Language Model) را پیش‌بینی کن.</p>
+        <div class="example">
+            <p>«من امروز به ______ رفتم.» → مدل پیش‌بینی می‌کند: «مدرسه»، «بازار»، «پارک» و...</p>
+        </div>
+
+        <h4>ج) Contrastive Learning (در بینایی ماشین)</h4>
+        <p>وظیفه: تشخیص اینکه دو تصویر آیا متعلق به یک شیء هستند یا نه.</p>
+        <p>مثال‌ها: SimCLR (Google)، MoCo (Facebook)</p>
+
+        <h4>د) Masked Autoencoder (در بینایی ماشین)</h4>
+        <p>وظیفه: بازسازی قسمت‌های پوشیده‌شده تصویر.</p>
+
+        <h3>۱۰.۶.۳ چرا Self-Supervised انقلابی است؟</h3>
+        <div class="stat-box">
+            <p><strong>در NLP:</strong> GPT-3 روی ۵۷۰ گیگابایت متن (میلیاردها کلمه) فقط با Self-Supervised آموزش دید. سپس با چند مثال (Few-Shot) توانست ترجمه، خلاصه‌سازی، و کدنویسی انجام دهد.</p>
+            <p><strong>در Vision:</strong> DINO (Meta) بدون هیچ برچسب انسانی، اشیاء را در تصویر تشخیص می‌دهد.</p>
+            <p><strong>نتیجه:</strong> مدل‌های Pre-trained با SSL، ستون فقرات هوش مصنوعی امروزی هستند.</p>
+        </div>
+
+        <h3>۱۰.۶.۴ فرایند Pre-training و Fine-tuning</h3>
+        <ol>
+            <li><strong>Pre-training:</strong> مدل بزرگ را با SSL روی حجم عظیمی از داده (اینترنت) آموزش بده</li>
+            <li><strong>Fine-tuning:</strong> با مقدار کمی داده برچسب‌دار، مدل را برای کار خاص تنظیم کن</li>
+            <li><strong>Inference:</strong> مدل در کاربرد نهایی استفاده شود</li>
+        </ol>
+
+        <h3>۱۰.۶.۵ کاربرد در زبان فارسی</h3>
+        <ul>
+            <li><strong>ParsBERT:</strong> نسخه فارسی BERT برای پردازش زبان فارسی</li>
+                <li><strong>mBERT:</strong> مدل چندزبانه گوگل که فارسی را تا حدی می‌فهمد</li>
+                <li>تشخیص احساسات نظرات کاربران فارسی</li>
+                <li>خلاصه‌سازی اخبار فارسی</li>
+        </ul>
+    </div>
+
+    <button class="accordion">بخش ۱۰.۷ — جدول مقایسه کامل انواع یادگیری</button>
     <div class="panel">
         <table>
             <tr>
                 <th>ویژگی</th>
-                <th>باناظر</th>
-                <th>بی‌ناظر</th>
-                <th>تقویتی</th>
+                <th>Supervised</th>
+                <th>Unsupervised</th>
+                <th>Reinforcement</th>
+                <th>Semi-Supervised</th>
+                <th>Self-Supervised</th>
             </tr>
             <tr>
-                <td>نوع داده</td>
-                <td>برچسب‌دار</td>
-                <td>بدون برچسب</td>
-                <td>تعاملی</td>
+                <td>ناظر</td>
+                <td>برچسب‌های انسانی</td>
+                <td>بدون ناظر</td>
+                <td>پاداش محیط</td>
+                <td>برخی برچسب‌ها</td>
+                <td>ساختار داده</td>
             </tr>
             <tr>
-                <td>خروجی</td>
-                <td>پیش‌بینی</td>
-                <td>ساختار/الگو</td>
-                <td>سیاست</td>
+                <td>داده</td>
+                <td>(x, y)</td>
+                <td>فقط x</td>
+                <td>trajectory</td>
+                <td>مخلوط</td>
+                <td>x</td>
             </tr>
             <tr>
                 <td>هدف</td>
-                <td>یادگیری نگاشت</td>
-                <td>کشف الگو</td>
-                <td>بیشینه‌سازی پاداش</td>
+                <td>پیش‌بینی y</td>
+                <td>کشف ساختار</td>
+                <td>سیاست بهینه</td>
+                <td>پیش‌بینی بهتر</td>
+                <td>Representation یادگیری</td>
             </tr>
             <tr>
-                <td>مثال</td>
-                <td>تشخیص spam</td>
-                <td>خوشه‌بندی</td>
-                <td>بازی کامپیوتری</td>
+                <td>خروجی</td>
+                <td>مدل پیش‌بین</td>
+                <td>خوشه / کاهش بُعد</td>
+                <td>Policy</td>
+                <td>مدل پیش‌بین بهبودیافته</td>
+                <td>Embedding / Pre-trained</td>
+            </tr>
+            <tr>
+                <td>هزینه</td>
+                <td>برچسب‌گذاری</td>
+                <td>کم</td>
+                <td>شبیه‌سازی محیط</td>
+                <td>متوسط</td>
+                <td>محاسباتی زیاد</td>
+            </tr>
+            <tr>
+                <td>کاربرد معروف</td>
+                <td>تشخیص بیماری</td>
+                <td>سگمنت‌بندی</td>
+                <td>بازی، رباتیک</td>
+                <td>تشخیص اسپم</td>
+                <td>GPT، BERT</td>
+            </tr>
+            <tr>
+                <td>محدودیت اصلی</td>
+                <td>نیاز به داده برچسب‌دار</td>
+                <td>ارزیابی سخت</td>
+                <td>پاداش کم، زمان آموزش طولانی</td>
+                <td>نویز در برچسب‌سازی خودکار</td>
+                <td>نیاز به داده زیاد</td>
             </tr>
         </table>
     </div>
 
-    <button class="accordion">یادگیری نیمه‌ناظر (Semi-Supervised)</button>
+    <button class="accordion">بخش ۱۰.۸ — راهنمای انتخاب نوع یادگیری</button>
     <div class="panel">
-        <div class="key-concept">
-            ترکیب داده‌های برچسب‌دار و بدون برچسب
+        <h3>۱۰.۸.۱ فلوچارت تصمیم‌گیری</h3>
+        <div class="example">
+            <ol>
+                <li><strong>آیا داده برچسب‌دار کافی دارید؟</strong>
+                    <ul>
+                        <li>بله، زیاد (۱۰K+) → Supervised</li>
+                        <li>کم (۱۰۰-۱۰K) + بدون برچسب زیاد → Semi-Supervised</li>
+                        <li>خیر → Unsupervised یا Self-Supervised</li>
+                    </ul>
+                </li>
+                <li><strong>آیا محیط تعاملی دارید؟</strong>
+                    <ul>
+                        <li>بله (بازی، ربات، سیستم پویا) → Reinforcement</li>
+                    </ul>
+                </li>
+                <li><strong>هدف چیست؟</strong>
+                    <ul>
+                        <li>پیش‌بینی برچسب → Supervised</li>
+                        <li>کشف ساختار → Unsupervised</li>
+                        <li>Representation برای کار بعدی → Self-Supervised</li>
+                        <li>تصمیم‌گیری تعاملی → RL</li>
+                    </ul>
+                </li>
+            </ol>
         </div>
 
-        <h3>چرا مفید است؟</h3>
-        <ul>
-            <li>برچسب‌گذاری داده‌ها گران و زمان‌بر است</li>
-            <li>معمولاً داده‌های بدون برچسب بیشتر از برچسب‌دار هستند</li>
-        </ul>
+        <h3>۱۰.۸.۲ جدول راهنما</h3>
+        <table>
+            <tr>
+                <th>مسئله</th>
+                <th>نوع مناسب</th>
+            </tr>
+            <tr>
+                <td>تشخیص ایمیل اسپم</td>
+                <td>Supervised (یا Semi)</td>
+            </tr>
+            <tr>
+                <td>سگمنت‌بندی مشتریان</td>
+                <td>Unsupervised</td>
+            </tr>
+            <tr>
+                <td>پیش‌بینی قیمت سهام</td>
+                <td>Supervised (Regression)</td>
+            </tr>
+            <tr>
+                <td>بازی شطرنج توسط کامپیوتر</td>
+                <td>Reinforcement</td>
+            </tr>
+            <tr>
+                <td>تشخیص چهره در عکس</td>
+                <td>Supervised + Self-Supervised Pre-training</td>
+            </tr>
+            <tr>
+                <td>پیشنهاد فیلم</td>
+                <td>Unsupervised (Collaborative Filtering) یا Semi-Supervised</td>
+            </tr>
+            <tr>
+                <td>تشخیص ناهنجاری در تراکنش بانکی</td>
+                <td>Unsupervised + Supervised</td>
+            </tr>
+            <tr>
+                <td>ربات چت هوشمند</td>
+                <td>Self-Supervised (Pre-trained) + RL Fine-tuning (RLHF)</td>
+            </tr>
+            <tr>
+                <td>کاهش بُعد برای Visualization</td>
+                <td>Unsupervised (t-SNE، UMAP)</td>
+            </tr>
+            <tr>
+                <td>آموزش مدل زبانی بزرگ (مثل GPT)</td>
+                <td>Self-Supervised</td>
+            </tr>
+        </table>
 
-        <h3>روش‌ها:</h3>
+        <h3>۱۰.۸.۳ Deep Reinforcement Learning: ترکیب RL با Deep Learning</h3>
+        <p>در عمل، بسیاری از سیستم‌های RL موفق از شبکه‌های عصبی عمیق برای تقریب Q-Value یا Policy استفاده می‌کنند. به این ترکیب Deep RL می‌گویند.</p>
+
+        <p>مهم‌ترین الگوریتم‌ها:</p>
         <ul>
-            <li>Self-Training: استفاده از مدل برای برچسب‌گذاری داده‌های بدون برچسب</li>
-            <li>Co-Training: ترکیب چند مدل</li>
-            <li>Generative Models: مدل‌های مولد</li>
+            <li><strong>DQN:</strong> برای بازی‌های Atari</li>
+            <li><strong>A3C / A2C:</strong> Actor-Critic ناهمزمان</li>
+            <li><strong>PPO:</strong> الگوریتم استاندارد OpenAI برای ChatGPT Fine-tuning (RLHF)</li>
+            <li><strong>SAC:</strong> برای کنترل ربات‌ها</li>
         </ul>
     </div>
 
-    <button class="accordion">یادگیری خودآموز (Self-Supervised)</button>
+    <button class="accordion">بخش ۱۰.۹ — کاربردها در ایران و جهان</button>
     <div class="panel">
-        <div class="key-concept">
-            ایجاد برچسب از داده بدون نیاز به انسان
-        </div>
-
-        <h3>مثال:</h3>
+        <h3>۱۰.۹.۱ هوش مصنوعی اسنپ (Snapp)</h3>
         <ul>
-            <li><strong>Word2Vec:</strong> پیش‌بینی کلمه بر اساس上下文</li>
-            <li><strong>BERT:</strong> پیش‌بینی کلمه masked در جمله</li>
-            <li><strong>Contrastive Learning:</strong> تشخیص تصویر مشابه/متفاوت</li>
+            <li><strong>Supervised:</strong> پیش‌بینی تقاضای سفر در هر منطقه</li>
+            <li><strong>Unsupervised:</strong> خوشه‌بندی مناطق پرتقاضا</li>
+            <li><strong>RL:</strong> تخصیص بهینه راننده به مسافر (کاهش زمان انتظار)</li>
         </ul>
 
-        <h3>کاربرد:</h3>
-        <p>بسیار رایج در پردازش زبان طبیعی و بینایی ماشین برای پیش‌آموزش مدل‌های بزرگ.</p>
+        <h3>۱۰.۹.۲ بانکداری ایران</h3>
+        <ul>
+            <li>تشخیص تقلب (Supervised با نمونه‌های تأییدشده + Unsupervised برای ناهنجاری)</li>
+            <li>اعتبارسنجی مشتری (Supervised)</li>
+            <li>سگمنت‌بندی مشتریان (Unsupervised)</li>
+        </ul>
+
+        <h3>۱۰.۹.۳ آموزش و پرورش</h3>
+        <ul>
+            <li>تشخیص سؤالات مشابه (Unsupervised)</li>
+            <li>پیش‌بینی عملکرد دانش‌آموز (Supervised)</li>
+            <li>تطبیق محتوا با سطح دانش‌آموز (RL)</li>
+        </ul>
+
+        <h3>۱۰.۹.۴ پزشکی</h3>
+        <ul>
+            <li>تشخیص سرطان از MRI (Supervised با Self-Supervised Pre-training)</li>
+            <li>کشف دارو (RL برای آزمایش ترکیبات)</li>
+            <li>کشف الگوهای بیماری در داده‌های بیمارستان (Unsupervised)</li>
+        </ul>
     </div>
 
-    <button class="accordion">یادداشت‌های استاد</button>
+    <button class="accordion">یادداشت‌های استاد (Instructor Notes)</button>
     <div class="panel">
         <div class="instructor-note">
             <strong>مقدمه و معرفی انواع (۱۰ دقیقه):</strong>
-            <p>با یک مثال ساده شروع کنید: فرض کنید می‌خواهیم به کودک یاد بدهیم که این عکس گربه است. روش اول: بهش بگویم این گربه است (برچسب دارم) - این یادگیری باناظر است. روش دوم: بذارم خودش عکس‌های شبیه به هم را پیدا کند - این یادگیری بی‌ناظر است. روش سوم: بذارم با گربه بازی کند و وقتی نوازش می‌کند پاداش بدهم - این یادگیری تقویتی است. این سه نوع یادگیری را خلاصه کنید و بگویید هر کدام کجا استفاده می‌شود.</p>
+            <p>با یک مثال ساده شروع کنید: فرض کنید می‌خواهیم به کودک یاد بدهیم که این عکس گربه است. روش اول: بهش بگوییم این گربه است (برچسب داریم) — این یادگیری باناظر است. روش دوم: بگذاریم خودش عکس‌های شبیه به هم را پیدا کند — این یادگیری بی‌ناظر است. روش سوم: بگذاریم با گربه بازی کند و وقتی نوازش می‌کند پاداش بدهیم — این یادگیری تقویتی است. این سه نوع یادگیری را خلاصه کنید و بگویید هر کدام کجا استفاده می‌شود.</p>
         </div>
         <div class="instructor-note">
             <strong>یادگیری باناظر (۱۰ دقیقه):</strong>
-            <p>این رایج‌ترین نوع یادگیری ماشین است. تأکید کنید که نیاز به داده‌های برچسب‌گذاری شده داریم - و این برچسب‌گذاری گران است. مثال عملی: تشخیص پزشکی - برای آموزش مدل، باید پزشک متخصص عکس‌ها را برچسب‌گذاری کند. مزیت: دقت بالا. عیب: نیاز به داده برچسب‌دار. دو دسته: رگرسیون (عدد) و طبقه‌بندی (برچسب).</p>
+            <p>این رایج‌ترین نوع یادگیری ماشین است. تأکید کنید که نیاز به داده‌های برچسب‌گذاری شده داریم — و این برچسب‌گذاری گران است. مثال عملی: تشخیص پزشکی — برای آموزش مدل، باید پزشک متخصص عکس‌ها را برچسب‌گذاری کند. مزیت: دقت بالا. عیب: نیاز به داده برچسب‌دار. دو دسته: رگرسیون (عدد) و دسته‌بندی (برچسب).</p>
+            <p><strong>نکته:</strong> امروزه بیشتر پروژه‌های جدی ترکیبی هستند. مثلاً Pre-training با Self-Supervised، سپس Supervised Fine-tuning.</p>
         </div>
         <div class="instructor-note">
             <strong>یادگیری بی‌ناظر (۱۰ دقیقه):</strong>
-            <p>این نوع یادگیری وقتی مفید است که برچسب نداریم یا برچسب‌گذاری گران است. مثال: شرکتی که می‌خواهد مشتریانش را بشناسد - با خوشه‌بندی می‌توان گروه‌های مختلف مشتریان را پیدا کرد بدون اینکه از قبل بدانیم چند گروه داریم. کاهش بُعد هم مهم است: وقتی داده‌ها خیلی ویژگی دارند، می‌توانیم با PCA آنها را به ۲-۳ بُعد فشرده کنیم و可视化 کنیم.</p>
+            <p>این نوع یادگیری وقتی مفید است که برچسب نداریم یا برچسب‌گذاری گران است. مثال: شرکتی که می‌خواهد مشتریانش را بشناسد — با خوشه‌بندی می‌توان گروه‌های مختلف مشتریان را پیدا کرد بدون اینکه از قبل بدانیم چند گروه داریم. کاهش بُعد هم مهم است: وقتی داده‌ها خیلی ویژگی دارند، می‌توانیم با PCA آنها را به ۲-۳ بُعد فشرده کنیم و Visualize کنیم.</p>
         </div>
         <div class="instructor-note">
             <strong>یادگیری تقویتی (۱۲ دقیقه):</strong>
             <p>این نوع یادگیری با بقیه خیلی فرق دارد. Agent با محیط تعامل می‌کند و پاداش یا جریمه می‌گیرد. مثال‌های معروف: AlphaGo که شطرنج Go یاد گرفت، بازی‌های Atari. Agent یاد می‌گیرد که کدام کارها پاداش بیشتری می‌دهند. تأکید کنید که RL در دنیای واقعی خیلی استفاده می‌شود: ربات‌ها، ماشین‌های خودران، توصیه‌گرها. این جلسه می‌تواند بحث جالبی درباره آینده هوش مصنوعی ایجاد کند.</p>
+            <p><strong>نکته جالب برای دانشجویان:</strong> ChatGPT با RLHF (Reinforcement Learning from Human Feedback) Fine-tune شده — یعنی انسان‌ها به آن بازخورد می‌دهند و مدل یاد می‌گیرد پاسخ‌های بهتر بدهد.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>یادگیری نیمه‌ناظر و خودآموز (۸ دقیقه):</strong>
+            <p>این‌ها پل ارتباطی بین سه نوع اصلی هستند. Self-Supervised امروزه بسیار مهم است — پایه همه مدل‌های زبانی بزرگ (BERT، GPT) و مدل‌های بینایی پیشرفته.</p>
+            <p>توضیح دهید: مدلی مثل GPT ابتدا با Self-Supervised روی تمام اینترنت آموزش می‌بیند (بدون برچسب انسانی)، سپس با RLHF تنظیم نهایی می‌شود. این ترکیب چندین نوع یادگیری است.</p>
         </div>
         <div class="instructor-note">
             <strong>مقایسه و جمع‌بندی (۵ دقیقه):</strong>
-            <p>از جدول مقایسه استفاده کنید. نکته کلیدی: در عمل، اکثر پروژه‌ها از یادگیری باناظر استفاده می‌کنند چون داده‌های برچسب‌دار بیشتر در دسترس هستند. اما یادگیری بی‌ناظر و تقویتی هم جایگاه خودشان را دارند. یادگیری نیمه‌ناظر و خودآموز را هم معرفی کنید که ترکیبی هستند و در پروژه‌های بزرگ استفاده می‌شوند.</p>
+            <p>از جدول مقایسه استفاده کنید. نکته کلیدی: در عمل، اکثر پروژه‌ها ترکیبی از چند نوع یادگیری هستند. آموزش‌های اولیه معمولاً Self-Supervised، سپس Supervised Fine-tuning، و در نهایت RL برای تنظیم نهایی.</p>
         </div>
         <div class="instructor-note">
-            <strong>تکلیف (۳ دقیقه):</strong>
+            <strong>تکلیف (۵ دقیقه):</strong>
             <p>تکلیف: دانشجویان باید یک مثال برای هر نوع یادگیری از زندگی روزمره پیدا کنند. همچنین از آنها بخواهید که فکر کنند: اگر بخواهیم مدلی برای تشخیص بیماری قلبی بسازیم، از کدام نوع یادگیری استفاده می‌کنیم و چرا؟</p>
+        </div>
+    </div>
+
+    <button class="accordion">مطالعه شخصی (Self-Read)</button>
+    <div class="panel">
+        <div class="self-read">
+            <h2>فصل دهم: انواع یادگیری ماشین</h2>
+
+            <h3>۱۰.۱ یادگیری باناظر (Supervised Learning)</h3>
+            <p>مدل از جفت‌های (x, y) یاد می‌گیرد. دو دسته: رگرسیون (خروجی پیوسته) و دسته‌بندی (خروجی گسسته). الگوریتم‌ها: Linear/Polynomial Regression، Logistic Regression، KNN، SVM، Decision Tree، Random Forest، Neural Networks.</p>
+
+            <h3>۱۰.۲ یادگیری بی‌ناظر (Unsupervised Learning)</h3>
+            <p>مدل بدون برچسب، ساختار پنهان را کشف می‌کند. چهار وظیفه: خوشه‌بندی، کاهش بُعد، تشخیص ناهنجاری، یادگیری قانون انجمنی.</p>
+
+            <h3>۱۰.۳ یادگیری تقویتی (Reinforcement Learning)</h3>
+            <p>عامل با محیط تعامل می‌کند و پاداش دریافت می‌کند. اجزا: Agent، Environment، State، Action، Reward. مفاهیم: Policy، Value Function، Q-Value. الگوریتم‌ها: Q-Learning، DQN، PPO.</p>
+
+            <h3>۱۰.۴ یادگیری نیمه‌ناظر (Semi-Supervised)</h3>
+            <p>ترکیب داده‌های برچسب‌دار کم و بدون برچسب زیاد. روش‌ها: Self-Training، Co-Training، Graph-Based.</p>
+
+            <h3>۱۰.۵ یادگیری خودآموز (Self-Supervised)</h3>
+            <p>مدل از خود داده‌ها برچسب تولید می‌کند. مثال‌ها: Word2Vec، BERT، Contrastive Learning، Masked Autoencoder. ستون فقرات مدل‌های بزرگ امروزی (GPT، BERT، CLIP).</p>
+
+            <h3>خلاصه فصل:</h3>
+            <ol>
+                <li>پنج نوع اصلی یادگیری وجود دارد: Supervised, Unsupervised, Reinforcement, Semi-Supervised, Self-Supervised</li>
+                <li>Supervised نیاز به داده برچسب‌دار دارد (رایج‌ترین ولی پرهزینه)</li>
+                <li>Unsupervised ساختار پنهان را کشف می‌کند</li>
+                <li>RL از تعامل با محیط یاد می‌گیرد</li>
+                <li>Semi-Supervised ترکیبی از داده برچسب‌دار و بدون برچسب استفاده می‌کند</li>
+                <li>Self-Supervised پایه مدل‌های بزرگ امروزی است</li>
+                <li>در عمل، اکثر سیستم‌های پیشرفته ترکیبی از چند نوع هستند</li>
+            </ol>
+
+            <h3>تمرین‌های خودآزمایی:</h3>
+            <ol>
+                <li>سه مثال از یادگیری باناظر در زندگی روزمره بنویسید</li>
+                <li>سه مثال از یادگیری بی‌ناظر بنویسید</li>
+                <li>یک مسئله واقعی مثال بزنید که RL مناسب باشد</li>
+                <li>چرا Self-Supervised در سال‌های اخیر انقلابی شده است؟</li>
+                <li>تفاوت Semi-Supervised و Self-Supervised چیست؟</li>
+                <li>چرا در پروژه‌های واقعی معمولاً چند نوع یادگیری با هم استفاده می‌شود؟</li>
+                <li>مفهوم «Exploration vs Exploitation» را توضیح دهید</li>
+                <li>Q-Learning و Policy Gradient را با هم مقایسه کنید</li>
+            </ol>
+
+            <h3>پروژه عملی پیشنهادی:</h3>
+            <ul>
+                <li><strong>بخش ۱:</strong> با داده‌های Iris یک Logistic Regression آموزش دهید (Supervised)</li>
+                <li><strong>بخش ۲:</strong> همان داده‌ها را با K-Means خوشه‌بندی کنید (Unsupervised). مقایسه کنید: آیا خوشه‌ها با برچسب‌های واقعی هم‌خوانی دارد؟</li>
+                <li><strong>بخش ۳:</strong> فرض کنید فقط ۱۰٪ داده‌ها برچسب دارند. Semi-Supervised را شبیه‌سازی کنید و دقت را با حالت ۱۰۰٪ مقایسه کنید</li>
+                <li><strong>بخش ۴ (چالشی):</strong> یک محیط ساده بازی (مثلاً CartPole) با Q-Learning حل کنید</li>
+            </ul>
+
+            <h3>منابع پیشنهادی برای مطالعه بیشتر:</h3>
+            <ul>
+                <li>کتاب «Reinforcement Learning» نوشته Sutton & Barto — مرجع اصلی RL</li>
+                <li>کتاب «Hands-On Machine Learning» — فصل‌های ۸، ۹</li>
+                <li>David Silver (DeepMind) — دوره RL در YouTube</li>
+                <li>Spinning Up — آموزش RL توسط OpenAI: <code>spinningup.openai.com</code></li>
+                <li>Sebastian Ruder — مقالات درباره Self-Supervised Learning</li>
+            </ul>
+
+            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۸۰ دقیقه</p>
         </div>
     </div>
 

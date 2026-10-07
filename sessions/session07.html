@@ -5,28 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جلسه ۷ - تابع هدف، هزینه و ضرر</title>
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; line-height: 1.9; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
         h3 { color: #16a085; margin-top: 20px; }
+        h4 { color: #34495e; margin-top: 15px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        ul { line-height: 1.8; }
+        ul, ol { line-height: 1.9; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
-        .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
-        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
-        code { background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+        .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 12px; margin: 10px 0; }
+        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 12px; margin: 10px 0; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 15px; margin: 10px 0; }
         .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
-
+        .warning { background: #fdecea; border-right: 4px solid #e74c3c; padding: 12px; margin: 10px 0; }
+        .stat-box { background: #f4ecf7; border-right: 4px solid #8e44ad; padding: 12px; margin: 10px 0; }
+        .quote { background: #fafafa; border-right: 4px solid #95a5a6; padding: 12px; margin: 10px 0; font-style: italic; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
         .accordion.active { background-color: #3498db; color: white; }
         .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
-
-        .math { font-family: "Times New Roman", serif; font-size: 1.2em; }
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
         th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        code { background-color: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: 'Courier New', monospace; color: #c0392b; }
+        .math { font-family: "Times New Roman", serif; font-size: 1.2em; }
     </style>
 </head>
 <body>
@@ -37,74 +41,188 @@
     <div class="phase">
         <h2>اهداف یادگیری</h2>
         <ul>
-            <li>درک مفهوم تابع هدف در ML</li>
-            <li>آشنایی با انواع توابع هزینه و ضرر</li>
-            <li>شناخت نحوه بهینه‌سازی مدل</li>
+            <li>درک عمیق مفهوم تابع هدف در یادگیری ماشین</li>
+            <li>شناخت انواع توابع هزینه و ضرر</li>
+            <li>توانایی انتخاب تابع هزینه مناسب برای هر مسئله</li>
+            <li>درک نقش منظم‌سازی در تابع هدف</li>
+            <li>آشنایی با نحوه بهینه‌سازی مدل</li>
         </ul>
     </div>
 
-    <button class="accordion">تابع هدف (Objective Function)</button>
+    <div class="key-concept">
+        <strong>تابع هدف (Objective Function):</strong> معیاری که می‌خواهیم آن را بهینه (کمینه یا بیشینه) کنیم. <strong>قلب یادگیری ماشین</strong> - مدل سعی می‌کند پارامترهایش را طوری تنظیم کند که این تابع بهینه شود.
+    </div>
+
+    <button class="accordion">۱. تابع هدف (Objective Function)</button>
     <div class="panel">
-        <div class="key-concept">
-            <strong>تابع هدف:</strong> تابعی که می‌خواهیم آن را بهینه (کمینه یا بیشینه) کنیم.
-        </div>
+        <h3>تعریف کلی:</h3>
+        <p>تابع هدف تابعی است که بر اساس پارامترهای مدل و داده‌ها، یک عدد (معمولاً اسکالر) برمی‌گرداند. مدل سعی می‌کند این عدد را بهینه کند.</p>
 
         <h3>تفاوت در انواع مسائل:</h3>
+        <table>
+            <tr>
+                <th>نوع مسئله</th>
+                <th>تابع هدف</th>
+                <th>جهت بهینه‌سازی</th>
+            </tr>
+            <tr>
+                <td>رگرسیون</td>
+                <td>کمینه‌سازی خطا (MSE, MAE)</td>
+                <td>↓ کمینه</td>
+            </tr>
+            <tr>
+                <td>طبقه‌بندی</td>
+                <td>کمینه‌سازی Cross-Entropy</td>
+                <td>↓ کمینه</td>
+            </tr>
+            <tr>
+                <td>یادگیری تقویتی</td>
+                <td>بیشینه‌سازی پاداش</td>
+                <td>↑ بیشینه</td>
+            </tr>
+            <tr>
+                <td>تحلیل مؤلفه‌ها (PCA)</td>
+                <td>بیشینه‌سازی واریانس</td>
+                <td>↑ بیشینه</td>
+            </tr>
+        </table>
+
+        <h3>مؤلفه‌های تابع هدف کامل:</h3>
+        <div class="formula">
+            <strong>J(θ) = L(θ) + λR(θ)</strong>
+        </div>
+
+        <p>که:</p>
         <ul>
-            <li><strong>رگرسیون:</strong> کمینه‌سازی خطای پیش‌بینی</li>
-            <li><strong>طبقه‌بندی:</strong> بیشینه‌سازی دقت یا احتمال</li>
-            <li><strong>یادگیری تقویتی:</strong> بیشینه‌سازی پاداش کل</li>
+            <li><strong>J(θ):</strong> تابع هدف کامل</li>
+            <li><strong>L(θ):</strong> تابع هزینه/ضرر اصلی (خطای پیش‌بینی)</li>
+            <li><strong>R(θ):</strong> عبارت منظم‌سازی (Regularization)</li>
+            <li><strong>λ:</strong> ضریب اهمیت منظم‌سازی (Hyperparameter)</li>
+            <li><strong>θ:</strong> پارامترهای مدل</li>
         </ul>
 
-        <h3>مولفه‌های تابع هدف:</h3>
+        <h3>مثال‌های کاربردی:</h3>
+        <div class="example">
+            <p><strong>رگرسیون خطی:</strong></p>
+            <p>J = MSE + λΣw²</p>
+            <p>← خطای پیش‌بینی + جریمه وزن‌های بزرگ</p>
+            <p><strong>شبکه عصبی:</strong></p>
+            <p>J = CrossEntropy + λ₁Σw² + λ₂Σ|w|</p>
+            <p>← خطای طبقه‌بندی + L2 + L1</p>
+        </div>
+    </div>
+
+    <button class="accordion">۲. تفاوت Loss و Cost</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>تابع ضرر (Loss Function):</strong> خطا برای یک نمونه منفرد
+            <strong>تابع هزینه (Cost Function):</strong> میانگین خطا روی کل داده‌ها
+        </div>
+
+        <h3>رابطه ریاضی:</h3>
+        <div class="formula">
+            <strong>Cost = (1/n) × Σᵢ Lossᵢ</strong>
+        </div>
+
+        <h3>مثال - ۴ نمونه با Loss های مختلف:</h3>
+        <div class="example">
+            <table>
+                <tr>
+                    <th>نمونه</th>
+                    <th>واقعی</th>
+                    <th>پیش‌بینی</th>
+                    <th>Loss</th>
+                </tr>
+                <tr>
+                    <td>۱</td>
+                    <td>۱۰</td>
+                    <td>۱۲</td>
+                    <td>(10-12)² = 4</td>
+                </tr>
+                <tr>
+                    <td>۲</td>
+                    <td>۲۰</td>
+                    <td>۱۸</td>
+                    <td>(20-18)² = 4</td>
+                </tr>
+                <tr>
+                    <td>۳</td>
+                    <td>۳۰</td>
+                    <td>۳۵</td>
+                    <td>(30-35)² = 25</td>
+                </tr>
+                <tr>
+                    <td>۴</td>
+                    <td>۴۰</td>
+                    <td>۳۸</td>
+                    <td>(40-38)² = 4</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><strong>Cost (MSE)</strong></td>
+                    <td>(4+4+25+4)/4 = 9.25</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="warning">
+            در عمل، اصطلاحات Loss و Cost اغلب به جای هم استفاده می‌شوند. ولی از نظر تئوری تفاوت دارند.
+        </div>
+
+        <h3>تعاریف دقیق‌تر:</h3>
         <ul>
-            <li><strong>تابع هزینه (Loss):</strong> اندازه‌گیری خطا برای یک نمونه</li>
-            <li><strong>عبارت منظم‌سازی:</strong> جلوگیری از بیش‌برازش</li>
-            <li><strong>عبارت جریمه:</strong> اعمال محدودیت‌های اضافی</li>
+            <li><strong>Loss:</strong> برای یک نمونه - مثلاً (y - ŷ)²</li>
+            <li><strong>Cost:</strong> میانگین Loss روی n نمونه - (1/n)ΣLᵢ</li>
+            <li><strong>Empirical Risk:</strong> همان Cost (نام رسمی‌تر)</li>
+            <li><strong>Objective:</strong> ترکیب Cost + Regularization</li>
+        </ul>
+    </div>
+
+    <button class="accordion">۳. توابع هزینه رگرسیون</button>
+    <div class="panel">
+        <h3>۳.۱ MSE (Mean Squared Error):</h3>
+        <div class="formula">
+            <strong>MSE = (1/n) × Σ(yᵢ - ŷᵢ)²</strong>
+        </div>
+
+        <h4>ویژگی‌ها:</h4>
+        <ul>
+            <li><strong>همیشه مثبت</strong> (مربع عدد)</li>
+            <li><strong>مشتق‌پذیر</strong> (مهم برای Gradient Descent)</li>
+            <li><strong>حساس به پرت</strong> - خطای بزرگ به توان ۲ می‌رسد!</li>
+            <li>یکای آن <strong>مربع یکای اصلی</strong></li>
         </ul>
 
         <div class="example">
-            <strong>مثال:</strong>
-            <p>در رگرسیون خطی: کمینه‌سازی MSE</p>
-            <p>در SVM: کمینه‌سازی حاشیه + جریمه طبقه‌بندی نادرست</p>
-        </div>
-    </div>
-
-    <button class="accordion">تابع هزینه (Cost Function)</button>
-    <div class="panel">
-        <div class="key-concept">
-            <strong>تابع هزینه:</strong> تابعی که خطای پیش‌بینی مدل را اندازه‌گیری می‌کند. هدف: کمینه‌سازی این تابع
+            <strong>چرا به پرت حساس است:</strong>
+            <p>اگر ۹۹ نمونه خطای ۱ داشته باشند ولی یک نمونه خطای ۱۰۰:</p>
+            <p>MSE = (99×1² + 100²)/100 = (99 + 10000)/100 = 100.99</p>
+            <p>← یک پرت، MSE را ۱۰۰ برابر بزرگ کرد!</p>
         </div>
 
-        <h3>MSE - میانگین مجذور خطا (Mean Squared Error):</h3>
+        <h3>۳.۲ RMSE (Root Mean Squared Error):</h3>
         <div class="formula">
-            MSE = <span class="math">1/n × Σ(y<sub>i</sub> - ŷ<sub>i</sub>)<sup>2</sup></span>
+            <strong>RMSE = √MSE</strong>
         </div>
+
         <ul>
-            <li>حساس به نقاط پرت</li>
-            <li>همیشه مثبت است</li>
-            <li>یکای آن مجذور یکای اصلی است</li>
+            <li><strong>هم‌یکا</strong> با متغیر خروجی (مثلاً تومان)</li>
+            <li>قابل فهم‌تر از MSE برای انسان</li>
+            <li>محبوب‌ترین شاخص ارزیابی رگرسیون</li>
         </ul>
 
-        <h3>RMSE - ریشه میانگین مجذور خطا:</h3>
+        <h3>۳.۳ MAE (Mean Absolute Error):</h3>
         <div class="formula">
-            RMSE = √MSE
+            <strong>MAE = (1/n) × Σ|yᵢ - ŷᵢ|</strong>
         </div>
+
+        <h4>ویژگی‌ها:</h4>
         <ul>
-            <li>هم‌یکا با متغیر خروجی</li>
-            <li>قابل فهم‌تر از MSE</li>
+            <li><strong>مقاوم در برابر پرت</strong> (توان ۱، نه ۲)</li>
+            <li>یکای اصلی</li>
+            <li>در صفر مشتق‌ناپذیر (مشکل در GD)</li>
         </ul>
 
-        <h3>MAE - میانگین قدرمطلق خطا:</h3>
-        <div class="formula">
-            MAE = <span class="math">1/n × Σ|y<sub>i</sub> - ŷ<sub>i</sub>|</span>
-        </div>
-        <ul>
-            <li>کمتر حساس به نقاط پرت</li>
-            <li>یکای آن همان یکای اصلی است</li>
-        </ul>
-
-        <h3>MSE vs MAE:</h3>
+        <h3>۳.۴ مقایسه MSE و MAE:</h3>
         <table>
             <tr>
                 <th>ویژگی</th>
@@ -113,97 +231,291 @@
             </tr>
             <tr>
                 <td>حساسیت به پرت</td>
-                <td>بالا</td>
-                <td>پایین</td>
+                <td>بالا (توان ۲)</td>
+                <td>پایین (توان ۱)</td>
             </tr>
             <tr>
                 <td>مشتق‌پذیری</td>
-                <td>بله</td>
+                <td>بله (همه جا)</td>
                 <td>خیر (در صفر)</td>
             </tr>
             <tr>
-                <td>کاربرد</td>
-                <td>رگرسیون</td>
-                <td>رگرسیون (مقاوم)</td>
+                <td>یکا</td>
+                <td>مربع خروجی</td>
+                <td>همان خروجی</td>
+            </tr>
+            <tr>
+                <td>بهینه‌سازی</td>
+                <td>آسان (محدب)</td>
+                <td>سخت‌تر</td>
+            </tr>
+            <tr>
+                <td>تفسیر</td>
+                <td>سخت‌تر</td>
+                <td>آسان‌تر</td>
             </tr>
         </table>
 
-        <div class="example">
-            <strong>مثال عددی:</strong>
-            <p>مقدار واقعی: [10, 20, 30, 40]</p>
-            <p>پیش‌بینی: [12, 18, 35, 38]</p>
-            <p>MSE = ((10-12)² + (20-18)² + (30-35)² + (40-38)²)/4 = (4+4+25+4)/4 = 9.25</p>
-            <p>MAE = (|10-12| + |20-18| + |30-35| + |40-38|)/4 = (2+2+5+2)/4 = 2.75</p>
+        <h3>۳.۵ Huber Loss (ترکیب MSE و MAE):</h3>
+        <div class="formula">
+            L<sub>δ</sub>(y, ŷ) = { ½(y - ŷ)² &nbsp;&nbsp; if |y - ŷ| ≤ δ<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; δ(|y - ŷ| - ½δ) &nbsp;&nbsp; otherwise }
+        </div>
+
+        <ul>
+            <li>برای خطاهای کوچک: مثل MSE (مربع)</li>
+            <li>برای خطاهای بزرگ: مثل MAE (قدرمطلق)</li>
+            <li>مقاوم در برابر پرت + مشتق‌پذیر</li>
+            <li>پارامتر δ تعیین‌کننده نقطه切换</li>
+        </ul>
+
+        <div class="quote">
+            «انتخاب تابع هزینه مثل انتخاب ابزار است - هر کدام برای کار خاصی بهترین هستند.» - الهام از Andrew Ng
         </div>
     </div>
 
-    <button class="accordion">تابع ضرر (Loss Function)</button>
+    <button class="accordion">۴. توابع هزینه طبقه‌بندی</button>
+    <div class="panel">
+        <h3>۴.۱ Cross-Entropy (آنتروپی متقاطع):</h3>
+        <p>پرکاربردترین تابع هزینه برای طبقه‌بندی. ایده: هرچه پیش‌بینی دورتر از واقعیت باشد، جریمه بیشتر.</p>
+
+        <h4>Binary Cross-Entropy (دو کلاسه):</h4>
+        <div class="formula">
+            <strong>CE = -[y·log(ŷ) + (1-y)·log(1-ŷ)]</strong>
+        </div>
+
+        <p>که y برچسب واقعی (0 یا 1) و ŷ احتمال پیش‌بینی شده برای کلاس 1 است.</p>
+
+        <div class="example">
+            <strong>مثال - تشخیص بیمار:</strong>
+            <table>
+                <tr>
+                    <th>واقعی (y)</th>
+                    <th>پیش‌بینی (ŷ)</th>
+                    <th>Loss</th>
+                    <th>توضیح</th>
+                </tr>
+                <tr>
+                    <td>1 (بیمار)</td>
+                    <td>0.9</td>
+                    <td>-log(0.9) = 0.105</td>
+                    <td>پیش‌بینی خوب - جریمه کم</td>
+                </tr>
+                <tr>
+                    <td>1 (بیمار)</td>
+                    <td>0.5</td>
+                    <td>-log(0.5) = 0.693</td>
+                    <td>پیش‌بینی متوسط</td>
+                </tr>
+                <tr>
+                    <td>1 (بیمار)</td>
+                    <td>0.1</td>
+                    <td>-log(0.1) = 2.302</td>
+                    <td>پیش‌بینی بد - جریمه سنگین!</td>
+                </tr>
+                <tr>
+                    <td>0 (سالم)</td>
+                    <td>0.1</td>
+                    <td>-log(0.9) = 0.105</td>
+                    <td>پیش‌بینی خوب</td>
+                </tr>
+            </table>
+            <p>← هرچه پیش‌بینی اشتباه‌تر، Loss بیشتر!</p>
+        </div>
+
+        <h4>Categorical Cross-Entropy (چند کلاسه):</h4>
+        <div class="formula">
+            <strong>CE = -Σ<sub>c</sub> y<sub>c</sub>·log(ŷ<sub>c</sub>)</strong>
+        </div>
+
+        <p>که c اندیس کلاس‌ها است. در One-Hot encoding، فقط کلاس واقعی y=1 است و بقیه صفر.</p>
+
+        <div class="example">
+            <strong>مثال ۳ کلاسه - تشخیص گربه/سگ/اسب:</strong>
+            <p>واقعیت: [1, 0, 0] (گربه)</p>
+            <p>پیش‌بینی خوب: [0.8, 0.1, 0.1] → CE = -1·log(0.8) = 0.223</p>
+            <p>پیش‌بینی بد: [0.1, 0.1, 0.8] → CE = -1·log(0.1) = 2.303</p>
+        </div>
+
+        <h3>۴.۲ Hinge Loss (برای SVM):</h3>
+        <div class="formula">
+            <strong>L = max(0, 1 - y·f(x))</strong>
+        </div>
+
+        <p>اگر پیش‌بینی درست با فاصله کافی باشد، Loss = 0. در غیر این صورت، جریمه.</p>
+
+        <h3>۴.۳ Focal Loss (برای داده نامتوازن):</h3>
+        <div class="formula">
+            <strong>FL = -α(1-ŷ)<sup>γ</sup>·log(ŷ)</strong>
+        </div>
+
+        <p>نمونه‌های سخت را بیشتر جریمه می‌کند. در Detection استفاده می‌شود.</p>
+
+        <h3>۴.۴ مقایسه توابع هزینه:</h3>
+        <table>
+            <tr>
+                <th>تابع</th>
+                <th>کاربرد</th>
+                <th>ویژگی خاص</th>
+            </tr>
+            <tr>
+                <td>Binary CE</td>
+                <td>دو کلاسه</td>
+                <td>ساده و محبوب</td>
+            </tr>
+            <tr>
+                <td>Categorical CE</td>
+                <td>چند کلاسه</td>
+                <td>استاندارد</td>
+            </tr>
+            <tr>
+                <td>Hinge</td>
+                <td>SVM</td>
+                <td>حاشیه‌ای</td>
+            </tr>
+            <tr>
+                <td>Focal</td>
+                <td>Detection، نامتوازن</td>
+                <td>تمرکز بر سخت‌ها</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">۵. منظم‌سازی (Regularization)</button>
     <div class="panel">
         <div class="key-concept">
-            <strong>تابع ضرر:</strong> تابع هزینه برای یک نمونه منفرد (در مقابل کل داده‌ها).
+            <strong>منظم‌سازی:</strong> اضافه کردن یک عبارت جریمه به تابع هدف برای جلوگیری از بیش‌برازش و بهبود تعمیم مدل.
         </div>
 
-        <h3>رابطه Loss و Cost:</h3>
+        <h3>چرا منظم‌سازی؟</h3>
+        <div class="warning">
+            مدل‌های پیچیده با ویژگی‌های زیاد، مستعد بیش‌برازش هستند. منظم‌سازی مدل را به سمت سادگی سوق می‌دهد.
+        </div>
+
+        <h3>۵.۱ L1 Regularization (Lasso):</h3>
         <div class="formula">
-            Cost = <span class="math">1/n × Σ Loss<sub>i</sub></span>
+            <strong>J = MSE + α × Σ|wᵢ|</strong>
         </div>
 
-        <h3>انواع Loss:</h3>
         <ul>
-            <li><strong>Squared Loss:</strong> (y - ŷ)²</li>
-            <li><strong>Absolute Loss:</strong> |y - ŷ|</li>
-            <li><strong>Huber Loss:</strong> ترکیب MSE و MAE</li>
+            <li>جریمه: <strong>قدرمطلق</strong> وزن‌ها</li>
+            <li>برخی وزن‌ها را <strong>دقیقاً صفر</strong> می‌کند</li>
+            <li>انتخاب خودکار ویژگی (Feature Selection)</li>
+            <li>مناسب وقتی تعداد کمی ویژگی مهم هستند</li>
         </ul>
-    </div>
 
-    <button class="accordion">توابع هزینه طبقه‌بندی</button>
-    <div class="panel">
-        <h3>Cross-Entropy (Entropy متقاطع):</h3>
+        <h3>۵.۲ L2 Regularization (Ridge):</h3>
         <div class="formula">
-            CE = -Σ y<sub>i</sub> × log(ŷ<sub>i</sub>)
-        </div>
-        <p>یا برای دو کلاس:</p>
-        <div class="formula">
-            CE = -[y × log(ŷ) + (1-y) × log(1-ŷ)]
+            <strong>J = MSE + α × Σwᵢ²</strong>
         </div>
 
-        <h3>Binary Cross-Entropy:</h3>
+        <ul>
+            <li>جریمه: <strong>مربع</strong> وزن‌ها</li>
+            <li>وزن‌ها را <strong>کوچک</strong> می‌کند (هرگز صفر نمی‌کند)</li>
+            <li>مقاوم در برابر همبستگی بین ویژگی‌ها</li>
+            <li>محاسبات ساده‌تر</li>
+        </ul>
+
+        <h3>۵.۳ Elastic Net (ترکیب):</h3>
+        <div class="formula">
+            <strong>J = MSE + α₁ × Σ|wᵢ| + α₂ × Σwᵢ²</strong>
+        </div>
+
+        <h3>۵.۴ Dropout (برای شبکه عصبی):</h3>
+        <p>در هر مرحله آموزش، درصدی از نورون‌ها به طور تصادفی خاموش می‌شوند. این کار:</p>
+        <ul>
+            <li>جلوگیری از وابستگی به نورون‌های خاص</li>
+            <li>ایجاد تعمیم بهتر</li>
+            <li>مثل آموزش چندین مدل به طور همزمان</li>
+        </ul>
+
+        <h3>۵.۵ Early Stopping:</h3>
+        <p>توقف آموزش وقتی خطای validation شروع به افزایش کرد.</p>
+
+        <h3>تأثیر α (ضریب منظم‌سازی):</h3>
         <div class="example">
-            <p>برای یک نمونه با برچسب 1 و پیش‌بینی 0.9:</p>
-            <p>Loss = -[1×log(0.9) + 0×log(0.1)] = -log(0.9) = 0.105</p>
-            <p>برای پیش‌بینی 0.1:</p>
-            <p>Loss = -log(0.1) = 2.302</p>
-            <p>→ پیش‌بینی اشتباه جریمه سنگین‌تری می‌شود!</p>
+            <table>
+                <tr>
+                    <th>α</th>
+                    <th>تأثیر</th>
+                    <th>خطر</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>بدون منظم‌سازی</td>
+                    <td>بیش‌برازش</td>
+                </tr>
+                <tr>
+                    <td>کوچک</td>
+                    <td>منظم‌سازی ملایم</td>
+                    <td>کم</td>
+                </tr>
+                <tr>
+                    <td>متوسط</td>
+                    <td>تعادل خوب</td>
+                    <td>کم</td>
+                </tr>
+                <tr>
+                    <td>بزرگ</td>
+                    <td>منظم‌سازی شدید</td>
+                    <td>زیربرازش</td>
+                </tr>
+            </table>
         </div>
-
-        <h3>Categorical Cross-Entropy:</h3>
-        <div class="formula">
-            CE = -Σ<sub>c</sub> y<sub>c</sub> × log(ŷ<sub>c</sub>)
-        </div>
-        <p>برای مسائل چند کلاسه.</p>
     </div>
 
-    <button class="accordion">منظم‌سازی (Regularization)</button>
+    <button class="accordion">۶. بهینه‌سازی تابع هدف</button>
     <div class="panel">
-        <p>اضافه کردن جریمه برای جلوگیری از بیش‌برازش.</p>
+        <p>هدف: پیدا کردن θ* که J(θ) را کمینه کند.</p>
 
-        <h3>L1 Regularization (Lasso):</h3>
+        <h3>۶.۱ روش‌های حل:</h3>
+
+        <h4>۱. حل تحلیلی (Closed-form):</h4>
+        <p>برای MSE می‌توان معادله نرمال را حل کرد:</p>
         <div class="formula">
-            Loss = MSE + α × Σ|w<sub>i</sub>|
+            <strong>W = (X<sup>T</sup>X)<sup>-1</sup> X<sup>T</sup>y</strong>
+        </div>
+        <p>مناسب برای داده‌های کوچک. مشکل: محاسبه معکوس ماتریس برای داده‌های بزرگ گران.</p>
+
+        <h4>۲. Gradient Descent:</h4>
+        <p>تکرار شونده: در خلاف جهت گرادیان قدم بردار.</p>
+        <div class="formula">
+            <strong>θ := θ - α · ∇J(θ)</strong>
+        </div>
+        <p>که α نرخ یادگیری است. در جلسه بعد مفصل توضیح داده می‌شود.</p>
+
+        <h4>۳. Stochastic Gradient Descent (SGD):</h4>
+        <p>گرادیان روی یک نمونه (یا batch کوچک) محاسبه می‌شود.</p>
+        <ul>
+            <li>سریع‌تر برای داده‌های بزرگ</li>
+            <li>نویزدارتر</li>
+            <li>می‌تواند از local minima فرار کند</li>
+        </ul>
+
+        <h4>۴. Mini-batch Gradient Descent:</h4>
+        <p>ترکیبی از GD و SGD: batch های کوچک (32, 64, 128).</p>
+
+        <h4>۵. Adam Optimizer:</h4>
+        <p>تطبیقی - برای هر پارامتر نرخ یادگیری جداگانه. در یادگیری عمیق بسیار محبوب.</p>
+
+        <h3>۶.۲ چالش‌های بهینه‌سازی:</h3>
+        <div class="warning">
+            <ul>
+                <li><strong>Local Minima:</strong> مدل در نقطه کمینه محلی گیر می‌کند</li>
+                <li><strong>Saddle Points:</strong> نقطه‌ای که در بعضی جهت‌ها min و بعضی max</li>
+                <li><strong>Plateau:</strong> ناحیه صاف که گرادیان ≈ 0</li>
+                <li><strong>Vanishing/Exploding Gradients:</strong> در شبکه‌های عمیق</li>
+            </ul>
         </div>
 
-        <h3>L2 Regularization (Ridge):</h3>
-        <div class="formula">
-            Loss = MSE + α × Σw<sub>i</sub><sup>2</sup>
+        <h3>۶.۔ ویژگی‌های تابع هدف خوب:</h3>
+        <div class="key-concept">
+            <ul>
+                <li><strong>محدب (Convex):</strong> فقط یک نقطه کمینه سراسری (مثل MSE در رگرسیون خطی)</li>
+                <li><strong>مشتق‌پذیر:</strong> برای Gradient Descent</li>
+                <li><strong>جریمه متناسب:</strong> خطای بیشتر، جریمه بیشتر</li>
+            </ul>
         </div>
-
-        <h3>Elastic Net:</h3>
-        <div class="formula">
-            Loss = MSE + α<sub>1</sub>Σ|w<sub>i</sub>| + α<sub>2</sub>Σw<sub>i</sub><sup>2</sup>
-        </div>
-
-        <h3>Dropout:</h3>
-        <p>در شبکه‌های عصبی: حذف تصادفی نورون‌ها در هنگام آموزش.</p>
     </div>
 
     <button class="accordion">یادداشت‌های استاد</button>
@@ -214,7 +526,7 @@
         </div>
         <div class="instructor-note">
             <strong>تابع هزینه برای رگرسیون (۱۲ دقیقه):</strong>
-            <p>MSE را با یک مثال عملی توضیح دهید: فرض کنید پیش‌بینی کردیم قیمت خانه ۱۰۰ میلیون ولی قیمت واقعی ۱۲۰ میلیون است. خطا ۲۰ میلیون. MSE می‌آید این را به توان ۲ می‌رساند (۴۰۰ میلیون) - یعنی خطاهای بزرگ خیلی جریمه می‌شوند. MAE را هم توضیح دهید: همان مثال با MAE خطا ۲۰ میلیون است (بدون توان ۲). نکته مهم: MSE به نقاط پرت خیلی حساس است - یک خانه ۱۰ میلیاردی می‌تواند همه پیش‌بینی‌ها را خراب کند.</p>
+            <p>MSE را با یک مثال عملی توضیح دهید: فرض کنید پیش‌بینی کردیم قیمت خانه ۱۰۰ میلیون ولی قیمت واقعی ۱۲۰ میلیون است. خطا ۲۰ میلیون. MSE می‌آید این را به توان ۲ می‌رساند (۴۰۰ میلیون) - یعنی خطاهای بزرگ خیلی جریمه می‌شوند. MAE را هم توضیح دهید: همان مثال با MAE خطا ۲۰ میلیون است (بدون توان ۲). نکته مهم: MSE به نقاط پرت خیلی حساس است - یک خانه ۱۰ میلیاردی می‌تواند همه پیش‌بینی‌ها را خراب کند. از تخته برای نوشتن فرمول استفاده کنید.</p>
         </div>
         <div class="instructor-note">
             <strong>تابع ضرر (Loss) (۵ دقیقه):</strong>
@@ -222,7 +534,7 @@
         </div>
         <div class="instructor-note">
             <strong>Cross-Entropy (۱۲ دقیقه):</strong>
-            <p>این برای طبقه‌بندی استفاده می‌شود. با یک مثال توضیح دهید: فرض کنید عکسی دارید که واقعاً گربه است (برچسب ۱). مدل می‌گوید ۸۰٪ گربه (۰.۸). Cross-entropy می‌شود -log(0.8) = 0.22 (خطای کم). اگر مدل بگوید ۱۰٪ گربه (۰.۱)، cross-entropy می‌شود -log(0.1) = 2.3 (خطای خیلی زیاد!). نکته کلیدی: پیش‌بینی اشتباه خیلی بیشتر جریمه می‌شود تا پیش‌بینی درست - این انگیزه مدل برای یادگیری است.</p>
+            <p>این برای طبقه‌بندی استفاده می‌شود. با یک مثال توضیح دهید: فرض کنید عکسی دارید که واقعاً گربه است (برچسب ۱). مدل می‌گوید ۸۰٪ گربه (۰.۸). Cross-entropy می‌شود -log(0.8) = 0.22 (خطای کم). اگر مدل بگوید ۱۰٪ گربه (۰.۱)، cross-entropy می‌شود -log(0.1) = 2.3 (خطای خیلی زیاد!). نکته کلیدی: پیش‌بینی اشتباه خیلی بیشتر جریمه می‌شود تا پیش‌بینی درست - این انگیزه مدل برای یادگیری است. لگاریتم در 0 = -∞ است - به همین دلیل اگر مدل احتمال 0 بدهد، Loss بی‌نهایت می‌شود!</p>
         </div>
         <div class="instructor-note">
             <strong>منظم‌سازی (۸ دقیقه):</strong>
@@ -230,7 +542,118 @@
         </div>
         <div class="instructor-note">
             <strong>جمع‌بندی (۵ دقیقه):</strong>
-            <p>خلاصه: تابع هدف چیزی است که می‌خواهیم بهینه کنیم. برای رگرسیون از MSE/MAE استفاده می‌کنیم، برای طبقه‌بندی از Cross-Entropy. منظم‌سازی برای جلوگیری از بیش‌برازش است. تکلیف: دانشجویان باید یک مثال از تابع هزینه در یک سناریوی واقعی بنویسند.</p>
+            <p>خلاصه: تابع هدف چیزی است که می‌خواهیم بهینه کنیم. برای رگرسیون از MSE/MAE استفاده می‌کنیم، برای طبقه‌بندی از Cross-Entropy. منظم‌سازی برای جلوگیری از بیش‌برازش است. تکلیف: دانشجویان باید یک مثال از تابع هزینه در یک سناریوی واقعی بنویسند. جلسه بعد Gradient Descent را یاد می‌گیریم - روش بهینه‌سازی تابع هدف.</p>
+        </div>
+    </div>
+
+    <button class="accordion">مطالعه شخصی (Self-Read)</button>
+    <div class="panel">
+        <div class="self-read">
+            <h2>فصل هفتم: تابع هدف، تابع هزینه و تابع ضرر</h2>
+
+            <h3>۷.۱ تابع هدف (Objective Function)</h3>
+            <p>تابع هدف تابعی است که می‌خواهیم آن را بهینه (کمینه یا بیشینه) کنیم. در یادگیری ماشین، هدف این است که پارامترهای مدل را طوری تنظیم کنیم که این تابع بهینه شود.</p>
+
+            <p><strong>تفاوت در انواع مسائل:</strong></p>
+            <ul>
+                <li><strong>رگرسیون:</strong> کمینه‌سازی خطای پیش‌بینی (MSE, MAE)</li>
+                <li><strong>طبقه‌بندی:</strong> کمینه‌سازی Cross-Entropy</li>
+                <li><strong>یادگیری تقویتی:</strong> بیشینه‌سازی پاداش کل</li>
+            </ul>
+
+            <p><strong>شکل کلی تابع هدف:</strong></p>
+            <p>J(θ) = L(θ) + λR(θ)</p>
+            <p>که L تابع هزینه، R منظم‌سازی، λ ضریب منظم‌سازی و θ پارامترها هستند.</p>
+
+            <h3>۷.۲ تفاوت Loss و Cost</h3>
+            <p><strong>تابع ضرر (Loss):</strong> خطا برای یک نمونه منفرد</p>
+            <p><strong>تابع هزینه (Cost):</strong> میانگین Loss روی کل داده‌ها</p>
+            <p>Cost = (1/n) × Σ Lossᵢ</p>
+
+            <h3>۷.۳ توابع هزینه رگرسیون</h3>
+
+            <h4>MSE (Mean Squared Error):</h4>
+            <p>MSE = (1/n) × Σ(yᵢ - ŷᵢ)²</p>
+            <ul>
+                <li>همیشه مثبت</li>
+                <li>مشتق‌پذیر</li>
+                <li>حساس به نقاط پرت</li>
+                <li>یکای مربع</li>
+            </ul>
+
+            <h4>RMSE (Root MSE):</h4>
+            <p>RMSE = √MSE - هم‌یکا با خروجی</p>
+
+            <h4>MAE (Mean Absolute Error):</h4>
+            <p>MAE = (1/n) × Σ|yᵢ - ŷᵢ|</p>
+            <ul>
+                <li>مقاوم در برابر پرت</li>
+                <li>یکای اصلی</li>
+            </ul>
+
+            <h4>Huber Loss:</h4>
+            <p>ترکیب MSE و MAE - مقاوم در برابر پرت + مشتق‌پذیر</p>
+
+            <h3>۷.۴ توابع هزینه طبقه‌بندی</h3>
+
+            <h4>Binary Cross-Entropy:</h4>
+            <p>CE = -[y·log(ŷ) + (1-y)·log(1-ŷ)]</p>
+            <p>هرچه پیش‌بینی دورتر از واقعیت، جریمه بیشتر!</p>
+
+            <h4>Categorical Cross-Entropy (چند کلاسه):</h4>
+            <p>CE = -Σ y<sub>c</sub>·log(ŷ<sub>c</sub>)</p>
+
+            <h4>Hinge Loss (SVM):</h4>
+            <p>L = max(0, 1 - y·f(x))</p>
+
+            <h4>Focal Loss (برای نامتوازن):</h4>
+            <p>تمرکز بر نمونه‌های سخت</p>
+
+            <h3>۷.۵ منظم‌سازی (Regularization)</h3>
+            <p>اضافه کردن جریمه برای جلوگیری از بیش‌برازش.</p>
+
+            <h4>L1 (Lasso):</h4>
+            <p>Loss = MSE + α × Σ|wᵢ|</p>
+            <p>انتخاب خودکار ویژگی (صفر کردن برخی وزن‌ها)</p>
+
+            <h4>L2 (Ridge):</h4>
+            <p>Loss = MSE + α × Σwᵢ²</p>
+            <p>کوچک کردن همه وزن‌ها</p>
+
+            <h4>Elastic Net:</h4>
+            <p>ترکیب L1 و L2</p>
+
+            <h4>Dropout (شبکه عصبی):</h4>
+            <p>حذف تصادفی نورون‌ها در آموزش</p>
+
+            <h3>۷.۶ بهینه‌سازی تابع هدف</h3>
+            <p>روش‌های حل:</p>
+            <ul>
+                <li><strong>حل تحلیلی:</strong> Closed-form (فقط برای MSE در رگرسیون خطی)</li>
+                <li><strong>Gradient Descent:</strong> تکرار شونده</li>
+                <li><strong>SGD:</strong> سریع‌تر با نمونه‌های تصادفی</li>
+                <li><strong>Adam:</strong> تطبیقی، محبوب در یادگیری عمیق</li>
+            </ul>
+
+            <h3>خلاصه فصل:</h3>
+            <ol>
+                <li>تابع هدف چیزی است که می‌خواهیم بهینه کنیم</li>
+                <li>Loss برای یک نمونه، Cost میانگین همه</li>
+                <li>برای رگرسیون: MSE (حساس به پرت) یا MAE (مقاوم)</li>
+                <li>برای طبقه‌بندی: Cross-Entropy</li>
+                <li>منظم‌سازی برای جلوگیری از بیش‌برازش ضروری است</li>
+            </ol>
+
+            <h3>تمرین‌های خودآزمایی:</h3>
+            <ol>
+                <li>تفاوت MSE و MAE را توضیح دهید</li>
+                <li>چرا Cross-Entropy برای طبقه‌بندی مناسب است؟</li>
+                <li>L1 و L2 چه تفاوتی دارند؟</li>
+                <li>یک مثال از تابع هزینه در سناریوی واقعی بنویسید</li>
+                <li>چرا Huber Loss ترکیب خوبی از MSE و MAE است؟</li>
+            </ol>
+
+            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۲۰ دقیقه</p>
         </div>
     </div>
 

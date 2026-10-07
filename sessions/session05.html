@@ -5,19 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جلسه ۵ - مفاهیم پایه یادگیری ماشین</title>
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; line-height: 1.9; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
         h3 { color: #16a085; margin-top: 20px; }
+        h4 { color: #34495e; margin-top: 15px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        ul { line-height: 1.8; }
+        ul, ol { line-height: 1.9; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
-        .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
-        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
+        .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 12px; margin: 10px 0; }
+        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 12px; margin: 10px 0; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 15px; margin: 10px 0; }
+        .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+        .warning { background: #fdecea; border-right: 4px solid #e74c3c; padding: 12px; margin: 10px 0; }
+        .stat-box { background: #f4ecf7; border-right: 4px solid #8e44ad; padding: 12px; margin: 10px 0; }
+        .quote { background: #fafafa; border-right: 4px solid #95a5a6; padding: 12px; margin: 10px 0; font-style: italic; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
         .accordion.active { background-color: #3498db; color: white; }
         .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        code { background-color: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: 'Courier New', monospace; color: #c0392b; }
     </style>
 </head>
 <body>
@@ -28,75 +39,619 @@
     <div class="phase">
         <h2>اهداف یادگیری</h2>
         <ul>
-            <li>درک مفهوم یادگیری ماشین و تفاوت آن با برنامه‌نویسی سنتی</li>
-            <li>آشنایی با انواع یادگیری</li>
-            <li>شناخت ویژگی‌ها و نحوه استخراج آن‌ها</li>
+            <li>درک تفاوت بنیادی یادگیری ماشین با برنامه‌نویسی سنتی</li>
+            <li>آشنایی با انواع یادگیری ماشین و کاربردها</li>
+            <li>شناخت مفهوم ویژگی (Feature) و انواع آن</li>
+            <li>یادگیری تکنیک‌های Feature Engineering</li>
+            <li>آشنایی با مفهوم بهینه‌سازی در یادگیری ماشین</li>
         </ul>
     </div>
 
-    <button class="accordion">یادگیری ماشین چیست؟</button>
+    <div class="key-concept">
+        <strong>یادگیری ماشین (Machine Learning):</strong> شاخه‌ای از هوش مصنوعی که به سیستم‌ها اجازه می‌دهد از داده‌ها یاد بگیرند و عملکرد خود را بهبود دهند، بدون اینکه صریحاً برای هر موقعیت برنامه‌ریزی شده باشند.
+    </div>
+
+    <button class="accordion">۱. یادگیری ماشین در مقابل برنامه‌نویسی سنتی</button>
+    <div class="panel">
+        <h3>تغییر پارادایم در تفکر محاسباتی:</h3>
+
+        <table>
+            <tr>
+                <th>ویژگی</th>
+                <th>برنامه‌نویسی سنتی</th>
+                <th>یادگیری ماشین</th>
+            </tr>
+            <tr>
+                <td>ورودی</td>
+                <td>قوانین + داده</td>
+                <td>داده + خروجی مورد انتظار</td>
+            </tr>
+            <tr>
+                <td>خروجی</td>
+                <td>پاسخ</td>
+                <td>قوانین (مدل)</td>
+            </tr>
+            <tr>
+                <td>نویسنده قوانین</td>
+                <td>انسان (برنامه‌نویس)</td>
+                <td>الگوریتم از روی داده</td>
+            </tr>
+            <tr>
+                <td>نگهداری</td>
+                <td>دستی توسط برنامه‌نویس</td>
+                <td>خودکار با داده جدید</td>
+            </tr>
+        </table>
+
+        <div class="example">
+            <strong>مثال عملی - تشخیص ایمیل اسپم:</strong>
+            <p><strong>روش سنتی:</strong></p>
+            <ul>
+                <li>اگر کلمه «برنده» در عنوان بود → اسپم</li>
+                <li>اگر بیش از ۵ لینک داشت → اسپم</li>
+                <li>اگر فرستنده ناشناس بود → اسپم</li>
+                <li>← باید همه قوانین را دستی بنویسیم</li>
+            </ul>
+            <p><strong>روش یادگیری ماشین:</strong></p>
+            <ul>
+                <li>۱۰۰۰۰ ایمیل اسپم و ۱۰۰۰۰ ایمیل عادی به مدل می‌دهیم</li>
+                <li>مدل خودش الگوها را پیدا می‌کند</li>
+                <li>← ممکن است الگوهایی پیدا کند که ما فکر نمی‌کردیم</li>
+            </ul>
+        </div>
+
+        <div class="quote">
+            «یادگیری ماشین علمی است که به کامپیوترها اجازه می‌دهد بدون برنامه‌ریزی صریح عمل کنند.» - آرتور ساموئل، ۱۹۵۹
+        </div>
+
+        <h3>چه زمانی از یادگیری ماشین استفاده کنیم؟</h3>
+        <div class="key-concept">
+            وقتی:
+            <ul>
+                <li>قوانین پیچیده و زیاد هستند (مثل تشخیص چهره)</li>
+                <li>الگوها در داده مخفی هستند (مثل کلاهبرداری)</li>
+                <li>محیط به سرعت تغییر می‌کند (مثل بازار سهام)</li>
+                <li>نوشتن دستی قوانین غیرممکن است (مثل ترجمه)</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>چه زمانی نباید استفاده کنیم:</strong>
+            <ul>
+                <li>مسائل ساده با قوانین واضح (مثل محاسبه مالیات)</li>
+                <li>وقتی داده کافی نداریم</li>
+                <li>وقتی تفسیرپذیری خیلی مهم است و مدل ساده کافی است</li>
+                <li>وقتی خطا بسیار پرهزینه است (مثل سیستم‌های نظامی)</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">۲. انواع یادگیری ماشین</button>
+    <div class="panel">
+        <table>
+            <tr>
+                <th>نوع</th>
+                <th>داده</th>
+                <th>هدف</th>
+                <th>مثال</th>
+            </tr>
+            <tr>
+                <td>باناظر (Supervised)</td>
+                <td>(x, y) برچسب‌دار</td>
+                <td>یادگیری نگاشت ورودی به خروجی</td>
+                <td>تشخیص اسپم</td>
+            </tr>
+            <tr>
+                <td>بی‌ناظر (Unsupervised)</td>
+                <td>(x) بدون برچسب</td>
+                <td>کشف ساختار پنهان</td>
+                <td>خوشه‌بندی مشتریان</td>
+            </tr>
+            <tr>
+                <td>تقویتی (Reinforcement)</td>
+                <td>تعامل با محیط</td>
+                <td>بیشینه‌سازی پاداش</td>
+                <td>بازی شطرنج</td>
+            </tr>
+            <tr>
+                <td>نیمه‌ناظر (Semi-Supervised)</td>
+                <td>ترکیب</td>
+                <td>استفاده از داده بدون برچسب</td>
+                <td>طبقه‌بندی اسناد</td>
+            </tr>
+            <tr>
+                <td>خودآموز (Self-Supervised)</td>
+                <td>تولید برچسب از خود داده</td>
+                <td>پیش‌آموزش مدل‌های بزرگ</td>
+                <td>BERT، GPT</td>
+            </tr>
+        </table>
+
+        <h3>۱. یادگیری باناظر (Supervised Learning):</h3>
+        <div class="key-concept">
+            مدل از جفت‌های (ورودی، خروجی) یاد می‌گیرد. مثل یک معلم که به دانش‌آموز نمونه و جواب درست را نشان می‌دهد.
+        </div>
+
+        <h4>دو دسته اصلی:</h4>
+        <ul>
+            <li><strong>رگرسیون (Regression):</strong> خروجی پیوسته عددی (مثل قیمت خانه، دما)</li>
+            <li><strong>طبقه‌بندی (Classification):</strong> خروجی گسسته (مثل اسپم/غیراسپم، بیمار/سالم)</li>
+        </ul>
+
+        <h4>الگوریتم‌های رایج:</h4>
+        <ul>
+            <li>Linear/Logistic Regression</li>
+            <li>Decision Tree, Random Forest</li>
+            <li>SVM (Support Vector Machine)</li>
+            <li>K-Nearest Neighbors</li>
+            <li>Neural Networks</li>
+        </ul>
+
+        <h3>۲. یادگیری بی‌ناظر (Unsupervised Learning):</h3>
+        <p>مدل بدون راهنمایی انسان باید الگوها را در داده پیدا کند.</p>
+
+        <h4>وظایف اصلی:</h4>
+        <ul>
+            <li><strong>خوشه‌بندی (Clustering):</strong> گروه‌بندی داده‌های مشابه (K-Means, DBSCAN)</li>
+            <li><strong>کاهش بُعد (Dimensionality Reduction):</strong> فشرده‌سازی (PCA, t-SNE)</li>
+            <li><strong>تشخیص ناهنجاری:</strong> پیدا کردن نقاط غیرعادی</li>
+            <li><strong>قانون‌کاوی (Association Rules):</strong> استخراج روابط (Market Basket Analysis)</li>
+        </ul>
+
+        <div class="example">
+            <strong>مثال ایرانی:</strong> یک فروشگاه آنلاین می‌خواهد مشتریانش را بشناسد. با خوشه‌بندی رفتار خرید، سه گروه پیدا می‌کند: «خریداران فصلی» (خرید در عید)، «خریداران روزانه» (خرید لوازم)، «خریداران هدیه» (خرید برای دیگران).
+        </div>
+
+        <h3>۳. یادگیری تقویتی (Reinforcement Learning):</h3>
+        <p>یک عامل (Agent) با محیط تعامل می‌کند و بر اساس عملکردش پاداش یا جریمه می‌گیرد.</p>
+
+        <h4>اجزای اصلی:</h4>
+        <ul>
+            <li><strong>Agent:</strong> یادگیرنده (مثلاً ربات)</li>
+            <li><strong>Environment:</strong> دنیای اطراف</li>
+            <li><strong>Action:</strong> عملی که عامل انجام می‌دهد</li>
+            <li><strong>State:</strong> وضعیت فعلی</li>
+            <li><strong>Reward:</strong> بازخورد مثبت یا منفی</li>
+        </ul>
+
+        <div class="example">
+            <strong>نمونه‌های معروف:</strong>
+            <ul>
+                <li>AlphaGo شکست قهرمان جهان در Go</li>
+                <li>OpenAI Five در Dota 2</li>
+                <li>ربات‌های چهارپا Boston Dynamics</li>
+                <li>خودروهای خودران (تا حدی)</li>
+            </ul>
+        </div>
+
+        <h3>۴. یادگیری نیمه‌ناظر:</h3>
+        <p>ترکیبی از داده‌های برچسب‌دار (کم) و بدون برچسب (زیاد). در عمل بسیار کاربردی است چون برچسب‌گذاری گران است.</p>
+
+        <h3>۵. یادگیری خودآموز (Self-Supervised):</h3>
+        <div class="key-concept">
+            مدل خودش برچسب را از داده استخراج می‌کند. این روش در پیش‌آموزش مدل‌های بزرگ (مانند BERT و GPT) بسیار موفق بوده است.
+        </div>
+
+        <h4>مثال‌ها:</h4>
+        <ul>
+            <li>پیش‌بینی کلمه بعدی در جمله (GPT)</li>
+            <li>تشخیص کلمه پنهان در جمله (BERT)</li>
+            <li>پیش‌بینی چرخش تصویر (Rotation Prediction)</li>
+        </ul>
+    </div>
+
+    <button class="accordion">۳. ویژگی‌ها (Features) - سنگ بنای یادگیری</button>
     <div class="panel">
         <div class="key-concept">
-            <strong>یادگیری ماشین:</strong> الگوریتم‌هایی که از داده یاد می‌گیرند بدون اینکه صریحاً برنامه‌ریزی شوند.
+            <strong>ویژگی (Feature):</strong> متغیر ورودی قابل اندازه‌گیری که مدل از آن برای پیش‌بینی استفاده می‌کند. به عبارت ساده‌تر، ویژگی‌ها «مواد اولیه» مدل هستند.
         </div>
+
+        <div class="quote">
+            «کیفیت ویژگی‌ها تعیین‌کننده کیفیت مدل است - بهترین الگوریتم با ویژگی‌های بد، نتیجه بد می‌دهد.» - یک ضرب‌المثل معروف در ML
+        </div>
+
+        <h3>انواع ویژگی‌ها:</h3>
+
+        <h4>۱. ویژگی‌های عددی (Numerical):</h4>
+        <div class="example">
+            <p><strong>پیوسته (Continuous):</strong></p>
+            <ul>
+                <li>قد (سانتی‌متر): ۱۷۵</li>
+                <li>وزن (کیلوگرم): ۷۰.۵</li>
+                <li>دما (سلسیوس): ۲۵.۳</li>
+                <li>قیمت خانه (تومان): ۵,۰۰۰,۰۰۰,۰۰۰</li>
+                <li>سن: ۲۸.۵</li>
+            </ul>
+            <p><strong>گسسته (Discrete):</strong></p>
+            <ul>
+                <li>تعداد اتاق: ۳</li>
+                <li>تعداد فرزند: ۲</li>
+                <li>سال تولد: ۱۳۷۵</li>
+            </ul>
+        </div>
+
+        <h4>۲. ویژگی‌های طبقه‌ای (Categorical):</h4>
+        <div class="example">
+            <p><strong>اسمی (Nominal) - بدون ترتیب:</strong></p>
+            <ul>
+                <li>رنگ: قرمز، آبی، سبز</li>
+                <li>شهر: تهران، اصفهان، شیراز</li>
+                <li>جنسیت: مرد، زن</li>
+                <li>نوع خودرو: سواری، وانت، کامیون</li>
+            </ul>
+            <p><strong>ترتیبی (Ordinal) - با ترتیب:</strong></p>
+            <ul>
+                <li>سطح تحصیلات: دیپلم، لیسانس، فوق‌لیسانس، دکتری</li>
+                <li>اندازه: کوچک، متوسط، بزرگ</li>
+                <li>رضایت: خیلی بد، بد، متوسط، خوب، عالی</li>
+            </ul>
+        </div>
+
+        <h4>۳. ویژگی‌های باینری (Boolean):</h4>
         <ul>
-            <li><strong>برنامه‌نویسی سنتی:</strong> قوانین + داده → خروجی</li>
-            <li><strong>یادگیری ماشین:</strong> داده + خروجی مورد انتظار → قوانین</li>
+            <li>فقط دو مقدار: ۰ یا ۱، بله یا خیر</li>
+            <li>مثال: آیا پارکینگ دارد؟ آیا بیمه شده؟ آیا مشتری وفادار است؟</li>
+        </ul>
+
+        <h4>۴. ویژگی‌های متنی (Text):</h4>
+        <ul>
+            <li>نظر مشتری، توضیحات محصول، ایمیل</li>
+            <li>نیاز به تبدیل به عدد (مثل TF-IDF، Embedding)</li>
+        </ul>
+
+        <h4>۵. ویژگی‌های زمانی (Datetime):</h4>
+        <ul>
+            <li>تاریخ، ساعت، روز هفته، فصل</li>
+            <li>می‌توان به چند ویژگی عددی تجزیه کرد</li>
+        </ul>
+
+        <h4>۶. ویژگی‌های تصویری:</h4>
+        <ul>
+            <li>پیکسل‌ها (در روش‌های سنتی)</li>
+            <li>ویژگی‌های استخراج‌شده توسط CNN (در روش‌های مدرن)</li>
         </ul>
     </div>
 
-    <button class="accordion">انواع یادگیری ماشین</button>
-    <div class="panel">
-        <ul>
-            <li><strong>یادگیری باناظر (Supervised):</strong> با داده‌های برچسب‌گذاری شده</li>
-            <li><strong>یادگیری بی‌ناظر (Unsupervised):</strong> بدون برچسب</li>
-            <li><strong>یادگیری تقویتی (Reinforcement):</strong> از طریق پاداش و جریمه</li>
-        </ul>
-    </div>
-
-    <button class="accordion">ویژگی‌ها (Features)</button>
+    <button class="accordion">۴. مهندسی ویژگی (Feature Engineering)</button>
     <div class="panel">
         <div class="key-concept">
-            <strong>ویژگی:</strong> متغیر ورودی که برای پیش‌بینی استفاده می‌شود.
+            <strong>Feature Engineering:</strong> فرآیند تبدیل داده‌های خام به ویژگی‌هایی که مدل بهتر بتواند از آنها یاد بگیرد. این هنر و علم داده‌کاوی است.
         </div>
+
+        <div class="stat-box">
+            <strong>تأثیر Feature Engineering:</strong> در پروژه‌های واقعی، کیفیت ویژگی‌ها معمولاً تأثیر بیشتری از انتخاب الگوریتم دارد. یک مدل ساده با ویژگی‌های خوب، اغلب بهتر از یک مدل پیچیده با ویژگی‌های بد عمل می‌کند.
+        </div>
+
+        <h3>۱. مقیاس‌گذاری (Scaling):</h3>
+        <div class="warning">
+            <strong>چرا مهم است:</strong> اگر یک ویژگی مقادیر ۰ تا ۱ داشته باشد و دیگری ۰ تا ۱۰۰۰، مدل‌هایی مثل SVM و Neural Networks به ویژگی دوم اهمیت بیشتری می‌دهند - حتی اگر واقعاً مهم نباشد.
+        </div>
+
+        <h4>روش‌های مقیاس‌گذاری:</h4>
+        <table>
+            <tr>
+                <th>روش</th>
+                <th>فرمول</th>
+                <th>کاربرد</th>
+            </tr>
+            <tr>
+                <td>Min-Max Scaling</td>
+                <td>(x - min) / (max - min)</td>
+                <td>محدوده ۰ تا ۱، حساس به پرت</td>
+            </tr>
+            <tr>
+                <td>Z-Score (Standardization)</td>
+                <td>(x - μ) / σ</td>
+                <td>میانگین ۰، انحراف معیار ۱</td>
+            </tr>
+            <tr>
+                <td>Robust Scaling</td>
+                <td>(x - median) / IQR</td>
+                <td>مقاوم در برابر پرت</td>
+            </tr>
+            <tr>
+                <td>Log Transform</td>
+                <td>log(x + 1)</td>
+                <td>برای داده‌های با توزیع نامتقارن</td>
+            </tr>
+        </table>
+
+        <h3>۲. کدگذاری ویژگی‌های طبقه‌ای (Encoding):</h3>
+
+        <h4>۱. Label Encoding:</h4>
+        <p>هر دسته به یک عدد تبدیل می‌شود. مناسب برای داده‌های ترتیبی.</p>
+        <div class="example">
+            <code>{قرمز: 0, سبز: 1, آبی: 2}</code>
+        </div>
+
+        <h4>۲. One-Hot Encoding:</h4>
+        <p>هر دسته به یک ستون باینری تبدیل می‌شود. مناسب برای داده‌های اسمی.</p>
+        <div class="example">
+            <table>
+                <tr><th>رنگ</th><th>رنگ_قرمز</th><th>رنگ_سبز</th><th>رنگ_آبی</th></tr>
+                <tr><td>قرمز</td><td>1</td><td>0</td><td>0</td></tr>
+                <tr><td>سبز</td><td>0</td><td>1</td><td>0</td></tr>
+                <tr><td>آبی</td><td>0</td><td>0</td><td>1</td></tr>
+            </table>
+        </div>
+        <div class="warning">
+            برای متغیرهایی با مقادیر زیاد (مثل نام شهرها)، One-Hot ستون‌های زیادی ایجاد می‌کند. در این موارد از Target Encoding یا Embedding استفاده می‌شود.
+        </div>
+
+        <h3>۳. انتخاب ویژگی (Feature Selection):</h3>
+        <p>انتخاب زیرمجموعه‌ای از ویژگی‌های مرتبط و حذف بی‌ربط‌ها.</p>
+
+        <h4>چرا مهم است:</h4>
         <ul>
-            <li><strong>ویژگی عددی:</strong> قد، وزن، دما</li>
-            <li><strong>ویژگی طبقه‌ای:</strong> جنسیت، رنگ</li>
-            <li><strong>ویژگی باینری:</strong> بله/خیر</li>
+            <li>کاهش پیچیدگی مدل</li>
+            <li>جلوگیری از Overfitting</li>
+            <li>افزایش سرعت آموزش</li>
+            <li>بهبود تفسیرپذیری</li>
+            <li>کاهش هزینه جمع‌آوری داده</li>
+        </ul>
+
+        <h4>روش‌ها:</h4>
+        <ul>
+            <li><strong>Filter Methods:</strong> بر اساس آمار (Correlation, Chi-Square)</li>
+            <li><strong>Wrapper Methods:</strong> استفاده از مدل (Recursive Feature Elimination)</li>
+            <li><strong>Embedded Methods:</strong> انتخاب در حین آموزش (Lasso)</li>
+        </ul>
+
+        <h3>۴. ایجاد ویژگی (Feature Creation):</h3>
+        <p>ساخت ویژگی‌های جدید از ترکیب ویژگی‌های موجود:</p>
+        <div class="example">
+            <p><strong>مثال‌ها:</strong></p>
+            <ul>
+                <li>BMI = وزن / قد²</li>
+                <li>قیمت هر متر = قیمت کل / متراژ</li>
+                <li>سن از تاریخ تولد</li>
+                <li>تعداد روزهای تعطیل در ماه</li>
+                <li>میانگین خرید ماهانه مشتری</li>
+                <li>نسبت درآمد به بدهی</li>
+            </ul>
+        </div>
+
+        <h3>۵. تبدیل ویژگی‌ها (Transformation):</h3>
+        <ul>
+            <li><strong>Polynomial Features:</strong> x, x², x³ (برای روابط غیرخطی)</li>
+            <li><strong>Interaction Features:</strong> x1 × x2 (اثر متقابل)</li>
+            <li><strong>Binning:</strong> تبدیل عدد پیوسته به بازه (سن → جوان/میانسال/پیر)</li>
+            <li><strong>Date Features:</strong> تاریخ → سال، ماه، روز، روز هفته</li>
         </ul>
     </div>
 
-    <button class="accordion">استخراج ویژگی (Feature Engineering)</button>
+    <button class="accordion">۵. مفهوم بهینه‌سازی در یادگیری ماشین</button>
     <div class="panel">
+        <div class="key-concept">
+            <strong>بهینه‌سازی (Optimization):</strong> فرآیند پیدا کردن بهترین پارامترهای مدل که خطا را کمینه کنند.
+        </div>
+
+        <h3>تابع هدف (Objective Function):</h3>
+        <p>تابعی که می‌خواهیم آن را کمینه یا بیشینه کنیم.</p>
         <ul>
-            <li><strong>مقیاس‌گذاری:</strong> نرمال‌سازی و استانداردسازی</li>
-            <li><strong>کدگذاری:</strong> تبدیل داده‌های طبقه‌ای به عدد</li>
-            <li><strong>انتخاب:</strong> انتخاب ویژگی‌های مرتبط</li>
-            <li><strong>ایجاد:</strong> ساخت ویژگی‌های جدید</li>
+            <li><strong>تابع هزینه (Cost/Loss Function):</strong> می‌خواهیم کمینه شود (مثل خطای پیش‌بینی)</li>
+            <li><strong>تابع امتیاز (Score Function):</strong> می‌خواهیم بیشینه شود (مثل دقت)</li>
         </ul>
+
+        <h3>مثال‌های تابع هزینه:</h3>
+        <table>
+            <tr>
+                <th>نوع مسئله</th>
+                <th>تابع هزینه رایج</th>
+            </tr>
+            <tr>
+                <td>رگرسیون</td>
+                <td>MSE (Mean Squared Error)</td>
+            </tr>
+            <tr>
+                <td>رگرسیون</td>
+                <td>MAE (Mean Absolute Error)</td>
+            </tr>
+            <tr>
+                <td>طبقه‌بندی</td>
+                <td>Cross-Entropy</td>
+            </tr>
+            <tr>
+                <td>طبقه‌بندی</td>
+                <td>Hinge Loss (SVM)</td>
+            </tr>
+        </table>
+
+        <h3>الگوریتم‌های بهینه‌سازی:</h3>
+        <ul>
+            <li><strong>Gradient Descent:</strong> الگوریتم پایه - در جلسه بعد مفصل توضیح داده می‌شود</li>
+            <li><strong>SGD (Stochastic):</strong> نسخه سریع‌تر با نمونه‌های تصادفی</li>
+            <li><strong>Adam:</strong> تطبیقی، محبوب در یادگیری عمیق</li>
+            <li><strong>RMSprop:</strong> مناسب برای داده‌های ناپایدار</li>
+        </ul>
+
+        <h3>چالش‌های بهینه‌سازی:</h3>
+        <div class="warning">
+            <ul>
+                <li><strong>Local Minima:</strong> مدل در نقطه کمینه محلی گیر می‌کند ولی نقطه کمینه سراسری نیست</li>
+                <li><strong>Saddle Points:</strong> نقطه‌ای که در بعضی جهت‌ها کمینه و در بعضی بیشینه است</li>
+                <li><strong>Plateau:</strong> ناحیه‌ای با شیب صفر که یادگیری کند می‌شود</li>
+                <li><strong>Exploding/Vanishing Gradients:</strong> گرادیان‌ها خیلی بزرگ یا خیلی کوچک می‌شوند</li>
+            </ul>
+        </div>
     </div>
 
     <button class="accordion">یادداشت‌های استاد</button>
     <div class="panel">
         <div class="instructor-note">
             <strong>مقدمه و تمایز از برنامه‌نویسی (۱۰ دقیقه):</strong>
-            <p>این جلسه فنی‌تر از جلسات قبل است. با یک مثال ساده شروع کنید: اگر بخواهیم برنامه‌ای بنویسیم که ایمیل‌های اسپم را تشخیص دهد، در روش سنتی باید همه قوانین را بنویسیم (مثلاً اگر کلمه «برنده» بود، اسپم است). اما در یادگیری ماشین، هزاران ایمیل اسپم و غیراسپم به مدل می‌دهیم و خودش قوانین را یاد می‌گیرد. این تفاوت اصلی است: قوانین از داده بیرون می‌آید نه از ذهن برنامه‌نویس.</p>
+            <p>این جلسه فنی‌تر از جلسات قبل است. با یک مثال ساده شروع کنید: اگر بخواهیم برنامه‌ای بنویسیم که ایمیل‌های اسپم را تشخیص دهد، در روش سنتی باید همه قوانین را بنویسیم (مثلاً اگر کلمه «برنده» بود، اسپم است). اما در یادگیری ماشین، هزاران ایمیل اسپم و غیراسپم به مدل می‌دهیم و خودش قوانین را یاد می‌گیرد. این تفاوت اصلی است: قوانین از داده بیرون می‌آید نه از ذهن برنامه‌نویس. از نقل قول آرتور ساموئل استفاده کنید.</p>
         </div>
         <div class="instructor-note">
             <strong>انواع یادگیری (۱۲ دقیقه):</strong>
-            <p>یادگیری باناظر را با مثال معلم و دانش‌آموز توضیح دهید: معلم (شما) به دانش‌آموز (مدل) می‌گوید که این عکس گربه است و آن عکس سگ است. در یادگیری بی‌ناظر، دانش‌آموز بدون معلم باید گروه‌بندی کند - مثلاً مشتریان را بر اساس رفتار خریدشان گروه‌بندی کند. یادگیری تقویتی را با بازی ویدیویی توضیح دهید: وقتی می‌بری امتیاز می‌گیری (پاداش)، وقتی می‌بازی امتیاز از دست می‌دهی (جریمه). AlphaGo از این روش استفاده کرد.</p>
+            <p>یادگیری باناظر را با مثال معلم و دانش‌آموز توضیح دهید: معلم (شما) به دانش‌آموز (مدل) می‌گوید که این عکس گربه است و آن عکس سگ است. در یادگیری بی‌ناظر، دانش‌آموز بدون معلم باید گروه‌بندی کند - مثلاً مشتریان را بر اساس رفتار خریدشان گروه‌بندی کند. یادگیری تقویتی را با بازی ویدیویی توضیح دهید: وقتی می‌بری امتیاز می‌گیری (پاداش)، وقتی می‌بازی امتیاز از دست می‌دهی (جریمه). AlphaGo از این روش استفاده کرد. اگر وقت شد، Self-Supervised را هم به عنوان پارادایم جدید معرفی کنید.</p>
         </div>
         <div class="instructor-note">
             <strong>ویژگی‌ها (۱۲ دقیقه):</strong>
-            <p>ویژگی‌ها مثل مواد اولیه هستند - کیفیت مواد اولیه تأثیر زیادی روی نتیجه نهایی دارد. مثال ویژگی عددی: قیمت خانه، متراژ. مثال ویژگی طبقه‌ای: محله، تعداد اتاق. مثال ویژگی باینری: آیا پارکینگ دارد یا نه. از دانشجویان بخواهید برای یک مثال (مثلاً پیش‌بینی فروش) چند ویژگی پیشنهاد دهند.</p>
+            <p>ویژگی‌ها مثل مواد اولیه هستند - کیفیت مواد اولیه تأثیر زیادی روی نتیجه نهایی دارد. مثال ویژگی عددی: قیمت خانه، متراژ. مثال ویژگی طبقه‌ای: محله، تعداد اتاق. مثال ویژگی باینری: آیا پارکینگ دارد یا نه. از دانشجویان بخواهید برای یک مثال (مثلاً پیش‌بینی فروش) چند ویژگی پیشنهاد دهند. درباره ویژگی‌های ترتیبی و اسمی هم توضیح دهید - این تفاوت در کدگذاری مهم است.</p>
         </div>
         <div class="instructor-note">
             <strong>استخراج ویژگی (۱۲ دقیقه):</strong>
-            <p>این بخش عملی است. مقیاس‌گذاری: اگر یک ویژگی قد (۱۵۰-۲۰۰ سانتی‌متر) و دیگری درآمد (میلیون‌ها تومان) باشد، مدل به درآمد اهمیت بیشتری می‌دهد چون اعداد بزرگ‌ترند. نرمال‌سازی این مشکل را حل می‌کند. کدگذاری: اگر رنگ «آبی»، «قرمز»، «سبز» داشته باشیم، باید به عدد تبدیل شود (مثلاً One-Hot Encoding). انتخاب: همه ویژگی‌ها به درد نمی‌خورند - مثلاً برای پیش‌بینی فروش، رنگ موی مدیر مهم نیست!</p>
+            <p>این بخش عملی است. مقیاس‌گذاری: اگر یک ویژگی قد (۱۵۰-۲۰۰ سانتی‌متر) و دیگری درآمد (میلیون‌ها تومان) باشد، مدل به درآمد اهمیت بیشتری می‌دهد چون اعداد بزرگ‌ترند. نرمال‌سازی این مشکل را حل می‌کند. کدگذاری: اگر رنگ «آبی»، «قرمز»، «سبز» داشته باشیم، باید به عدد تبدیل شود (مثلاً One-Hot Encoding). انتخاب: همه ویژگی‌ها به درد نمی‌خورند - مثلاً برای پیش‌بینی فروش، رنگ موی مدیر مهم نیست! از دانشجویان بخواهید برای یک مسئله واقعی ویژگی‌ها را طراحی کنند.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>بهینه‌سازی (۵ دقیقه):</strong>
+            <p>فقط مقدمه‌ای کوتاه بیان کنید چون در جلسه بعد مفصل توضیح داده می‌شود. نکته: مدل یاد می‌گیرد تا یک تابع هزینه (Loss) را کم کند. این کار را با Gradient Descent انجام می‌دهد. توضیح ساده: مدل در فضای پارامترها قدم می‌زند و سعی می‌کند به پایین‌ترین نقطه (کمترین خطا) برسد.</p>
         </div>
         <div class="instructor-note">
             <strong>جمع‌بندی و تکلیف (۴ دقیقه):</strong>
-            <p>خلاصه: یادگیری ماشین یعنی یادگیری از داده. سه نوع یادگیری داریم. ویژگی‌ها مهم‌اند و باید درست انتخاب و آماده شوند. تکلیف: دانشجویان باید یک مثال از یادگیری ماشین در زندگی روزمره پیدا کنند و مشخص کنند که کدام نوع یادگیری است و چه ویژگی‌هایی دارد.</p>
+            <p>خلاصه: یادگیری ماشین یعنی یادگیری از داده. سه نوع یادگیری داریم. ویژگی‌ها مهم‌اند و باید درست انتخاب و آماده شوند. تکلیف: دانشجویان باید یک مثال از یادگیری ماشین در زندگی روزمره پیدا کنند و مشخص کنند که کدام نوع یادگیری است و چه ویژگی‌هایی دارد. این تکلیف برای جلسه بعد مفید است.</p>
+        </div>
+    </div>
+
+    <button class="accordion">مطالعه شخصی (Self-Read)</button>
+    <div class="panel">
+        <div class="self-read">
+            <h2>فصل پنجم: مفاهیم پایه یادگیری ماشین</h2>
+
+            <p>یادگیری ماشین قلب هوش مصنوعی مدرن است. در این فصل با مفاهیم پایه‌ای یادگیری ماشین آشنا می‌شویم.</p>
+
+            <h3>۵.۱ یادگیری ماشین چیست؟</h3>
+            <p>یادگیری ماشین شاخه‌ای از هوش مصنوعی است که به سیستم‌ها اجازه می‌دهد از داده یاد بگیرند بدون اینکه صریحاً برنامه‌ریزی شوند. این تعریف توسط آرتور ساموئل در سال ۱۹۵۹ ارائه شد.</p>
+
+            <h4>تفاوت با برنامه‌نویسی سنتی:</h4>
+            <p>در برنامه‌نویسی سنتی:</p>
+            <ul>
+                <li><strong>ورودی:</strong> قوانین + داده</li>
+                <li><strong>خروجی:</strong> پاسخ</li>
+            </ul>
+            <p>در یادگیری ماشین:</p>
+            <ul>
+                <li><strong>ورودی:</strong> داده + خروجی مورد انتظار</li>
+                <li><strong>خروجی:</strong> قوانین (مدل)</li>
+            </ul>
+
+            <h4>مثال - تشخیص ایمیل اسپم:</h4>
+            <p>در روش سنتی، برنامه‌نویس باید قواعدی بنویسد: «اگر کلمه "برنده" در ایمیل بود، اسپم است». اما در یادگیری ماشین، هزاران ایمیل اسپم و غیراسپم به مدل می‌دهیم و مدل خودش الگوها را یاد می‌گیرد.</p>
+
+            <h3>۵.۲ انواع یادگیری ماشین</h3>
+
+            <h4>یادگیری باناظر (Supervised Learning):</h4>
+            <p>در این نوع، داده‌های برچسب‌گذاری شده داریم. مدل از جفت‌های (ورودی، خروجی) یاد می‌گیرد.</p>
+            <p><strong>دو دسته اصلی:</strong></p>
+            <ul>
+                <li><strong>رگرسیون:</strong> خروجی پیوسته (مثل قیمت)</li>
+                <li><strong>طبقه‌بندی:</strong> خروجی گسسته (مثل بیمار/سالم)</li>
+            </ul>
+            <p><strong>الگوریتم‌ها:</strong> Linear Regression، Logistic Regression، Decision Tree، Random Forest، SVM، KNN، Neural Networks.</p>
+
+            <h4>یادگیری بی‌ناظر (Unsupervised Learning):</h4>
+            <p>در این نوع، داده‌های بدون برچسب داریم. مدل باید الگوها و ساختارهای پنهان در داده را کشف کند.</p>
+            <p><strong>وظایف:</strong></p>
+            <ul>
+                <li>خوشه‌بندی (K-Means, DBSCAN, Hierarchical)</li>
+                <li>کاهش بُعد (PCA, t-SNE, UMAP)</li>
+                <li>تشخیص ناهنجاری</li>
+                <li>قانون‌کاوی</li>
+            </ul>
+
+            <h4>یادگیری تقویتی (Reinforcement Learning):</h4>
+            <p>در این نوع، یک عامل (Agent) با محیط تعامل می‌کند و بر اساس اقدامات خود پاداش یا جریمه دریافت می‌کند. هدف: یادگیری استراتژی بهینه برای بیشینه‌سازی پاداش تجمعی.</p>
+            <p><strong>اجزا:</strong> Agent، Environment، Action، State، Reward</p>
+            <p><strong>الگوریتم‌ها:</strong> Q-Learning، DQN، PPO، A3C</p>
+
+            <h4>یادگیری نیمه‌ناظر (Semi-Supervised):</h4>
+            <p>ترکیبی از داده‌های برچسب‌دار (کم) و بدون برچسب (زیاد). وقتی برچسب‌گذاری گران است مفید است.</p>
+
+            <h4>یادگیری خودآموز (Self-Supervised):</h4>
+            <p>مدل خودش برچسب را از داده استخراج می‌کند. در پیش‌آموزش مدل‌های بزرگ بسیار موفق بوده. مثال: BERT، GPT.</p>
+
+            <h3>۵.۳ ویژگی‌ها (Features)</h3>
+            <p>ویژگی‌ها متغیرهای ورودی هستند که برای پیش‌بینی یا طبقه‌بندی استفاده می‌شوند. کیفیت ویژگی‌ها تأثیر زیادی بر کیفیت مدل دارد.</p>
+
+            <h4>انواع ویژگی‌ها:</h4>
+            <ul>
+                <li><strong>عددی (Numerical):</strong> مقادیر پیوسته یا گسسته عددی
+                    <ul>
+                        <li>پیوسته: قد، وزن، دما، قیمت</li>
+                        <li>گسسته: تعداد اتاق، تعداد فرزند</li>
+                    </ul>
+                </li>
+                <li><strong>طبقه‌ای (Categorical):</strong> مقادیر کیفی
+                    <ul>
+                        <li>اسمی: رنگ، شهر، جنسیت</li>
+                        <li>ترتیبی: سطح تحصیلات، رتبه‌بندی</li>
+                    </ul>
+                </li>
+                <li><strong>باینری (Boolean):</strong> دو مقدار (بله/خیر)</li>
+                <li><strong>متنی (Text):</strong> نیاز به تبدیل</li>
+                <li><strong>زمانی (Datetime):</strong> تاریخ و زمان</li>
+            </ul>
+
+            <h3>۵.۴ مهندسی ویژگی (Feature Engineering)</h3>
+            <p>فرآیند تبدیل داده‌های خام به ویژگی‌هایی که مدل یادگیری ماشین بتواند از آنها استفاده کند.</p>
+
+            <h4>۱. مقیاس‌گذاری (Scaling):</h4>
+            <p>ویژگی‌های با مقیاس‌های مختلف باید مقیاس‌گذاری شوند. اگر قد بین ۱۵۰-۲۰۰ سانتی‌متر و درآمد بین ۱-۱۰۰ میلیون تومان باشد، مدل ممکن است فکر کند درآمد مهم‌تر است.</p>
+            <ul>
+                <li><strong>Min-Max Scaling:</strong> (x - min) / (max - min) - محدوده ۰ تا ۱</li>
+                <li><strong>Z-Score:</strong> (x - μ) / σ - میانگین ۰، انحراف معیار ۱</li>
+                <li><strong>Robust Scaling:</strong> (x - median) / IQR - مقاوم در برابر پرت</li>
+            </ul>
+
+            <h4>۲. کدگذاری (Encoding):</h4>
+            <p>تبدیل داده‌های غیرعددی به عدد.</p>
+            <ul>
+                <li><strong>Label Encoding:</strong> هر دسته به یک عدد (مناسب برای ترتیبی)</li>
+                <li><strong>One-Hot Encoding:</strong> هر دسته به یک ستون باینری (مناسب برای اسمی)</li>
+                <li><strong>Target Encoding:</strong> جایگزینی با میانگین هدف (مناسب برای اسمی با مقادیر زیاد)</li>
+            </ul>
+
+            <h4>۳. انتخاب ویژگی (Feature Selection):</h4>
+            <p>انتخاب ویژگی‌های مرتبط و حذف ویژگی‌های بی‌ربط یا تکراری. مزایا: کاهش پیچیدگی، جلوگیری از Overfitting، افزایش سرعت، بهبود تفسیرپذیری.</p>
+
+            <h4>۴. ایجاد ویژگی (Feature Creation):</h4>
+            <p>ساخت ویژگی‌های جدید از ترکیب ویژگی‌های موجود. مثال: BMI از قد و وزن، سن از تاریخ تولد.</p>
+
+            <h4>۵. تبدیل ویژگی‌ها (Transformation):</h4>
+            <p>Polynomial Features، Interaction Features، Binning، Date Features.</p>
+
+            <h3>۵.۵ بهینه‌سازی در یادگیری ماشین</h3>
+            <p>فرآیند پیدا کردن بهترین پارامترهای مدل که خطا را کمینه کنند.</p>
+
+            <h4>تابع هزینه (Loss Function):</h4>
+            <p>تابعی که خطای مدل را اندازه می‌گیرد. مدل سعی می‌کند این تابع را کمینه کند.</p>
+            <ul>
+                <li><strong>MSE:</strong> برای رگرسیون</li>
+                <li><strong>Cross-Entropy:</strong> برای طبقه‌بندی</li>
+                <li><strong>Hinge Loss:</strong> برای SVM</li>
+            </ul>
+
+            <h4>الگوریتم‌های بهینه‌سازی:</h4>
+            <p>Gradient Descent (پایه)، SGD، Adam، RMSprop - در جلسه بعد مفصل توضیح داده می‌شوند.</p>
+
+            <h3>خلاصه فصل:</h3>
+            <ol>
+                <li>یادگیری ماشین یعنی یادگیری از داده بدون برنامه‌ریزی صریح</li>
+                <li>پنج نوع یادگیری: باناظر، بی‌ناظر، تقویتی، نیمه‌ناظر، خودآموز</li>
+                <li>ویژگی‌ها ورودی‌های مدل هستند و انواع مختلفی دارند</li>
+                <li>مهندسی ویژگی برای آماده‌سازی داده ضروری است</li>
+                <li>بهینه‌سازی فرآیند یافتن بهترین پارامترهای مدل است</li>
+            </ol>
+
+            <h3>تمرین‌های خودآزمایی:</h3>
+            <ol>
+                <li>تفاوت برنامه‌نویسی سنتی و یادگیری ماشین را با یک مثال توضیح دهید</li>
+                <li>یک مثال برای هر نوع یادگیری ماشین بنویسید</li>
+                <li>چرا مقیاس‌گذاری ویژگی‌ها مهم است؟ با مثال توضیح دهید</li>
+                <li>یک مثال از ایجاد ویژگی جدید بنویسید</li>
+                <li>تفاوت One-Hot Encoding و Label Encoding چیست؟</li>
+                <li>یک مسئله واقعی انتخاب کنید و ۱۰ ویژگی برای آن پیشنهاد دهید</li>
+            </ol>
+
+            <h3>منابع پیشنهادی:</h3>
+            <ul>
+                <li>کتاب «Hands-On Machine Learning» - Aurélien Géron</li>
+                <li>دوره Andrew Ng در Coursera</li>
+                <li>مستندات Scikit-learn</li>
+            </ul>
+
+            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۲۰ دقیقه</p>
         </div>
     </div>
 
