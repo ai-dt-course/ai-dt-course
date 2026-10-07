@@ -5,18 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جلسه ۱۴ - شاخص‌های ارزیابی و انتخاب مدل</title>
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; line-height: 1.9; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
         h3 { color: #16a085; margin-top: 20px; }
+        h4 { color: #34495e; margin-top: 15px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        ul { line-height: 1.8; }
+        ul, ol { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
-        .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
-        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
-        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 10px; margin: 10px 0; }
+        .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 15px; margin: 15px 0; border-radius: 5px; }
         .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+        .warning { background: #fde8e8; border-right: 4px solid #e74c3c; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .stat-box { background: #ecf0f1; border-right: 4px solid #95a5a6; padding: 10px; margin: 10px 0; font-weight: bold; border-radius: 5px; }
+        .quote { background: #f4ecf7; border-right: 4px solid #8e44ad; padding: 10px; margin: 10px 0; font-style: italic; border-radius: 5px; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
         .accordion.active { background-color: #3498db; color: white; }
@@ -25,232 +29,1088 @@
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
         th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        code { background-color: #f4f4f4; padding: 2px 6px; border-radius: 3px; color: #c0392b; font-family: "Courier New", monospace; }
     </style>
 </head>
 <body>
     <a href="../plan.html" class="back-link">← بازگشت به برنامه درسی</a>
 
     <h1>جلسه ۱۴: شاخص‌های ارزیابی و انتخاب مدل</h1>
+    <p style="text-align: center; color: #7f8c8d; font-size: 14px;">زمان تقریبی: ۹۰ دقیقه | نوع: نظری-عملی | سطح: متوسط</p>
 
     <div class="phase">
         <h2>اهداف یادگیری</h2>
+        <p>در پایان این جلسه، دانشجو باید بتواند:</p>
         <ul>
-            <li>آشنایی با شاخص‌های ارزیابی</li>
-            <li>یادگیری انتخاب شاخص مناسب</li>
-            <li>درک مفهوم Trade-off</li>
+            <li>شاخص‌های ارزیابی رگرسیون (MSE, RMSE, MAE, R², MAPE) را بشناسد و محاسبه کند</li>
+            <li>شاخص‌های ارزیابی طبقه‌بندی (Accuracy, Precision, Recall, F1, MCC) را درک کند</li>
+            <li>ماتریس سردرگمی را تحلیل کرده و TP, FP, TN, FN را استخراج کند</li>
+            <li>منحنی ROC و مفهوم AUC را تفسیر کند</li>
+            <li>شاخص مناسب را بر اساس نوع مسئله و توزیع داده انتخاب کند</li>
+            <li>اعتبارسنجی متقاطع (Cross-Validation) را اجرا و تفسیر کند</li>
+            <li>روش‌های انتخاب مدل (Model Selection) و مقایسه سیستماتیک مدل‌ها را فرا بگیرد</li>
+            <li>با سناریوهای واقعی ایرانی مانند تشخیص تقلب بانکی و پیش‌بینی قیمت مسکن کار کند</li>
         </ul>
     </div>
 
-    <button class="accordion">شاخص‌های رگرسیون</button>
+    <button class="accordion">بخش ۱: چرا ارزیابی مدل حیاتی است؟</button>
     <div class="panel">
-        <h3>۱. MSE (Mean Squared Error):</h3>
-        <div class="formula">
-            MSE = <span class="math">1/n × Σ(y<sub>i</sub> - ŷ<sub>i</sub>)<sup>2</sup></span>
+        <h3>داستان واقعی: مدلی که ۹۹٪ دقت داشت ولی بی‌فایده بود</h3>
+        <div class="example">
+            <p>یک تیم در یکی از بانک‌های ایرانی (مثل بانک پاسارگاد) مدلی ساخت برای تشخیص تراکنش‌های مشکوک. دقت مدل <strong>۹۹٪</strong> بود. مدیرعامل خوشحال شد. اما وقتی دقیق‌تر بررسی کردند:</p>
+            <ul>
+                <li>از ۱۰۰۰۰۰ تراکنش، فقط ۱۰۰ مورد تقلب واقعی بود (۰/۱ درصد)</li>
+                <li>مدل یاد گرفته بود همیشه بگوید "عادی" - و ۹۹/۹ درصد مواقع درست بود!</li>
+                <li>اما هیچ تقلبی را پیدا نکرده بود</li>
+                <li><strong>دقت بالا فریبنده بود</strong></li>
+            </ul>
+            <p>نتیجه: مدل بازنویسی شد و از F1-Score و Recall استفاده شد. Recall جدید: ۸۵٪.</p>
         </div>
+
+        <h3>درس‌های کلیدی</h3>
+        <div class="key-concept">
+            <ol>
+                <li><strong>یک شاخص کافی نیست:</strong> باید چند شاخص را همزمان ببینید</li>
+                <li><strong>شاخص باید با مسئله تناسب داشته باشد:</strong> پزشکی ≠ فروشگاه</li>
+                <li><strong>توزیع داده اهمیت دارد:</strong> متوازن ≠ نامتوازن</li>
+                <li><strong>هزینه خطا مهم است:</strong> FP و FN هزینه‌های متفاوت دارند</li>
+            </ol>
+        </div>
+
+        <h3>فرآیند ارزیابی مدل</h3>
+        <div class="formula">
+            داده → تقسیم (Train/Val/Test) → آموزش مدل → ارزیابی روی Val → تنظیم هایپرپارامتر → ارزیابی نهایی روی Test → استقرار
+        </div>
+
+        <div class="instructor-note">
+            <strong>نکته برای استاد (۵ دقیقه):</strong>
+            <p>این بخش را با داستان بانک شروع کنید. از دانشجویان بپرسید: «اگر شما مدیر بانک بودید، چه شاخصی برایتان مهم‌تر بود؟». دانشجویان معمولاً اول می‌گویند Accuracy، اما بعد از بحث متقاعد می‌شوند که Recall مهم‌تر است. این بحث پایه خوبی برای بقیه جلسه است.</p>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۲: شاخص‌های ارزیابی رگرسیون</button>
+    <div class="panel">
+        <h3>مسئله رگرسیون چیست؟</h3>
+        <p>وقتی خروجی مدل یک عدد پیوسته است، مثلاً:</p>
         <ul>
-            <li>همیشه مثبت</li>
-            <li>به نقاط پرت حساس</li>
-            <li>یکای آن مجذور یکای اصلی</li>
+            <li>پیش‌بینی قیمت خانه در دیوار (تهران، اصفهان، شیراز)</li>
+            <li>پیش‌بینی فروش روزانه اسنپ‌فود</li>
+            <li>پیش‌بینی مصرف برق در یک منطقه از تهران</li>
+            <li>پیش‌بینی دمای فردای تهران</li>
         </ul>
 
-        <h3>۲. RMSE (Root MSE):</h3>
+        <h3>۱. MSE (Mean Squared Error) - میانگین مربعات خطا</h3>
+        <div class="formula">
+            MSE = <span class="math">1/n × Σ<sub>i=1</sub><sup>n</sup>(y<sub>i</sub> - ŷ<sub>i</sub>)²</span>
+        </div>
+        <p>تفسیر: میانگین مجذور فاصله پیش‌بینی‌ها از واقعیت</p>
+        <ul>
+            <li><strong>مزایا:</strong> ریاضیاتی ساده، مشتق‌پذیر، در بهینه‌سازی استاندارد</li>
+            <li><strong>معایب:</strong> یکایش مجذور یکای اصلی (مثلاً اگر قیمت به تومان است، MSE به تومان² است)، به نقاط پرت خیلی حساس</li>
+        </ul>
+
+        <h3>مثال واقعی MSE در پیش‌بینی قیمت مسکن</h3>
+        <div class="example">
+            <p><strong>سناریو:</strong> مدل قیمت خانه در دیوار برای تهران</p>
+            <p>قیمت واقعی سه خانه: ۲، ۳، ۴ میلیارد تومان</p>
+            <p>پیش‌بینی مدل: ۲.۵، ۳.۵، ۴.۵ میلیارد</p>
+            <p>خطاها: ۰.۵، ۰.۵، ۰.۵</p>
+            <p>MSE = (0.5² + 0.5² + 0.5²)/3 = 0.25 میلیارد² تومان²</p>
+            <p><strong>توجه:</strong> اگر یک خانه لوکس ۱۰۰ میلیاردی داشته باشیم و مدل آن را ۵۰ میلیارد پیش‌بینی کند، خطای ۵۰ میلیارد، MSE را منفجر می‌کند!</p>
+        </div>
+
+        <h3>۲. RMSE (Root Mean Squared Error) - جذر MSE</h3>
         <div class="formula">
             RMSE = √MSE
         </div>
-        <ul>
-            <li>هم‌یکا با متغیر خروجی</li>
-            <li>قابل فهم‌تر</li>
-        </ul>
+        <p>تفسیر: "به طور متوسط، پیش‌بینی‌ها چند واحد با واقعیت فاصله دارند؟"</p>
+        <div class="key-concept">
+            <strong>مزیت اصلی RMSE:</strong> هم‌یکا با متغیر خروجی است. اگر قیمت به میلیارد است، RMSE هم به میلیارد است. قابل فهم برای غیرمتخصصین.
+        </div>
 
-        <h3>۳. MAE (Mean Absolute Error):</h3>
+        <h3>۳. MAE (Mean Absolute Error) - میانگین قدر مطلق خطا</h3>
         <div class="formula">
             MAE = <span class="math">1/n × Σ|y<sub>i</sub> - ŷ<sub>i</sub>|</span>
         </div>
-        <ul>
-            <li>کمتر حساس به پرت</li>
-            <li>یکای اصلی</li>
-        </ul>
+        <p><strong>تفاوت با RMSE:</strong> توان دوم نمی‌شود، پس به نقاط پرت حساسیت کمتری دارد.</p>
 
-        <h3>۴. R² (Coefficient of Determination):</h3>
+        <h3>مقایسه MSE/RMSE/MAE در عمل</h3>
+        <table>
+            <tr>
+                <th>ویژگی</th>
+                <th>MSE</th>
+                <th>RMSE</th>
+                <th>MAE</th>
+            </tr>
+            <tr>
+                <td>یکا</td>
+                <td>مجذور یکای اصلی</td>
+                <td>هم‌یکا با خروجی</td>
+                <td>هم‌یکا با خروجی</td>
+            </tr>
+            <tr>
+                <td>حساسیت به پرت</td>
+                <td>خیلی بالا</td>
+                <td>بالا</td>
+                <td>پایین</td>
+            </tr>
+            <tr>
+                <td>تفسیر</td>
+                <td>سخت</td>
+                <td>آسان</td>
+                <td>خیلی آسان</td>
+            </tr>
+            <tr>
+                <td>کاربرد بهینه‌سازی</td>
+                <td>بله (مشتق‌پذیر)</td>
+                <td>غیرمستقیم</td>
+                <td>نیمه</td>
+            </tr>
+            <tr>
+                <td>موارد استفاده</td>
+                <td>آموزش شبکه عصبی</td>
+                <td>گزارش به مدیر</td>
+                <td>داده با پرت</td>
+            </tr>
+        </table>
+
+        <h3>۴. R² (Coefficient of Determination) - ضریب تعیین</h3>
         <div class="formula">
             R² = 1 - SS<sub>res</sub> / SS<sub>tot</sub>
+            <br>
+            SS<sub>res</sub> = Σ(y<sub>i</sub> - ŷ<sub>i</sub>)² (مربعات باقیمانده)
+            <br>
+            SS<sub>tot</sub> = Σ(y<sub>i</sub> - ȳ)² (مربعات کل، نسبت به میانگین)
         </div>
-        <ul>
-            <li>بین ۰ و ۱</li>
-            <li>۱ = مدل عالی</li>
-            <li>۰ = مدل بد</li>
-        </ul>
+
+        <div class="key-concept">
+            <strong>تفسیر R²:</strong>
+            <ul>
+                <li>R² = 1: مدل عالی، همه تغییرات را توضیح می‌دهد</li>
+                <li>R² = 0: مدل به اندازه میانگین‌گرفتن خوب است</li>
+                <li>R² < 0: مدل از میانگین هم بدتر است!</li>
+                <li>R² = 0.7: مدل ۷۰٪ تغییرات قیمت را توضیح می‌دهد</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>هشدار R² منفی:</strong> در داده تست، ممکن است R² منفی شود. این یعنی مدل واقعاً عملکرد بدی دارد. معمولاً R² فقط در train بالاست، در تست پایین‌تر.
+        </div>
+
+        <h3>۵. MAPE (Mean Absolute Percentage Error)</h3>
+        <div class="formula">
+            MAPE = <span class="math">100/n × Σ|(y<sub>i</sub> - ŷ<sub>i</sub>) / y<sub>i</sub>|</span>
+        </div>
+        <p>تفسیر: "به طور متوسط، پیش‌بینی چند درصد خطا دارد؟"</p>
+        <div class="example">
+            <p>اگر MAPE = ۱۵٪ برای پیش‌بینی فروش اسنپ‌فود، یعنی مدل به طور متوسط ۱۵٪ با واقعیت فاصله دارد. برای مدیرعامل قابل فهم‌تر است: "مدل ما ۸۵٪ دقیق است."</p>
+        </div>
+
+        <h3>۶. Adjusted R² (R² تعدیل‌شده)</h3>
+        <p>مشکل R²: با اضافه کردن ویژگی جدید (حتی بی‌ربط)، R² بالا می‌رود!</p>
+        <div class="formula">
+            Adjusted R² = 1 - (1 - R²) × (n - 1) / (n - k - 1)
+        </div>
+        <p>که n تعداد نمونه و k تعداد ویژگی‌هاست. این شاخص فقط با ویژگی‌های مفید بالا می‌رود.</p>
+
+        <h3>چه شاخصی برای رگرسیون انتخاب کنیم؟</h3>
+        <table>
+            <tr>
+                <th>وضعیت</th>
+                <th>شاخص پیشنهادی</th>
+                <th>دلیل</th>
+            </tr>
+            <tr>
+                <td>داده تمیز بدون پرت</td>
+                <td>RMSE یا R²</td>
+                <td>تفسیر آسان، حساسیت متناسب</td>
+            </tr>
+            <tr>
+                <td>داده با پرت زیاد</td>
+                <td>MAE یا Huber</td>
+                <td>مقاومت در برابر پرت</td>
+            </tr>
+            <tr>
+                <td>گزارش به مدیرعامل</td>
+                <td>MAPE</td>
+                <td>قابل فهم برای غیرمتخصص</td>
+            </tr>
+            <tr>
+                <td>آموزش مدل</td>
+                <td>MSE</td>
+                <td>مشتق‌پذیر، استاندارد</td>
+            </tr>
+            <tr>
+                <td>مقایسه مدل‌ها</td>
+                <td>Adjusted R²</td>
+                <td>جریمه ویژگی‌های بی‌ربط</td>
+            </tr>
+        </table>
     </div>
 
-    <button class="accordion">شاخص‌های طبقه‌بندی - دقت</button>
+    <button class="accordion">بخش ۳: ماتریس سردرگمی (Confusion Matrix)</button>
     <div class="panel">
-        <h3>Accuracy (دقت):</h3>
-        <div class="formula">
-            Accuracy = (TP + TN) / (TP + TN + FP + FN)
-        </div>
+        <h3>ماتریس سردرگمی چیست؟</h3>
+        <p>جدولی که عملکرد مدل طبقه‌بندی را در چهار حالت مختلف نشان می‌دهد. مبنای همه شاخص‌های طبقه‌بندی است.</p>
 
-        <h3>ماتریس سردرگمی (Confusion Matrix):</h3>
         <table>
             <tr>
                 <th></th>
                 <th>پیش‌بینی: مثبت</th>
                 <th>پیش‌بینی: منفی</th>
+                <th>جمع</th>
             </tr>
             <tr>
                 <th>واقعی: مثبت</th>
-                <td>TP (True Positive)</td>
-                <td>FN (False Negative)</td>
+                <td>TP (درست مثبت)</td>
+                <td>FN (نادرست منفی)</td>
+                <td>کل واقعی مثبت</td>
             </tr>
             <tr>
                 <th>واقعی: منفی</th>
-                <td>FP (False Positive)</td>
-                <td>TN (True Negative)</td>
+                <td>FP (نادرست مثبت)</td>
+                <td>TN (درست منفی)</td>
+                <td>کل واقعی منفی</td>
             </tr>
         </table>
 
-        <h3>مثال:</h3>
-        <div class="example">
-            <p>۱۰۰۰ نمونه: ۹۰۰ منفی، ۱۰۰ مثبت</p>
-            <p>مدل: ۸۵۰ TN، ۵۰ TP، ۵۰ FP، ۵۰ FN</p>
-            <p>Accuracy = (850+50)/1000 = 90%</p>
-        </div>
-    </div>
-
-    <button class="accordion">Precision و Recall</button>
-    <div class="panel">
-        <h3>Precision (دقت):</h3>
-        <div class="formula">
-            Precision = TP / (TP + FP)
-        </div>
-        <p>از کسانی که مثبت گفتیم، چندتا واقعاً مثبت بودند؟</p>
-
-        <h3>Recall (یادآوری):</h3>
-        <div class="formula">
-            Recall = TP / (TP + FN)
-        </div>
-        <p>از کسانی که واقعاً مثبت بودند، چندتا را پیدا کردیم؟</p>
-
-        <h3>مثال:</h3>
-        <div class="example">
-            <p>تشخیص سرطان:</p>
+        <h3>تفسیر هر خانه</h3>
+        <div class="key-concept">
             <ul>
-                <li>می‌خواهیم همه سرطانی‌ها را پیدا کنیم → Recall بالا</li>
-                <li>می‌خواهیم اشتباهی سرطان نگوییم → Precision بالا</li>
+                <li><strong>TP (True Positive):</strong> مدل گفت مثبت، واقعاً مثبت بود → ✅ درست تشخیص داد</li>
+                <li><strong>TN (True Negative):</strong> مدل گفت منفی، واقعاً منفی بود → ✅ درست تشخیص داد</li>
+                <li><strong>FP (False Positive):</strong> مدل گفت مثبت، ولی منفی بود → ❌ false alarm (آژیر اشتباه)</li>
+                <li><strong>FN (False Negative):</strong> مدل گفت منفی، ولی مثبت بود → ❌ missed (از دست رفته)</li>
+            </ul>
+        </div>
+
+        <h3>مثال کامل: تشخیص سرطان در بیمارستان ایرانی</h3>
+        <div class="example">
+            <p><strong>سناریو:</strong> مدل هوش مصنوعی بیمارستان امام خمینی (یا یک بیمارستان خصوصی در تهران) برای تشخیص سرطان از روی تصاویر MRI</p>
+            <p>تست روی ۱۰۰۰ بیمار:</p>
+            <table>
+                <tr>
+                    <th></th>
+                    <th>پیش‌بینی: سرطان دارد</th>
+                    <th>پیش‌بینی: سالم است</th>
+                </tr>
+                <tr>
+                    <th>واقعاً سرطان دارد (100 نفر)</th>
+                    <td>TP = 85</td>
+                    <td>FN = 15 (از دست رفته!)</td>
+                </tr>
+                <tr>
+                    <th>واقعاً سالم است (900 نفر)</th>
+                    <td>FP = 50 (اشتباه مثبت)</td>
+                    <td>TN = 850</td>
+                </tr>
+            </table>
+            <p><strong>تفسیر:</strong></p>
+            <ul>
+                <li>از ۱۰۰ بیمار واقعاً سرطانی، ۸۵ نفر درست تشخیص داده شدند (Recall = 85%)</li>
+                <li>از ۱۳۵ نفر که مدل گفت سرطان دارند، ۸۵ نفر واقعاً سرطان داشتند (Precision = 63%)</li>
+                <li>۱۵ بیمار سرطانی مدل اشتباه گفت سالم‌اند - اینها missed می‌شوند! ⚠️</li>
+            </ul>
+        </div>
+
+        <h3>هزینه‌های متفاوت FP و FN</h3>
+        <div class="warning">
+            <strong>در مسائل مختلف، هزینه FP و FN فرق دارد:</strong>
+            <ul>
+                <li><strong>سرطان:</strong> هزینه FN خیلی بالاست (یک نفر جانش را از دست می‌دهد) - پس Recall مهم‌تر است</li>
+                <li><strong>ایمیل اسپم:</strong> هزینه FP بالاست (ایمیل مهم اسپم شود) - پس Precision مهم‌تر است</li>
+                <li><strong>کلاهبرداری بانکی:</strong> FN بد (پول از دست می‌رود)، FP هم بد (مشتری ناراحت)</li>
+                <li><strong>تشخیص چهره در گوشی:</strong> FP بد (هر کسی باز شود)، FN هم بد (مالک باز نشود)</li>
             </ul>
         </div>
     </div>
 
-    <button class="accordion">F1-Score</button>
+    <button class="accordion">بخش ۴: Accuracy، Precision و Recall</button>
     <div class="panel">
-        <div class="key-concept">
-            میانگین هارمونیک Precision و Recall
+        <h3>Accuracy (دقت کلی)</h3>
+        <div class="formula">
+            Accuracy = (TP + TN) / (TP + TN + FP + FN) = درست‌ها / کل
         </div>
 
+        <h3>مشکل بزرگ Accuracy در داده نامتوازن</h3>
+        <div class="example">
+            <p>تشخیص تقلب در تراکنش‌های بانک ملت:</p>
+            <ul>
+                <li>۱ میلیون تراکنش در ماه</li>
+                <li>۱۰۰۰ مورد تقلب واقعی (۰/۱٪)</li>
+                <li>مدل "احمق" می‌گوید: همه تراکنش‌ها عادی‌اند</li>
+                <li>→ Accuracy = 99.9% !!! ولی هیچ تقلبی پیدا نکرده!</li>
+            </ul>
+            <p><strong>نتیجه:</strong> Accuracy در داده نامتوازن فریبنده است.</p>
+        </div>
+
+        <h3>Precision (دقت مثبت)</h3>
+        <div class="formula">
+            Precision = TP / (TP + FP) = درست مثبت / همه پیش‌بینی مثبت
+        </div>
+        <p><strong>سوال:</strong> "از کسانی که مثبت گفتیم، چندتا واقعاً مثبت بودند؟"</p>
+
+        <div class="example">
+            <p><strong>مثال:</strong> سیستم توصیه فیلم فیلیمو</p>
+            <ul>
+                <li>۱۰ فیلم به کاربر پیشنهاد داد</li>
+                <li>۷ تا را دوست داشت، ۳ تا نپسندید</li>
+                <li>TP = 7، FP = 3</li>
+                <li><strong>Precision = 7/10 = 70%</strong></li>
+                <li>یعنی 70 درصد پیشنهادات ما دقیق بوده</li>
+            </ul>
+        </div>
+
+        <h3>Recall (یادآوری، حساسیت)</h3>
+        <div class="formula">
+            Recall = TP / (TP + FN) = درست مثبت / همه واقعاً مثبت
+        </div>
+        <p><strong>سوال:</strong> "از کسانی که واقعاً مثبت بودند، چندتا را پیدا کردیم؟"</p>
+
+        <div class="example">
+            <p><strong>مثال:</strong> تشخیص بیماری کرونا در ایران (اوج کرونا)</p>
+            <ul>
+                <li>۱۰۰۰ نفر واقعاً کرونا داشتند</li>
+                <li>تست ۹۰۰ نفر را مثبت تشخیص داد، ۱۰۰ نفر را منفی گفت</li>
+                <li>TP = 900، FN = 100</li>
+                <li><strong>Recall = 900/1000 = 90%</strong></li>
+                <li>یعنی 90 درصد بیماران واقعی را پیدا کردیم</li>
+                <li>10 درصد missed شدند ⚠️</li>
+            </ul>
+        </div>
+
+        <h3>Trade-off بنیادی Precision-Recall</h3>
+        <div class="warning">
+            <p><strong>قانون طلایی:</strong> معمولاً افزایش Precision باعث کاهش Recall می‌شود و بالعکس.</p>
+
+            <p><strong>مثال پزشکی:</strong></p>
+            <ul>
+                <li>اگر آستانه تست خیلی پایین بگذاریم: همه را مثبت می‌گوییم → Recall بالا، ولی Precision پایین (false alarm زیاد)</li>
+                <li>اگر آستانه خیلی بالا بگذاریم: فقط مطمئن‌ها را مثبت می‌گوییم → Precision بالا، ولی Recall پایین (missed زیاد)</li>
+                <li>هدف: نقطه تعادل بهینه پیدا کنیم</li>
+            </ul>
+        </div>
+
+        <h3>هنر انتخاب بین Precision و Recall</h3>
+        <table>
+            <tr>
+                <th>نوع مسئله</th>
+                <th>اولویت</th>
+                <th>دلیل</th>
+            </tr>
+            <tr>
+                <td>تشخیص سرطان</td>
+                <td>Recall بالا</td>
+                <td>FN = مرگ بیمار، FP = استرس اضافی</td>
+            </tr>
+            <tr>
+                <td>فیلتر اسپم</td>
+                <td>Precision بالا</td>
+                <td>FP = از دست دادن ایمیل مهم</td>
+            </tr>
+            <tr>
+                <td>توصیه محصول دیجی‌کالا</td>
+                <td>Precision بالا</td>
+                <td>پیشنهاد بد = اعتماد از دست رفته</td>
+            </tr>
+            <tr>
+                <td>تشخیص کلاهبرداری بانکی</td>
+                <td>Recall بالا</td>
+                <td>از دست دادن پول بدتر از مسدود کردن کارت</td>
+            </tr>
+            <tr>
+                <td>تشخیص چهره برای باز کردن قفل</td>
+                <td>هر دو</td>
+                <td>هر خطا تجربه بد کاربر</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">بخش ۵: F1-Score و F-Beta</button>
+    <div class="panel">
+        <h3>F1-Score چیست؟</h3>
         <div class="formula">
             F1 = 2 × (Precision × Recall) / (Precision + Recall)
         </div>
+        <p>میانگین هارمونیک Precision و Recall. عددی بین ۰ و ۱.</p>
 
-        <h3>چرا میانگین هارمونیک؟</h3>
-        <ul>
-            <li>اگر یکی صفر باشد، F1 صفر می‌شود</li>
-            <li>هر دو باید بالا باشند</li>
-        </ul>
+        <h3>چرا میانگین هارمونیک نه حسابی؟</h3>
+        <div class="key-concept">
+            <strong>میانگین حسابی:</strong> (P + R)/2</p>
+            <p>اگر P = 1 و R = 0 → میانگین حسابی = 0.5 (ناعادلانه بالا!)</p>
 
-        <h3>F-Beta:</h3>
+            <p><strong>میانگین هارمونیک:</strong> 2PR/(P+R)</p>
+            <p>اگر P = 1 و R = 0 → F1 = 0 (منصفانه)</p>
+
+            <p><strong>نتیجه:</strong> F1 فقط وقتی بالاست که هر دو (P و R) بالا باشند.</p>
+        </div>
+
+        <h3>مثال محاسبه F1</h3>
+        <div class="example">
+            <p>سیستم تشخیص نظر منفی در دیجی‌کالا:</p>
+            <ul>
+                <li>Precision = 0.80 (از ۱۰ نظر منفی پیش‌بینی‌شده، ۸ تا واقعاً منفی)</li>
+                <li>Recall = 0.60 (از ۱۰ نظر واقعاً منفی، ۶ تا پیدا شد)</li>
+                <li>F1 = 2 × (0.80 × 0.60) / (0.80 + 0.60) = 0.96 / 1.40 = <strong>0.69</strong></li>
+                <li>میانگین حسابی = (0.80 + 0.60)/2 = 0.70 (تقریباً نزدیک، ولی در موارد نامتوازن تفاوت بزرگ‌تر است)</li>
+            </ul>
+        </div>
+
+        <h3>F-Beta Score (تعمیم F1)</h3>
         <div class="formula">
-            F<sub>β</sub> = (1+β²) × (P×R) / (β²×P + R)
+            F<sub>β</sub> = (1 + β²) × (P × R) / (β² × P + R)
         </div>
         <ul>
-            <li>F<sub>0.5</sub>: Precision مهم‌تر</li>
-            <li>F<sub>2</sub>: Recall مهم‌تر</li>
+                <li><strong>β = 1</strong> → F1 تعادل بین P و R</li>
+                <li><strong>β = 0.5</strong> → Precision وزن ۲ برابر (برای فیلتر اسپم، توصیه محصول)</li>
+                <li><strong>β = 2</strong> → Recall وزن ۲ برابر (برای تشخیص سرطان، کلاهبرداری)</li>
+                <li><strong>β = 0.1</strong> → تقریباً فقط Precision</li>
+                <li><strong>β = 10</strong> → تقریباً فقط Recall</li>
+        </ul>
+
+        <h3>چه زمانی F1 خوب نیست؟</h3>
+        <div class="warning">
+            <ul>
+                <li>F1 فقط دو کلاس را در نظر می‌گیرد. در مسائل چندکلاسه (multi-class) باید میانگین بگیرید (macro, micro, weighted)</li>
+                <li>F1 فرض می‌کند کلاس مثبت برایمان مهم‌تر است. در مسائل باینری متقارن نیست</li>
+                <li>F1 به تنهایی، توزیع کلاس‌ها را نشان نمی‌دهد</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۶: منحنی ROC و AUC</button>
+    <div class="panel">
+        <h3>ROC Curve چیست؟</h3>
+        <p>ROC = Receiver Operating Characteristic. منحنی‌ای که عملکرد مدل را در تمام آستانه‌های ممکن نشان می‌دهد.</p>
+
+        <div class="formula">
+            TPR (True Positive Rate) = Recall = TP / (TP + FN)
+            <br><br>
+            FPR (False Positive Rate) = FP / (FP + TN) = 1 - Specificity
+        </div>
+
+        <h3>نمودار ROC</h3>
+        <div class="example">
+            <p>محور X: FPR (از ۰ تا ۱) - محور Y: TPR (از ۰ تا ۱)</p>
+            <p>خط مورب (y=x): مدل تصادفی - AUC = 0.5</p>
+            <p>منحنی بالا-چپ: مدل خوب - AUC نزدیک ۱</p>
+            <p>منحنی پایین-راست: مدل بد - AUC کمتر از ۰/۵ (می‌توان کلاس‌ها را برعکس کرد)</p>
+            <p>نقطه ایده‌آل: (0, 1) - یعنی FPR=0 و TPR=1</p>
+        </div>
+
+        <h3>AUC (Area Under Curve)</h3>
+        <p>مساحت زیر منحنی ROC - عددی بین ۰ و ۱.</p>
+
+        <div class="key-concept">
+            <strong>تفسیر AUC:</strong>
+            <ul>
+                <li>AUC = 1.0: مدل عالی (تقریباً غیرواقعی!)</li>
+                <li>AUC = 0.95-0.99: مدل خیلی خوب</li>
+                <li>AUC = 0.85-0.95: مدل خوب</li>
+                <li>AUC = 0.70-0.85: مدل متوسط</li>
+                <li>AUC = 0.50: مدل تصادفی (پرتاب سکه)</li>
+                <li>AUC < 0.50: بدتر از تصادفی (احتمالاً کلاس‌ها برعکس شده)</li>
+            </ul>
+        </div>
+
+        <h3>تفسیر احتمالی AUC</h3>
+        <div class="quote">
+            "اگر AUC = 0.85 باشد، یعنی اگر یک نمونه مثبت و یک نمونه منفی تصادفی انتخاب کنیم، مدل ۸۵٪ مواقع نمونه مثبت را بالاتر از منفی رتبه‌بندی می‌کند."
+        </div>
+
+        <h3>مزایای ROC-AUC نسبت به F1</h3>
+        <div class="key-concept">
+            <ol>
+                <li><strong>مستقل از آستانه:</strong> یک عدد برای کل مدل، نه فقط یک آستانه</li>
+                <li><strong>مناسب داده نامتوازن:</strong> درصد نسبی را می‌سنجد، نه مطلق</li>
+                <li><strong>مقایسه آسان:</strong> دو مدل را با یک عدد مقایسه کنید</li>
+                <li><strong>بصری:</strong> منحنی قابل رسم و تحلیل است</li>
+            </ol>
+        </div>
+
+        <h3>PR Curve (Precision-Recall) - جایگزین ROC در نامتوازن شدید</h3>
+        <div class="example">
+            <p>وقتی کلاس مثبت خیلی نادر است (مثلاً ۰/۱٪)، منحنی ROC ممکن است خیلی خوش‌بینانه باشد. PR Curve واقع‌بینانه‌تر است:</p>
+            <ul>
+                <li>محور X: Recall</li>
+                <li>محور Y: Precision</li>
+                <li>مساحت زیر آن: AP (Average Precision)</li>
+            </ul>
+        </div>
+
+        <h3>سناریو واقعی: تشخیص کلاهبرداری در اسنپ</h3>
+        <div class="example">
+            <p>سیستم ضد کلاهبرداری اسنپ برای تشخیص سفرهای جعلی:</p>
+            <ul>
+                <li>۱۰ میلیون سفر در ماه</li>
+                <li>۱۰۰۰ مورد مشکوک (۰/۰۱٪)</li>
+                <li>مدل A: AUC = 0.95 (از ۱۰۰ کلاهبرداری، ۹۵ تا پیدا می‌کند)</li>
+                <li>مدل B: AUC = 0.80 (از ۱۰۰ کلاهبرداری، ۸۰ تا پیدا می‌کند)</li>
+                <li>→ مدل A انتخاب می‌شود، حتی اگر Accuracy هر دو ۹۹/۹٪ باشد!</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۷: شاخص‌های پیشرفته طبقه‌بندی</button>
+    <div class="panel">
+        <h3>۱. Specificity (ویژگی)</h3>
+        <div class="formula">
+            Specificity = TN / (TN + FP) = درست منفی / همه واقعاً منفی
+        </div>
+        <p>معادل منفی Recall. "از کسانی که واقعاً منفی بودند، چند تا درست تشخیص دادیم؟"</p>
+
+        <h3>۲. MCC (Matthews Correlation Coefficient)</h3>
+        <div class="formula">
+            MCC = (TP × TN - FP × FN) / √((TP+FP)(TP+FN)(TN+FP)(TN+FN))
+        </div>
+        <p>ضریب همبستگی بین پیش‌بینی و واقعیت. عددی بین -۱ و ۱.</p>
+        <div class="key-concept">
+            <strong>مزیت MCC:</strong>
+            <ul>
+                <li>هر چهار خانه ماتریس سردرگمی را در نظر می‌گیرد (نه فقط دو تا)</li>
+                <li>حتی در داده خیلی نامتوازن هم قابل اعتماد است</li>
+                <li>می‌تواند منفی شود (مدل خیلی بد)</li>
+                <li>اگر MCC = 0، مدل تصادفی است</li>
+            </ul>
+        </div>
+
+        <h3>۳. Cohen's Kappa</h3>
+        <div class="formula">
+            κ = (p<sub>o</sub> - p<sub>e</sub>) / (1 - p<sub>e</sub>)
+        </div>
+        <p>که p<sub>o</sub> دقت مشاهده‌شده و p<sub>e</sub> دقت مورد انتظار بر اساس شانس است.</p>
+        <p>اصلاح Accuracy برای شانس. اگر κ = 1 دو مدل کاملاً موافق‌اند، κ ≤ 0 بدتر از شانس.</p>
+
+        <h3>۴. Log Loss (Cross-Entropy)</h3>
+        <div class="formula">
+            LogLoss = -1/n × Σ[y<sub>i</sub> log(p<sub>i</sub>) + (1-y<sub>i</sub>) log(1-p<sub>i</sub>)]
+        </div>
+        <p>تفاوت این با Accuracy: Log Loss به «میزان اطمینان» مدل هم حساس است.</p>
+
+        <div class="example">
+            <p>دو پیش‌بینی برای یک نمونه واقعاً مثبت:</p>
+            <ul>
+                <li>مدل A: 0.99 (خیلی مطمئن، درست)</li>
+                <li>مدل B: 0.51 (کمی مطمئن، درست ولی نه چندان)</li>
+            </ul>
+            <p>هر دو Accuracy را بالا می‌برند، اما Log Loss مدل A خیلی کمتر است. مدل A بهتر است چون مطمئن‌تر درست حدس زده.</p>
+        </div>
+
+        <h3>۵. Hamming Loss (مسائل چندبرچسبی)</h3>
+        <p>در مسائلی که هر نمونه چند برچسب دارد (مثلاً یک فیلم می‌تواند هم "اکشن" و هم "کمدی" باشد):</p>
+        <div class="formula">
+            HammingLoss = (تعداد برچسب‌های اشتباه) / (کل برچسب‌ها)
+        </div>
+
+        <h3>۶. شاخص‌های چندکلاسه</h3>
+        <p>در مسائل چندکلاسه (مثلاً تشخیص ۱۰ رقم، یا تشخیص نوع غذا در اسنپ‌فود)، باید:</p>
+        <ul>
+            <li><strong>Macro Avg:</strong> میانگین ساده شاخص هر کلاس (کلاس‌های کوچک اهمیت بیشتری دارند)</li>
+            <li><strong>Micro Avg:</strong> محاسبه globally (مثل Accuracy کلی)</li>
+            <li><strong>Weighted Avg:</strong> میانگین وزنی با وزن تعداد نمونه هر کلاس</li>
         </ul>
     </div>
 
-    <button class="accordion">ROC و AUC</button>
+    <button class="accordion">بخش ۸: Cross-Validation (اعتبارسنجی متقاطع)</button>
     <div class="panel">
-        <h3>ROC Curve (Receiver Operating Characteristic):</h3>
-        <p>نمودار True Positive Rate در مقابل False Positive Rate</p>
-
-        <div class="formula">
-            TPR = TP / (TP + FN)
-            <br>
-            FPR = FP / (FP + TN)
+        <h3>مشکل ارزیابی فقط با یکبار تست</h3>
+        <div class="warning">
+            اگر فقط یک train-test split داشته باشیم، ممکن است نتیجه تصادفی باشد. مثلاً:
+            <ul>
+                <li>اگر test set سخت باشد، مدل بد به نظر می‌رسد</li>
+                <li>اگر test set آسان باشد، مدل خوب به نظر می‌رسد</li>
+            </ul>
         </div>
 
-        <h3>AUC (Area Under Curve):</h3>
-        <ul>
-            <li>AUC = 1: مدل عالی</li>
-            <li>AUC = 0.5: مدل تصادفی</li>
-            <li>AUC < 0.5: بدتر از تصادفی</li>
-        </ul>
+        <h3>K-Fold Cross Validation</h3>
+        <p>داده را به K قسمت مساوی تقسیم کن. K بار آزمایش کن، هر بار یک قسمت test و K-1 قسمت train:</p>
 
-        <h3>مزایا:</h3>
-        <ul>
-            <li>مقایسه مدل‌ها</li>
-            <li>انتخاب آستانه بهینه</li>
-            <li>کاربرد در داده نامتوازن</li>
-        </ul>
-    </div>
+        <div class="example">
+            <p><strong>5-Fold CV:</strong></p>
+            <ul>
+                <li>Fold 1: Train=[2,3,4,5], Test=[1] → Score1</li>
+                <li>Fold 2: Train=[1,3,4,5], Test=[2] → Score2</li>
+                <li>Fold 3: Train=[1,2,4,5], Test=[3] → Score3</li>
+                <li>Fold 4: Train=[1,2,3,5], Test=[4] → Score4</li>
+                <li>Fold 5: Train=[1,2,3,4], Test=[5] → Score5</li>
+                <li>CV Score = میانگین (Score1, ..., Score5)</li>
+                <li>علاوه بر این، انحراف معیار هم محاسبه می‌شود (نشانه پایداری)</li>
+            </ul>
+        </div>
 
-    <button class="accordion">انتخاب شاخص مناسب</button>
-    <div class="panel">
+        <h3>انواع Cross-Validation</h3>
         <table>
             <tr>
-                <th>مشکل</th>
-                <th>شاخص مناسب</th>
+                <th>روش</th>
+                <th>توضیح</th>
+                <th>کاربرد</th>
             </tr>
             <tr>
-                <td>داده متوازن</td>
-                <td>Accuracy</td>
+                <td>K-Fold</td>
+                <td>تقسیم به K قسمت</td>
+                <td>عمومی، استاندارد</td>
             </tr>
             <tr>
+                <td>Stratified K-Fold</td>
+                <td>K-Fold با حفظ نسبت کلاس‌ها</td>
                 <td>داده نامتوازن</td>
-                <td>Precision, Recall, F1</td>
             </tr>
             <tr>
-                <td>تشخیص همه موارد مثبت</td>
-                <td>Recall</td>
+                <td>Leave-One-Out (LOO)</td>
+                <td>K = N (هر بار یک نمونه test)</td>
+                <td>داده خیلی کم</td>
             </tr>
             <tr>
-                <td>کاهش false positive</td>
-                <td>Precision</td>
+                <td>Time Series Split</td>
+                <td>ترتیب زمانی حفظ می‌شود</td>
+                <td>سری زمانی (مثلاً پیش‌بینی قیمت دلار)</td>
             </tr>
             <tr>
-                <td>مقایسه کلی مدل‌ها</td>
-                <td>AUC-ROC</td>
+                <td>Group K-Fold</td>
+                <td>گروه‌ها از هم جدا نمی‌شوند</td>
+                <td>داده با ساختار گروهی</td>
+            </tr>
+            <tr>
+                <td>Repeated K-Fold</td>
+                <td>K-Fold چند بار با تقسیم‌های مختلف</td>
+                <td>برای نتایج پایدارتر</td>
             </tr>
         </table>
 
-        <h3>Trade-off:</h3>
-        <p>Precision و Recall معمولاً متضاد هستند.</p>
-        <p>→ بسته به مشکل، یکی را انتخاب کنید.</p>
+        <h3>مثال عملی با Stratified K-Fold</h3>
+        <div class="example">
+            <p>تشخیص اسپم در ایمیل‌های فارسی:</p>
+            <ul>
+                <li>۱۰۰۰۰ ایمیل، ۵٪ اسپم (۵۰۰ اسپم، ۹۵۰۰ عادی)</li>
+                <li>Stratified 5-Fold: هر fold دقیقاً ۱۰۰ اسپم و ۱۹۰۰ عادی دارد</li>
+                <li>میانگین F1 در ۵ fold: مثلاً ۰/۹۲</li>
+                <li>انحراف معیار: مثلاً ۰/۰۲ (پایدار)</li>
+            </ul>
+        </div>
+
+        <h3>Leave-One-Out در عمل</h3>
+        <div class="example">
+            <p><strong>سناریو:</strong> تشخیص نوع نادر بیماری ژنتیکی در ایران - فقط ۳۰ نمونه موجود</p>
+            <ul>
+                <li>LOO: ۳۰ بار آزمایش، هر بار ۲۹ train و ۱ test</li>
+                <li>هر نمونه دقیقاً یکبار تست می‌شود</li>
+                <li>ولید ولی کند (برای مدل‌های سنگین مناسب نیست)</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۹: انتخاب مدل (Model Selection)</button>
+    <div class="panel">
+        <h3>فرآیند انتخاب مدل</h3>
+        <p>اگر چند مدل داریم (مثلاً Logistic Regression، Random Forest، XGBoost، Neural Network)، چطور بهترین را انتخاب کنیم؟</p>
+
+        <h3>روش ۱: مقایسه با معیارهای مختلف</h3>
+        <div class="formula">
+            برای هر مدل:
+            1. آموزش روی Train
+            2. ارزیابی روی Validation (با چند شاخص)
+            3. Cross-Validation برای پایداری
+            4. مقایسه
+        </div>
+
+        <h3>مقایسه چند مدل در عمل</h3>
+        <table>
+            <tr>
+                <th>مدل</th>
+                <th>Accuracy</th>
+                <th>F1</th>
+                <th>AUC</th>
+                <th>زمان آموزش</th>
+            </tr>
+            <tr>
+                <td>Logistic Regression</td>
+                <td>0.85</td>
+                <td>0.78</td>
+                <td>0.88</td>
+                <td>1 ثانیه</td>
+            </tr>
+            <tr>
+                <td>Random Forest</td>
+                <td>0.89</td>
+                <td>0.85</td>
+                <td>0.93</td>
+                <td>10 ثانیه</td>
+            </tr>
+            <tr>
+                <td>XGBoost</td>
+                <td>0.91</td>
+                <td>0.88</td>
+                <td>0.95</td>
+                <td>5 ثانیه</td>
+            </tr>
+            <tr>
+                <td>Neural Network</td>
+                <td>0.90</td>
+                <td>0.86</td>
+                <td>0.94</td>
+                <td>300 ثانیه</td>
+            </tr>
+        </table>
+        <p><strong>سوال:</strong> کدام بهتر است؟ جواب: بستگی دارد به زمان و سخت‌افزار موجود!</p>
+
+        <h3>Hyperparameter Tuning</h3>
+        <p>هر مدل هایپرپارامترهایی دارد که باید تنظیم شوند:</p>
+        <ul>
+            <li>Random Forest: n_estimators، max_depth، min_samples_split</li>
+            <li>XGBoost: learning_rate، max_depth، n_estimators</li>
+            <li>Neural Network: layers، neurons، learning_rate، batch_size</li>
+        </ul>
+
+        <h3>Grid Search (جستجوی شبکه‌ای)</h3>
+        <div class="example">
+            <p>برای Random Forest:</p>
+            <ul>
+                <li>n_estimators: [50, 100, 200]</li>
+                <li>max_depth: [5, 10, 20, None]</li>
+                <li>min_samples_split: [2, 5, 10]</li>
+                <li><strong>کل ترکیب: 36 حالت</strong></li>
+                <li>هر حالت با 5-Fold CV → 180 آموزش!</li>
+                <li>طولانی ولی exhaustive</li>
+            </ul>
+        </div>
+
+        <h3>Random Search (در عمل بهتر)</h3>
+        <p>به جای همه ترکیب‌ها، تعدادی تصادفی امتحان کن:</p>
+        <div class="key-concept">
+            <strong>یافته تحقیقاتی:</strong> Random Search در عمل بهتر از Grid Search عمل می‌کند! چون:
+            <ul>
+                <li>فضای بزرگ‌تری را پوشش می‌دهد</li>
+                <li>محاسبات کمتری نیاز دارد</li>
+                <li>اغلب به جواب بهینه یا نزدیک می‌رسد</li>
+            </ul>
+        </div>
+
+        <h3>Bayesian Optimization (پیشرفته)</h3>
+        <p>از نتایج قبلی یاد می‌گیرد که کجا را امتحان کند. کتابخانه‌هایی مثل Optuna و Hyperopt.</p>
+
+        <h3>فلوی کامل انتخاب مدل</h3>
+        <div class="formula">
+            1. تقسیم داده: Train (60%) + Val (20%) + Test (20%)
+            2. چند مدل مختلف آموزش بده
+            3. هر کدام را روی Val ارزیابی کن
+            4. بهترین را انتخاب کن
+            5. Hyperparameter Tuning روی بهترین
+            6. Cross-Validation برای اطمینان
+            7. ارزیابی نهایی روی Test
+            8. استقرار (Deploy)
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۱۰: انتخاب شاخص مناسب - راهنمای نهایی</button>
+    <div class="panel">
+        <h3>درخت تصمیم‌گیری عملی</h3>
+        <div class="formula">
+            نوع مسئله چیست؟
+            <br>├── رگرسیون → RMSE یا MAE + R²
+            <br>└── طبقه‌بندی → آیا داده متوازن است؟
+            <br>    ├── بله → Accuracy + F1
+            <br>    └── خیر
+            <br>        ├── کدام خطا بدتر است؟
+            <br>        │   ├── FN → Recall + F2
+            <br>        │   └── FP → Precision + F0.5
+            <br>        └── مقایسه مدل‌ها → AUC-ROC یا AP
+        </div>
+
+        <h3>جدول مرجع نهایی</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>شاخص اول</th>
+                <th>شاخص دوم</th>
+                <th>چرا</th>
+            </tr>
+            <tr>
+                <td>پیش‌بینی قیمت خانه دیوار</td>
+                <td>RMSE</td>
+                <td>R²</td>
+                <td>یکای قابل فهم، تفسیر آسان</td>
+            </tr>
+            <tr>
+                <td>تشخیص سرطان</td>
+                <td>Recall</td>
+                <td>F2</td>
+                <td>miss کردن بیمار = مرگ</td>
+            </tr>
+            <tr>
+                <td>توصیه محصول دیجی‌کالا</td>
+                <td>Precision</td>
+                <td>F0.5</td>
+                <td>پیشنهاد بد = نارضایتی</td>
+            </tr>
+            <tr>
+                <td>تشخیص تقلب بانکی</td>
+                <td>Recall</td>
+                <td>F2, AUC</td>
+                <td>از دست دادن پول بدتر از مسدود کردن کارت</td>
+            </tr>
+            <tr>
+                <td>تشخیص اسپم فارسی</td>
+                <td>Precision</td>
+                <td>F0.5</td>
+                <td>ایمیل مهم را اسپم نکن</td>
+            </tr>
+            <tr>
+                <td>تشخیص چهره</td>
+                <td>F1</td>
+                <td>Accuracy</td>
+                <td>هر دو خطا بد است</td>
+            </tr>
+            <tr>
+                <td>پیش‌بینی فروش اسنپ‌فود</td>
+                <td>MAPE</td>
+                <td>RMSE</td>
+                <td>درصد خطا برای مدیر قابل فهم</td>
+            </tr>
+            <tr>
+                <td>مقایسه چند مدل</td>
+                <td>AUC</td>
+                <td>CV-Score</td>
+                <td>مستقل از آستانه</td>
+            </tr>
+        </table>
+
+        <h3>اشتباهات رایج در انتخاب شاخص</h3>
+        <div class="warning">
+            <ol>
+                <li><strong>گزارش فقط Accuracy در داده نامتوازن</strong> - فریبنده!</li>
+                <li><strong>نادیده گرفتن هزینه خطا</strong> - هر خطایی هزینه یکسان ندارد</li>
+                <li><strong>تمرکز بر یک شاخص</strong> - باید حداقل ۲ شاخص ببینید</li>
+                <li><strong>استفاده از AUC در multiclass</strong> - پیچیده‌تر است</li>
+                <li><strong>ارزیابی روی Train</strong> - بی‌فایده! باید Val/Test باشد</li>
+                <li><strong>عدم Cross-Validation</strong> - ممکن است نتیجه شانسی باشد</li>
+                <li><strong>تکرار ارزیابی روی Test</strong> - "data leakage" و overfit به test</li>
+            </ol>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۱۱: منابع و تمرین‌های عملی</button>
+    <div class="panel">
+        <h3>تمرین عملی ۱: محاسبه دستی شاخص‌ها</h3>
+        <div class="example">
+            <p>سیستم تشخیص چهره برای ورود به ساختمان:</p>
+            <p>تست روی ۵۰۰ نفر (۴۵۰ مجاز، ۵۰ غیرمجاز):</p>
+            <ul>
+                <li>TP = 40 (غیرمجاز درست تشخیص داده شد)</li>
+                <li>FN = 10 (غیرمجاز اشتباهی مجاز شناخته شد)</li>
+                <li>TN = 430 (مجاز درست تشخیص داده شد)</li>
+                <li>FP = 20 (مجاز اشتباهی غیرمجاز)</li>
+            </ul>
+            <p><strong>محاسبه کنید:</strong></p>
+            <ol>
+                <li>Accuracy = ?</li>
+                <li>Precision = ?</li>
+                <li>Recall = ?</li>
+                <li>F1 = ?</li>
+                <li>چه شاخصی برای این مسئله مهم‌تر است؟</li>
+            </ol>
+        </div>
+
+        <h3>تمرین عملی ۲: کد Python</h3>
+        <div class="formula">
+            <pre style="text-align: left; direction: ltr; background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
+from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score, f1_score,
+    roc_auc_score, confusion_matrix, classification_report
+)
+from sklearn.model_selection import cross_val_score, StratifiedKFold
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_breast_cancer
+
+# داده
+import pandas as pd
+
+# بارگذاری داده سرطان (واقعی)
+data = load_breast_cancer()
+X, y = data.data, data.target
+
+# مدل
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# Cross-Validation 5-Fold
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+scores = cross_val_score(model, X, y, cv=cv, scoring='f1')
+
+print(f"F1 در هر fold: {scores}")
+print(f"میانگین F1: {scores.mean():.3f}")
+print(f"انحراف معیار: {scores.std():.3f}")
+
+# آموزش نهایی و ارزیابی
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+y_prob = model.predict_proba(X_test)[:, 1]
+
+print(f"\nAccuracy: {accuracy_score(y_test, y_pred):.3f}")
+print(f"Precision: {precision_score(y_test, y_pred):.3f}")
+print(f"Recall: {recall_score(y_test, y_pred):.3f}")
+print(f"F1: {f1_score(y_test, y_pred):.3f}")
+print(f"AUC-ROC: {roc_auc_score(y_test, y_prob):.3f}")
+
+print("\nماتریس سردرگمی:")
+print(confusion_matrix(y_test, y_pred))
+            </pre>
+        </div>
+
+        <h3>تمرین عملی ۳: تحلیل سناریوی واقعی</h3>
+        <div class="example">
+            <p>شرکت اسنپ می‌خواهد سفرهای رانندگان با رفتار مشکوک (مثلاً سرعت غیرعادی، تغییر مسیر مکرر) را تشخیص دهد:</p>
+            <ol>
+                <li>چه شاخصی مناسب‌تر است: Accuracy، Precision یا Recall؟ چرا؟</li>
+                <li>اگر روزانه ۱۰۰۰۰۰ سفر باشد و ۱۰۰ مورد مشکوک باشد، Accuracy مدل "همه چی عادی" چقدر می‌شود؟ آیا قابل اعتماد است؟</li>
+                <li>اگر F1 = 0.85، Recall = 0.80، Precision = 0.91، مدل چگونه عمل می‌کند؟</li>
+                <li>اگر بخواهید آستانه (threshold) مدل را تنظیم کنید، چه معیاری را استفاده می‌کنید؟</li>
+            </ol>
+        </div>
+
+        <h3>تمرین عملی ۴: Grid Search</h3>
+        <div class="formula">
+            <pre style="text-align: left; direction: ltr; background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto;">
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+
+param_grid = {
+    'n_estimators': [50, 100, 200],
+    'max_depth': [5, 10, 20, None],
+    'min_samples_split': [2, 5, 10]
+}
+
+grid_search = GridSearchCV(
+    RandomForestClassifier(random_state=42),
+    param_grid,
+    cv=5,
+    scoring='f1',
+    n_jobs=-1  # استفاده از همه CPUها
+)
+
+grid_search.fit(X_train, y_train)
+
+print(f"بهترین پارامترها: {grid_search.best_params_}")
+print(f"بهترین F1: {grid_search.best_score_:.3f}")
+            </pre>
+        </div>
+
+        <h3>تمرین عملی ۵: مقایسه چند مدل</h3>
+        <div class="example">
+            <p>سه مدل روی داده پیش‌بینی ترک سرویس مشترکین ایرانسل:</p>
+            <table>
+                <tr>
+                    <th>مدل</th>
+                    <th>Accuracy</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1</th>
+                    <th>AUC</th>
+                </tr>
+                <tr>
+                    <td>Logistic Regression</td>
+                    <td>0.82</td>
+                    <td>0.65</td>
+                    <td>0.70</td>
+                    <td>0.67</td>
+                    <td>0.85</td>
+                </tr>
+                <tr>
+                    <td>Random Forest</td>
+                    <td>0.88</td>
+                    <td>0.75</td>
+                    <td>0.80</td>
+                    <td>0.77</td>
+                    <td>0.92</td>
+                </tr>
+                <tr>
+                    <td>XGBoost</td>
+                    <td>0.90</td>
+                    <td>0.80</td>
+                    <td>0.83</td>
+                    <td>0.81</td>
+                    <td>0.94</td>
+                </tr>
+            </table>
+            <p><strong>سوال:</strong></p>
+            <ul>
+                <li>کدام مدل بهتر است؟ چرا؟</li>
+                <li>اگر شرکت ایرانسل بخواهد مشتریانی که واقعاً ترک می‌کنند را بشناسد، کدام مهم‌تر است؟</li>
+                <li>آیا اختلاف مدل RF و XGBoost معنادار است؟ چطور بفهمیم؟</li>
+            </ul>
+        </div>
+
+        <h3>منابع برای مطالعه بیشتر</h3>
+        <div class="key-concept">
+            <ul>
+                <li><strong>کتاب:</strong> "Hands-On Machine Learning" - Aurélien Géron - فصل ۳ (Classification) و فصل ۴ (Training Models)</li>
+                <li><strong>کتاب:</strong> "Pattern Recognition and Machine Learning" - Bishop - فصل ۹ (Combining Models)</li>
+                <li><strong>مستندات:</strong> Scikit-learn metrics module (<code>sklearn.metrics</code>)</li>
+                <li><strong>مقاله:</strong> "The Relationship Between Precision-Recall and ROC Curves" - Davis & Goadrich</li>
+                <li><strong>دوره:</strong> Andrew Ng - Machine Learning (Coursera) - هفته‌های ۵-۷</li>
+                <li><strong>وبلاگ:</strong> "Classification Accuracy is Not Enough" - towardsdatascience.com</li>
+            </ul>
+        </div>
+
+        <h3>پروژه پیشنهادی برای تمرین</h3>
+        <div class="example">
+            <p>یکی از این پروژه‌ها را انتخاب کنید و از ابتدا تا انتها با ارزیابی کامل پیاده‌سازی کنید:</p>
+            <ol>
+                <li><strong>تشخیص اسپم فارسی:</strong> از دیتاست‌های فارسی استفاده کنید، Recall بالا هدف است</li>
+                <li><strong>پیش‌بینی قیمت خانه:</strong> داده‌های دیوار را scrape کنید (یا دیتاست آماده)، RMSE هدف است</li>
+                <li><strong>تشخیص احساس نظرات دیجی‌کالا:</strong> مثبت/منفی/خنثی، F1 Macro هدف است</li>
+                <li><strong>پیش‌بینی ترک سرویس:</strong> داده مخابرات/ایرانسل، Recall بالا هدف است</li>
+                <li><strong>تشخیص تقلب کارت‌های بانکی:</strong> داده نامتوازن، AUC بالا هدف است</li>
+            </ol>
+        </div>
     </div>
 
     <button class="accordion">یادداشت‌های استاد</button>
     <div class="panel">
         <div class="instructor-note">
             <strong>مقدمه و اهمیت شاخص‌ها (۸ دقیقه):</strong>
-            <p>با یک مثال شروع کنید: «مدلی داریم با ۹۰٪ دقت. خوب است؟». جواب: بستگی دارد! اگر داده نامتوازن باشد (۹۵٪ منفی، ۵٪ مثبت)، مدلی که همیشه منفی بگوید ۹۵٪ دقت دارد ولی هیچ مثبتی پیدا نمی‌کند. پس باید شاخص‌های دیگر را هم ببینیم. تأکید کنید که انتخاب شاخص مناسب به مشکل بستگی دارد.</p>
+            <p>با داستان بانک شروع کنید: «مدلی با ۹۹٪ دقت چطور می‌تواند بی‌فایده باشد؟». از دانشجویان بپرسید چه شاخصی مهم‌تر است. بحث کنید: در تشخیص تقلب، Accuracy فریبنده است. تأکید کنید که انتخاب شاخص به Context بستگی دارد، نه یک عدد جهانی.</p>
         </div>
         <div class="instructor-note">
-            <strong>شاخص‌های رگرسیون (۶ دقیقه):</strong>
-            <p>MSE به نقاط پرت خیلی حساس است - یک خانه ۱۰ میلیاردی می‌تواند همه را خراب کند. MAE مقاوم‌تر است. R² قابل فهم‌تر است - می‌گوید مدل چقدر از تغییرات را توضیح می‌دهد. اگر R² = 0.7 یعنی ۷۰٪ تغییرات را توضیح می‌دهد.</p>
+            <strong>شاخص‌های رگرسیون (۱۰ دقیقه):</strong>
+            <p>MSE را با مثال قیمت مسکن توضیح دهید: یک خانه لوکس ۱۰۰ میلیاردی می‌تواند MSE را منفجر کند. RMSE قابل فهم‌تر است چون هم‌یکا با خروجی است. R² توضیح می‌دهد چند درصد تغییرات توضیح داده شده - اما در داده تست ممکن است منفی شود! MAE مقاوم‌تر است. MAPE برای مدیرعامل قابل فهم‌تر است («مدل ما ۱۵٪ خطا دارد»).</p>
         </div>
         <div class="instructor-note">
-            <strong>ماتریس سردرگمی و Accuracy (۸ دقیقه):</strong>
-            <p>ماتریس سردرگمی را با یک مثال کامل توضیح دهید: TP واقعاً مثبت (تشخیص درست)، TN واقعاً منفی (تشخیص درست)، FP false alarm (اشتباه مثبت)، FN از دست رفته (miss). Accuracy = (TP+TN)/همه - اما در داده نامتوازن گمراه‌کننده است.</p>
+            <strong>ماتریس سردرگمی و Accuracy (۱۲ دقیقه):</strong>
+            <p>ماتریس سردرگمی را با مثال سرطان بیمارستان به طور کامل توضیح دهید. ۱۰۰ بیمار سرطانی، ۹۰۰ سالم. مدل ۸۵ سرطانی را درست تشخیص داد، ۱۵ را از دست داد. سوال کلیدی: «کدام خطا بدتر است؟ FN (۱۵ نفر سرطانی که گفتیم سالم‌اند) یا FP (۵۰ نفر سالم که گفتیم سرطانی‌اند)؟». بحث کلاسی غنی خواهد بود. تأکید کنید که Accuracy ساده‌ترین و در عین حال گمراه‌کننده‌ترین شاخص است.</p>
         </div>
         <div class="instructor-note">
-            <strong>Precision و Recall (۸ دقیقه):</strong>
-            <p>این دو را با مثال پزشکی توضیح دهید: اگر بخواهیم همه سرطانی‌ها را پیدا کنیم (حتی به قیمت false positive)، Recall بالا می‌خواهیم. اگر نخواهیم کسی را اشتباهاً سرطانی تشخیص دهیم (به قیمت از دست دادن برخی واقعی)، Precision بالا می‌خواهیم. Trade-off: نمی‌توان هر دو را همزمان بالا برد.</p>
+            <strong>Precision و Recall (۱۲ دقیقه):</strong>
+            <p>با سوال ساده شروع کنید: «اگر ۱۰ نفر بگوییم سرطانی‌اند، ۸ نفر واقعاً سرطانی باشند - Precision = 80٪». Recall: «اگر ۱۰۰ نفر واقعاً سرطانی باشند و ۸۰ نفر را پیدا کنیم - Recall = 80٪». حال توضیح دهید که معمولاً این دو متضادند. در پزشکی اولویت Recall است. در فروشگاه آنلاین اولویت Precision است. بحث کنید.</p>
         </div>
         <div class="instructor-note">
-            <strong>F1-Score و ROC-AUC (۸ دقیقه):</strong>
-            <p>F1 میانگین هارمونیک است - یعنی اگر یکی صفر باشد، F1 صفر می‌شود. این خوب است چون مدل باید هر دو را خوب داشته باشد. ROC را توضیح دهید: نموداری که TPR را در مقابل FPR نشان می‌دهد. AUC = 1 یعنی مدل عالی است، 0.5 یعنی تصادفی. AUC مزیت دارد که می‌تواند همه آستانه‌ها را یکجا نشان دهد.</p>
+            <strong>F1-Score و F-Beta (۸ دقیقه):</strong>
+            <p>توضیح دهید که F1 میانگین هارمونیک است نه حسابی چرا که اگر یکی صفر باشد، F1 صفر شود. سپس F-Beta: بتای ۰/۵ برای Precision مهم‌تر، بتای ۲ برای Recall مهم‌تر. با مثال تشخیص کلاهبرداری بانکی (Recall مهم) مقابل فیلتر اسپم (Precision مهم) نشان دهید.</p>
         </div>
         <div class="instructor-note">
-            <strong>انتخاب شاخص (۵ دقیقه):</strong>
-            <p>خلاصه کنید: داده متوازن = Accuracy. داده نامتوازن = F1 یا AUC. مشکل پزشکی = Recall بالا. مشکل توصیه = Precision بالا. همیشه به Context توجه کنید! تکلیف: دانشجویان باید یک سناریو بنویسند و شاخص مناسب را انتخاب کنند.</p>
+            <strong>ROC-AUC (۱۲ دقیقه):</strong>
+            <p>ROC را با نمودار توضیح دهید: TPR در مقابل FPR برای آستانه‌های مختلف. AUC = مساحت زیر منحنی. اگر AUC=0.5 خط مورب است (تصادفی). هر چه AUC بالاتر، بهتر. توضیح دهید ROC-AUC مستقل از آستانه است (برخلاف F1) و در داده نامتوازن هم کار می‌کند. تفسیر احتمالی: «اگر AUC=0.85، مدل ۸۵٪ مواقع نمونه مثبت را بالاتر رتبه‌بندی می‌کند».</p>
+        </div>
+        <div class="instructor-note">
+            <strong>Cross-Validation (۱۰ دقیقه):</strong>
+            <p>توضیح دهید که CV تخمین پایدارتری از عملکرد مدل می‌دهد. 5-Fold استاندارد است. در داده نامتوازن Stratified K-Fold لازم است (نسبت کلاس‌ها حفظ شود). در سری زمانی از Time Series Split استفاده می‌شود (نه تصادفی). Leave-One-Out برای داده خیلی کم مناسب است (ولی کند).</p>
+        </div>
+        <div class="instructor-note">
+            <strong>انتخاب مدل و Hyperparameter Tuning (۱۰ دقیقه):</strong>
+            <p>توضیح دهید: چند مدل مختلف بسازید، هر کدام را با Cross-Validation ارزیابی کنید، بهترین را انتخاب کنید، سپس با Grid Search یا Random Search هایپرپارامترها را تنظیم کنید. تأکید کنید: Random Search در عمل بهتر از Grid Search است! علت: فضای بزرگ‌تر را پوشش می‌دهد. در آخر، تست نهایی فقط یک‌بار روی Test.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>انتخاب شاخص نهایی (۱۰ دقیقه):</strong>
+            <p>یک جدول بزرگ روی تخته بکشید: «اگر مسئله X است، شاخص Y». از دانشجویان بخواهید سناریو بنویسند. مثلاً: «ما در دیجی‌کالا می‌خواهیم محصولاتی که مشتری ناراضی می‌کند را بشناسیم» - شاخص مناسب کدام است؟ بحث کنید: از یک طرف Recall (همه ناراضی‌ها پیدا شوند)، از طرف دیگر Precision (اشتباه نکنیم). تعادل چیست؟</p>
+        </div>
+        <div class="instructor-note">
+            <strong>جمع‌بندی و تکلیف (۸ دقیقه):</strong>
+            <p>خلاصه کنید که انتخاب شاخص یک تصمیم Context-based است. یادآوری کنید: «همیشه چند شاخص ببینید، نه یکی». تکلیف: دانشجویان باید یک پروژه کوچک انتخاب کنند (مثل تشخیص اسپم فارسی، پیش‌بینی قیمت دیوار) و گزارش کامل با ارزیابی چندشاخصی تحویل دهند. زمان پیشنهادی: ۱۲۰ دقیقه مطالعه + ۱۸۰ دقیقه تمرین.</p>
         </div>
     </div>
 
@@ -259,158 +1119,245 @@
         <div class="self-read">
             <h2>فصل چهاردهم: شاخص‌های ارزیابی و انتخاب مدل</h2>
 
-            <h3>۱۴.۱ شاخص‌های ارزیابی رگرسیون</h3>
-
-            <h4>۱. MSE (Mean Squared Error):</h4>
-            <p>MSE = 1/n × Σ(yi - ŷi)²</p>
+            <h3>۱۴.۱ چرا ارزیابی مهم است</h3>
+            <p>ارزیابی مدل تنها برای فهم «چقدر خوب کار می‌کند» نیست، بلکه برای:</p>
             <ul>
-                <li>همیشه مثبت است</li>
-                <li>به نقاط پرت خیلی حساس است</li>
-                <li>یکای آن مجذور یکای اصلی است</li>
+                <li>مقایسه چند مدل مختلف</li>
+                <li>تنظیم هایپرپارامترها</li>
+                <li>تشخیص overfitting و underfitting</li>
+                <li>تصمیم‌گیری برای استقرار (deploy)</li>
+                <li>ارتباط با ذی‌نفعان (مدیر، مشتری، سرمایه‌گذار)</li>
             </ul>
 
-            <h4>۲. RMSE (Root Mean Squared Error):</h4>
-            <p>RMSE = √MSE</p>
+            <h3>۱۴.۲ شاخص‌های رگرسیون</h3>
+
+            <h4>MSE (Mean Squared Error):</h4>
+            <div class="formula">
+                MSE = <span class="math">1/n × Σ(y<sub>i</sub> - ŷ<sub>i</sub>)²</span>
+            </div>
             <ul>
-                <li>هم‌یکا با متغیر خروجی است</li>
-                <li>قابل فهم‌تر از MSE است</li>
+                <li>همیشه مثبت</li>
+                <li>به نقاط پرت خیلی حساس (توان ۲)</li>
+                <li>یکایش مجذور یکای خروجی</li>
+                <li>مناسب برای آموزش مدل (مشتق‌پذیر)</li>
             </ul>
 
-            <h4>۳. MAE (Mean Absolute Error):</h4>
-            <p>MAE = 1/n × Σ|yi - ŷi|</p>
+            <h4>RMSE (Root MSE):</h4>
+            <div class="formula">
+                RMSE = √MSE
+            </div>
             <ul>
-                <li>کمتر حساس به نقاط پرت است</li>
-                <li>یکای آن همان یکای اصلی است</li>
+                <li>هم‌یکا با خروجی</li>
+                <li>قابل فهم‌تر</li>
+                <li>مناسب برای گزارش</li>
             </ul>
 
-            <h4>۴. R² (ضریب تعیین):</h4>
-            <p>R² = 1 - SSres / SStot</p>
+            <h4>MAE (Mean Absolute Error):</h4>
+            <div class="formula">
+                MAE = <span class="math">1/n × Σ|y<sub>i</sub> - ŷ<sub>i</sub>|</span>
+            </div>
             <ul>
-                <li>بین ۰ و ۱ است</li>
+                <li>مقاوم در برابر نقاط پرت</li>
+                <li>هم‌یکا با خروجی</li>
+                <li>تفسیر خطی (نه مجذور)</li>
+            </ul>
+
+            <h4>R² (Coefficient of Determination):</h4>
+            <div class="formula">
+                R² = 1 - SS<sub>res</sub> / SS<sub>tot</sub>
+            </div>
+            <ul>
+                <li>بین -∞ و ۱</li>
                 <li>۱ = مدل عالی</li>
-                <li>۰ = مدل بد</li>
+                <li>۰ = به اندازه میانگین</li>
+                <li>منفی = بدتر از میانگین</li>
             </ul>
 
-            <h3>۱۴.۲ شاخص‌های ارزیابی طبقه‌بندی</h3>
+            <h4>MAPE (Mean Absolute Percentage Error):</h4>
+            <div class="formula">
+                MAPE = <span class="math">100/n × Σ|(y<sub>i</sub> - ŷ<sub>i</sub>) / y<sub>i</sub>|</span>
+            </div>
+            <ul>
+                <li>درصد خطا</li>
+                <li>برای مدیر قابل فهم</li>
+                <li>مشکل: وقتی y نزدیک صفر، انفجاری می‌شود</li>
+            </ul>
 
-            <h4>ماتریس سردرگمی (Confusion Matrix):</h4>
+            <h4>Adjusted R²:</h4>
+            <div class="formula">
+                Adjusted R² = 1 - (1 - R²)(n-1)/(n-k-1)
+            </div>
+            <ul>
+                <li>جریمه ویژگی‌های بی‌ربط</li>
+                <li>مناسب برای مقایسه مدل‌ها با تعداد ویژگی متفاوت</li>
+            </ul>
+
+            <h3>۱۴.۳ ماتریس سردرگمی</h3>
+            <p>جدول ۲×۲ که نتایج مدل طبقه‌بندی را نشان می‌دهد:</p>
             <table>
-                <tr>
-                    <th></th>
-                    <th>پیش‌بینی: مثبت</th>
-                    <th>پیش‌بینی: منفی</th>
-                </tr>
-                <tr>
-                    <th>واقعی: مثبت</th>
-                    <td>TP (True Positive)</td>
-                    <td>FN (False Negative)</td>
-                </tr>
-                <tr>
-                    <th>واقعی: منفی</th>
-                    <td>FP (False Positive)</td>
-                    <td>TN (True Negative)</td>
-                </tr>
+                <tr><th></th><th>پیش‌بینی مثبت</th><th>پیش‌بینی منفی</th></tr>
+                <tr><th>واقعی مثبت</th><td>TP</td><td>FN</td></tr>
+                <tr><th>واقعی منفی</th><td>FP</td><td>TN</td></tr>
             </table>
 
-            <h4>Accuracy (دقت):</h4>
-            <p>Accuracy = (TP + TN) / (TP + TN + FP + FN)</p>
+            <h4>تفسیر هر خانه:</h4>
+            <ul>
+                <li>TP: درست مثبت (تشخیص صحیح)</li>
+                <li>TN: درست منفی (تشخیص صحیح)</li>
+                <li>FP: نادرست مثبت (false alarm)</li>
+                <li>FN: نادرست منفی (missed)</li>
+            </ul>
 
-            <h3>۱۴.۳ Precision و Recall</h3>
+            <h3>۱۴.۴ Accuracy</h3>
+            <div class="formula">
+                Accuracy = (TP + TN) / (TP + TN + FP + FN)
+            </div>
 
-            <h4>Precision (دقت مثبت):</h4>
-            <p>Precision = TP / (TP + FP)</p>
-            <p>از کسانی که مثبت گفتیم، چندتا واقعاً مثبت بودند؟</p>
+            <h4>مشکل Accuracy:</h4>
+            <p>در داده نامتوازن، Accuracy فریبنده است. مدل «همه منفی» در داده ۹۹٪ منفی، Accuracy = ۹۹٪ ولی هیچ مثبتی پیدا نمی‌کند!</p>
 
-            <h4>Recall (یادآوری):</h4>
-            <p>Recall = TP / (TP + FN)</p>
-            <p>از کسانی که واقعاً مثبت بودند، چندتا را پیدا کردیم؟</p>
+            <h3>۱۴.۵ Precision</h3>
+            <div class="formula">
+                Precision = TP / (TP + FP)
+            </div>
+            <p>«از کسانی که مثبت گفتیم، چندتا واقعاً مثبت بودند؟»</p>
+            <p>در فیلتر اسپم مهم است: ایمیل مهم اسپم نشود.</p>
+
+            <h3>۱۴.۶ Recall</h3>
+            <div class="formula">
+                Recall = TP / (TP + FN)
+            </div>
+            <p>«از کسانی که واقعاً مثبت بودند، چندتا را پیدا کردیم؟»</p>
+            <p>در تشخیص بیماری مهم است: بیمار missed نشود.</p>
 
             <h4>Trade-off:</h4>
-            <p>Precision و Recall معمولاً متضاد هستند. بسته به مشکل، یکی را انتخاب کنید.</p>
+            <p>افزایش معمولاً یکی، کاهش دیگری است. نقطه بهینه به Context بستگی دارد.</p>
 
-            <h3>۱۴.۴ F1-Score</h3>
-
-            <p>F1 میانگین هارمونیک Precision و Recall است:</p>
-            <p>F1 = 2 × (Precision × Recall) / (Precision + Recall)</p>
-
-            <h4>چرا میانگین هارمونیک؟</h4>
-            <ul>
-                <li>اگر یکی صفر باشد، F1 صفر می‌شود</li>
-                <li>هر دو باید بالا باشند</li>
-            </ul>
+            <h3>۱۴.۷ F1-Score</h3>
+            <div class="formula">
+                F1 = 2 × (P × R) / (P + R)
+            </div>
+            <p>میانگین هارمونیک. اگر یکی صفر، F1 صفر. هر دو باید بالا باشند.</p>
 
             <h4>F-Beta:</h4>
+            <div class="formula">
+                F<sub>β</sub> = (1+β²) × (P×R) / (β²×P + R)
+            </div>
             <ul>
-                <li>F0.5: وقتی Precision مهم‌تر است</li>
-                <li>F2: وقتی Recall مهم‌تر است</li>
+                <li>β=0.5: Precision مهم‌تر</li>
+                <li>β=1: F1 (تعادل)</li>
+                <li>β=2: Recall مهم‌تر</li>
             </ul>
 
-            <h3>۱۴.۵ منحنی ROC و AUC</h3>
+            <h3>۱۴.۸ ROC و AUC</h3>
 
-            <h4>منحنی ROC:</h4>
-            <p>نمودار True Positive Rate در مقابل False Positive Rate</p>
-            <p>TPR = TP / (TP + FN)</p>
-            <p>FPR = FP / (FP + TN)</p>
-
-            <h4>AUC (Area Under Curve):</h4>
+            <h4>ROC Curve:</h4>
+            <p>نمودار TPR در مقابل FPR برای آستانه‌های مختلف:</p>
             <ul>
-                <li>AUC = 1: مدل عالی</li>
-                <li>AUC = 0.5: مدل تصادفی</li>
+                <li>TPR (Recall) = TP/(TP+FN)</li>
+                <li>FPR = FP/(FP+TN)</li>
+            </ul>
+
+            <h4>AUC:</h4>
+            <p>مساحت زیر منحنی ROC - بین ۰ و ۱:</p>
+            <ul>
+                <li>AUC = 1: عالی</li>
+                <li>AUC = 0.9: خیلی خوب</li>
+                <li>AUC = 0.5: تصادفی</li>
                 <li>AUC < 0.5: بدتر از تصادفی</li>
             </ul>
 
-            <h4>مزایای ROC-AUC:</h4>
+            <h4>مزایای AUC:</h4>
             <ul>
-                <li>مقایسه مدل‌ها</li>
-                <li>انتخاب آستانه بهینه</li>
-                <li>کاربرد در داده نامتوازن</li>
+                <li>مستقل از آستانه</li>
+                <li>مناسب داده نامتوازن</li>
+                <li>یک عدد برای مقایسه مدل‌ها</li>
             </ul>
 
-            <h3>۱۴.۶ انتخاب شاخص مناسب</h3>
+            <h3>۱۴.۹ شاخص‌های پیشرفته</h3>
+
+            <h4>MCC (Matthews Correlation Coefficient):</h4>
+            <div class="formula">
+                MCC = (TP×TN - FP×FN) / √[(TP+FP)(TP+FN)(TN+FP)(TN+FN)]
+            </div>
+            <p>بین -۱ و ۱. هر چهار خانه را در نظر می‌گیرد.</p>
+
+            <h4>Cohen's Kappa:</h4>
+            <p>اصلاح Accuracy برای شانس. κ ≤ 0 بدتر از شانس.</p>
+
+            <h4>Log Loss:</h4>
+            <p>به «میزان اطمینان» مدل هم حساس.</p>
+
+            <h3>۱۴.۱۰ Cross-Validation</h3>
+
+            <h4>K-Fold:</h4>
+            <p>تقسیم به K قسمت، K بار آزمایش.</p>
+
+            <h4>Stratified K-Fold:</h4>
+            <p>برای داده نامتوازن، نسبت کلاس‌ها حفظ می‌شود.</p>
+
+            <h4>Leave-One-Out:</h4>
+            <p>هر بار یک نمونه test (K=N). برای داده خیلی کم.</p>
+
+            <h4>Time Series Split:</h4>
+            <p>برای سری زمانی، ترتیب زمانی حفظ می‌شود.</p>
+
+            <h3>۱۴.۱۱ انتخاب مدل</h3>
+
+            <h4>فرآیند:</h4>
+            <ol>
+                <li>چند مدل بساز</li>
+                <li>هر کدام را با CV ارزیابی کن</li>
+                <li>بهترین را انتخاب کن</li>
+                <li>هایپرپارامترها را تنظیم کن (Grid/Random Search)</li>
+                <li>تست نهایی روی Test (فقط یک‌بار!)</li>
+                <li>استقرار</li>
+            </ol>
+
+            <h4>Grid Search:</h4>
+            <p>تمام ترکیب‌های پارامتر را امتحان کن. Exhausted ولی کند.</p>
+
+            <h4>Random Search:</h4>
+            <p>تعدادی ترکیب تصادفی. در عمل بهتر از Grid!</p>
+
+            <h3>۱۴.۱۲ راهنمای انتخاب شاخص</h3>
 
             <table>
-                <tr>
-                    <th>مشکل</th>
-                    <th>شاخص مناسب</th>
-                </tr>
-                <tr>
-                    <td>داده متوازن</td>
-                    <td>Accuracy</td>
-                </tr>
-                <tr>
-                    <td>داده نامتوازن</td>
-                    <td>Precision, Recall, F1</td>
-                </tr>
-                <tr>
-                    <td>تشخیص همه موارد مثبت</td>
-                    <td>Recall</td>
-                </tr>
-                <tr>
-                    <td>کاهش false positive</td>
-                    <td>Precision</td>
-                </tr>
-                <tr>
-                    <td>مقایسه کلی مدل‌ها</td>
-                    <td>AUC-ROC</td>
-                </tr>
+                <tr><th>سناریو</th><th>شاخص اول</th></tr>
+                <tr><td>قیمت مسکن</td><td>RMSE</td></tr>
+                <tr><td>تشخیص سرطان</td><td>Recall</td></tr>
+                <tr><td>توصیه محصول</td><td>Precision</td></tr>
+                <tr><td>تقلب بانکی</td><td>Recall</td></tr>
+                <tr><td>فیلتر اسپم</td><td>Precision</td></tr>
+                <tr><td>تشخیص چهره</td><td>F1</td></tr>
+                <tr><td>مقایسه مدل‌ها</td><td>AUC</td></tr>
+                <tr><td>داده نامتوازن</td><td>F1, AUC</td></tr>
             </table>
 
             <h3>خلاصه فصل:</h3>
             <ol>
-                <li>شاخص‌های رگرسیون: MSE، RMSE، MAE، R²</li>
-                <li>شاخص‌های طبقه‌بندی: Accuracy، Precision، Recall، F1</li>
-                <li>ROC-AUC برای مقایسه مدل‌ها در تمام آستانه‌ها</li>
-                <li>انتخاب شاخص به نوع مشکل بستگی دارد</li>
-                <li>در داده نامتوازن از F1 یا AUC استفاده کنید</li>
+                <li>شاخص‌های رگرسیون: MSE، RMSE، MAE، R²، MAPE</li>
+                <li>ماتریس سردرگمی پایه همه شاخص‌های طبقه‌بندی است</li>
+                <li>Accuracy در داده نامتوازن فریبنده است</li>
+                <li>Precision و Recall معمولاً متضاد هستند</li>
+                <li>F1 میانگین هارمونیک - هر دو باید بالا باشند</li>
+                <li>ROC-AUC مستقل از آستانه و مناسب نامتوازن</li>
+                <li>Cross-Validation برای تخمین پایدار لازم است</li>
+                <li>انتخاب شاخص به Context و هزینه خطا بستگی دارد</li>
             </ol>
 
             <h3>تمرین‌های خودآزمایی:</h3>
             <ol>
-                <li>تفاوت Precision و Recall چیست؟</li>
+                <li>تفاوت RMSE و MAE در حساسیت به پرت چیست؟</li>
                 <li>چرا F1 از میانگین حسابی استفاده نمی‌کند؟</li>
-                <li>یک مثال بزنید که در آن Recall مهم‌تر از Precision باشد</li>
-                <li>AUC چه چیزی را نشان می‌دهد؟</li>
-                <li>چرا Accuracy برای داده نامتوازن مناسب نیست؟</li>
+                <li>یک مثال بزنید که در آن Recall مهم‌تر از Precision باشد.</li>
+                <li>AUC چه چیزی را نشان می‌دهد؟ تفسیر احتمالی آن چیست؟</li>
+                <li>چرا Accuracy برای داده نامتوازن مناسب نیست؟ مثال عددی بزنید.</li>
+                <li>MCC چه مزیتی نسبت به F1 دارد؟</li>
+                <li>Stratified K-Fold چه زمانی لازم است؟</li>
+                <li>چرا Random Search در عمل بهتر از Grid Search است؟</li>
+                <li>اگر AUC مدلی 0.99 باشد ولی Recall آن 0.30، چه مشکلی دارد؟</li>
+                <li>برای مسئله تشخیص کلاهبرداری در اسنپ، چه شاخصی مناسب‌تر است؟ چرا؟</li>
             </ol>
 
             <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۲۰ دقیقه</p>

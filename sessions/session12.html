@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جلسه ۱۲ - مدیریت داده‌های نامتوازن و پرت</title>
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; line-height: 1.9; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
         h3 { color: #16a085; margin-top: 20px; }
+        h4 { color: #34495e; margin-top: 15px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
         .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
-        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 10px; margin: 10px 0; }
-        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 15px; margin: 10px 0; }
+        .warning { background: #fdecea; border-right: 4px solid #e74c3c; padding: 10px; margin: 10px 0; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+        .stat-box { background: #f4ecf7; border-right: 4px solid #8e44ad; padding: 10px; margin: 10px 0; }
+        .quote { background: #fdf2e9; border-right: 4px solid #e67e22; padding: 10px; margin: 10px 0; font-style: italic; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: monospace; color: #c0392b; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
         .accordion.active { background-color: #3498db; color: white; }
@@ -25,198 +30,763 @@
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
         th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
     </style>
 </head>
 <body>
     <a href="../plan.html" class="back-link">← بازگشت به برنامه درسی</a>
 
-    <h1>جلسه ۱۲: مدیریت داده‌های نامتوازن و پرت</h1>
+    <h1>جلسه ۱۲: مدیریت داده‌های نامتوازن و پرت (Imbalanced Data & Outliers)</h1>
 
     <div class="phase">
         <h2>اهداف یادگیری</h2>
+        <p>در پایان این جلسه، دانشجو باید بتواند:</p>
         <ul>
-            <li>شناخت داده نامتوازن و راه‌حل‌ها</li>
-            <li>آشنایی با تشخیص و مدیریت داده‌های پرت</li>
-            <li>یادگیری تکنیک‌های sampling</li>
+            <li>مسئله داده نامتوازن را تشخیص دهد و پیامدهای آن را بشناسد</li>
+            <li>چهار راهکار اصلی (Undersampling, Oversampling, Class Weight, Threshold) را اجرا کند</li>
+            <li>الگوریتم SMOTE و خانواده آن را با جزئیات درک کند</li>
+            <li>روش‌های تشخیص Outlier (Z-Score, IQR, Isolation Forest, LOF, DBSCAN) را اعمال کند</li>
+            <li>تصمیم بگیرد که پرت‌ها را حذف، تبدیل یا نگه دارد</li>
+            <li>معیارهای ارزیابی مناسب مسائل نامتوازن (F1, AUC-ROC, Precision-Recall) را انتخاب کند</li>
+            <li>از ابزارهای imbalanced-learn و PyOD استفاده کند</li>
+        </ul>
+
+        <h2>پیش‌نیازهای جلسه</h2>
+        <ul>
+            <li>آشنایی با دسته‌بندی (جلسه ۹)</li>
+            <li>دانش پایه از KNN (K نزدیک‌ترین همسایه)</li>
+            <li>درک معیارهای ارزیابی</li>
         </ul>
     </div>
 
-    <button class="accordion">داده نامتوازن (Imbalanced Data)</button>
+    <button class="accordion">بخش ۱۲.۱ — داده نامتوازن: تعریف و اهمیت</button>
     <div class="panel">
         <div class="key-concept">
-            <strong>داده نامتوازن:</strong> وقتی توزیع کلاس‌ها یکسان نیست.
+            <strong>داده نامتوازن (Imbalanced Data):</strong> مجموعه داده‌ای که در آن توزیع کلاس‌ها یکنواخت نیست — یک یا چند کلاس به‌مراتب کمتر از سایرین نمونه دارند.
         </div>
 
-        <h3>مثال:</h3>
-        <div class="example">
-            <p>تشخیص تقلب در تراکنش‌های بانکی:</p>
-            <ul>
-                <li>۹۹٪ تراکنش: سالم</li>
-                <li>۱٪ تراکنش: تقلبی</li>
-            </ul>
-            <p>→ مدل می‌تواند همیشه "سالم" بگوید و ۹۹٪ دقت داشته باشد!</p>
-        </div>
+        <h3>۱۲.۱.۱ تعریف دقیق</h3>
+        <p>اگر کلاس اکثریت N<sub>majority</sub> نمونه و کلاس اقلیت N<sub>minority</sub> نمونه داشته باشد:</p>
 
-        <h3>مشکل:</h3>
-        <ul>
-            <li>مدل به کلاس اکثریت bias پیدا می‌کند</li>
-            <li>معیار accuracy گمراه‌کننده است</li>
-            <li>کلاس اقلیت مهم‌تر است!</li>
-        </ul>
-    </div>
-
-    <button class="accordion">تکنیک‌های مواجهه با داده نامتوازن</button>
-    <div class="panel">
-        <h3>۱. Undersampling:</h3>
-        <p>کاهش نمونه‌های کلاس اکثریت</p>
-        <ul>
-            <li>Random Undersampling</li>
-            <li>NearMiss</li>
-            <li>Tomek Links</li>
-        </ul>
-
-        <h3>۲. Oversampling:</h3>
-        <p>افزایش نمونه‌های کلاس اقلیت</p>
-        <ul>
-            <li>Random Oversampling</li>
-            <li>SMOTE (Synthetic Minority Over-sampling Technique)</li>
-            <li>ADASYN</li>
-        </ul>
-
-        <h3>۳. ترکیب:</h3>
-        <p>SMOTE + Tomek Links یا ENN</p>
-
-        <h3>۴. وزن‌دهی کلاس:</h3>
         <div class="formula">
-            class_weight = {class_1: 1, class_2: 50}
+            Imbalance Ratio = N<sub>majority</sub> / N<sub>minority</sub>
+        </div>
+
+        <table>
+            <tr>
+                <th>Imbalance Ratio</th>
+                <th>طبقه‌بندی</th>
+                <th>مثال</th>
+            </tr>
+            <tr>
+                <td>۱:۱ تا ۴:۱</td>
+                <td>متعادل تا نسبتاً نامتوازن</td>
+                <td>تشخیص گربه/سگ</td>
+            </tr>
+            <tr>
+                <td>۵:۱ تا ۲۰:۱</td>
+                <td>نامتوازن متوسط</td>
+                <td>تشخیص بیماری شایع</td>
+            </tr>
+            <tr>
+                <td>۱۰۰:۱ تا ۱۰۰۰:۱</td>
+                <td>نامتوازن شدید</td>
+                <td>تشخیص تقلب، عیب تولید</td>
+            </tr>
+            <tr>
+                <td>> ۱۰۰۰:۱</td>
+                <td>نامتوازن بسیار شدید (Severely)</td>
+                <td>تشخیص رویداد نادر، ناهنجاری</td>
+            </tr>
+        </table>
+
+        <h3>۱۲.۱.۲ کاربردهای واقعی</h3>
+        <div class="example">
+            <p>اکثر مسائل جذاب یادگیری ماشین، ذاتاً نامتوازن هستند:</p>
+            <ul>
+                <li><strong>تشخیص تقلب بانکی:</strong> از هر ۱۰٬۰۰۰ تراکنش، فقط ۵ تا تقلبی</li>
+                <li><strong>تشخیص بیماری نادر:</strong> از هر ۱۰۰٬۰۰۰ نفر، ۱ نفر مبتلا</li>
+                <li><strong>تشخیص نقص در تولید:</strong> از هر ۱ میلیون قطعه، ۱۰۰ تا معیوب</li>
+                <li><strong>پیش‌بینی ریزش مشتری:</strong> از ۱۰۰۰ مشتری، ۵۰ ریزش می‌کنند</li>
+                <li><strong>تشخیص هرزنامه:</strong> ۷۰٪ ایمیل‌ها در Gmail اسپم هستند</li>
+                <li><strong>تشخیص تومور بدخیم:</strong> از ۱۰۰ بیمار مشکوک، ۵ مبتلا</li>
+                <li><strong>تشخیص کلاهبرداری بیمه:</strong> بسیار نادر ولی پرهزینه</li>
+            </ul>
+        </div>
+
+        <h3>۱۲.۱.۳ مشکل اصلی چیست؟</h3>
+        <div class="warning">
+            <strong>پارادوکس Accuracy:</strong> اگر ۹۹٪ تراکنش‌ها سالم هستند، مدلی که همیشه «سالم» بگوید، ۹۹٪ دقت خواهد داشت — ولی هیچ تقلبی را شناسایی نمی‌کند! یعنی مدل بی‌ارزش است ولی Accuracy بالا نشان می‌دهد.
+        </div>
+
+        <h3>۱۲.۱.۴ چرا مدل‌ها Bias به کلاس اکثریت دارند؟</h3>
+        <ul>
+            <li>بسیاری از الگوریتم‌ها تابع هزینه را در سطح کلی کمینه می‌کنند</li>
+            <li>اگر ۹۹٪ نمونه‌ها کلاس A هستند، پیش‌بینی همه به A بهترین نتیجه را می‌دهد</li>
+            <li>مدل یاد نمی‌گیرد چگونه کلاس B را تشخیص دهد چون نمونه کافی ندیده</li>
+            <li>حتی با تنظیمات، مدل به B بی‌توجه می‌ماند</li>
+        </ul>
+    </div>
+
+    <button class="accordion">بخش ۱۲.۲ — راهکار اول: Resampling</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>Resampling:</strong> تغییر توزیع کلاس‌ها با افزایش یا کاهش نمونه‌ها — تا قبل از آموزش مدل، داده‌ها متعادل‌تر شوند.
+        </div>
+
+        <h3>۱۲.۲.۱ Undersampling (کاهش کلاس اکثریت)</h3>
+
+        <h4>الف) Random Undersampling</h4>
+        <p>به‌صورت تصادفی نمونه‌های کلاس اکثریت حذف می‌شوند تا تعدادشان با اقلیت برابر شود.</p>
+        <p><strong>مزایا:</strong> ساده، سریع، حجم داده کم می‌شود</p>
+        <p><strong>معایب:</strong> از دست رفتن اطلاعات بالقوه</p>
+
+        <h4>ب) NearMiss</h4>
+        <p>نمونه‌های اکثریتی که به نمونه‌های اقلیت نزدیک‌تر هستند، نگه داشته می‌شوند (بقیه حذف).</p>
+        <p>سه نسخه: NearMiss-1 (کمترین فاصله متوسط)، NearMiss-2 (کمترین فاصله دورترین)، NearMiss-3 (بیشترین فاصله نزدیک‌ترین).</p>
+
+        <h4>ج) Tomek Links</h4>
+        <p>جفت‌هایی از دو کلاس مختلف که نزدیک‌ترین همسایه یکدیگرند → نمونه اکثریت حذف می‌شود. مرز بین کلاس‌ها تمیزتر می‌شود.</p>
+
+        <h4>د) Edited Nearest Neighbors (ENN)</h4>
+        <p>نمونه‌ای که با اکثریت همسایه‌هایش هم‌کلاس نیست → حذف.</p>
+
+        <h3>۱۲.۲.۲ Oversampling (افزایش کلاس اقلیت)</h3>
+
+        <h4>الف) Random Oversampling</h4>
+        <p>نمونه‌های اقلیت به‌صورت تصادفی کپی می‌شوند تا تعدادشان با اکثریت برابر شود.</p>
+        <p><strong>مزایا:</strong> ساده، بدون از دست دادن اطلاعات</p>
+        <p><strong>معایب:</strong> <strong>Overfitting شدید</strong> (مدل نمونه‌های تکراری را حفظ می‌کند)</p>
+
+        <h4>ب) SMOTE (Synthetic Minority Over-sampling Technique)</h4>
+        <div class="key-concept">
+            ایده اصلی: به جای کپی کردن، نمونه‌های جدید «مصنوعی» بین نمونه‌های واقعی اقلیت تولید کن. این کار هم تعداد را افزایش می‌دهد و هم تنوع ایجاد می‌کند.
+        </div>
+
+        <h4>پ) ADASYN (Adaptive Synthetic Sampling)</h4>
+        <p>نسخه تطبیقی SMOTE — نمونه‌های مصنوعی بیشتر در مناطق «دشوار» (نزدیک مرز) تولید می‌کند. مدل در یادگیری مرز بهتر عمل می‌کند.</p>
+
+        <h3>۱۲.۲.۳ ترکیب Undersampling و Oversampling</h3>
+        <ul>
+            <li><strong>SMOTE + Tomek:</strong> ابتدا افزایش، سپس حذف نمونه‌های مرزی</li>
+            <li><strong>SMOTE + ENN:</strong> ابتدا افزایش، سپس حذف نویزی</li>
+        </ul>
+
+        <h3>۱۲.۲.۴ جدول مقایسه راهکارها</h3>
+        <table>
+            <tr>
+                <th>روش</th>
+                <th>مزایا</th>
+                <th>معایب</th>
+                <th>زمان استفاده</th>
+            </tr>
+            <tr>
+                <td>Random Undersampling</td>
+                <td>سریع، ساده</td>
+                <td>از دست دادن اطلاعات</td>
+                <td>داده بسیار زیاد</td>
+            </tr>
+            <tr>
+                <td>NearMiss</td>
+                <td>حفظ نمونه‌های مهم</td>
+                <td>پیچیده‌تر</td>
+                <td>مرز اهمیت دارد</td>
+            </tr>
+            <tr>
+                <td>Random Oversampling</td>
+                <td>ساده</td>
+                <td>Overfitting شدید</td>
+                <td>فقط حجم داده مهم است</td>
+            </tr>
+            <tr>
+                <td><strong>SMOTE</strong></td>
+                <td>تنوع، کاهش Overfitting</td>
+                <td>ممکن است نمونه‌های عجیب تولید کند</td>
+                <td><strong>پیش‌فرض و محبوب</strong></td>
+            </tr>
+            <tr>
+                <td>ADASYN</td>
+                <td>تمرکز بر مناطق دشوار</td>
+                <td>ممکن است Overfit شدید در مرز</td>
+                <td>مسائل با مرز پیچیده</td>
+            </tr>
+        </table>
+
+        <p><strong>قاعده تجربی:</strong></p>
+        <div class="example">
+            <p>اگر تعداد نمونه‌های اقلیت > ۱۰۰۰: معمولاً SMOTE کافی است.</p>
+            <p>اگر تعداد نمونه‌های اقلیت ۱۰۰-۱۰۰۰: ترکیب SMOTE + Tomek بهتر است.</p>
+            <p>اگر تعداد نمونه‌های اقلیت < ۱۰۰: علاوه بر SMOTE، از Class Weight هم استفاده کنید.</p>
         </div>
     </div>
 
-    <button class="accordion">SMOTE - جزئیات</button>
+    <button class="accordion">بخش ۱۲.۳ — SMOTE: محبوب‌ترین الگوریتم Oversampling</button>
     <div class="panel">
-        <h3>SMOTE چگونه کار می‌کند؟</h3>
+        <h3>۱۲.۳.۱ ایده اصلی</h3>
+        <p>SMOTE در فضای ویژگی (Feature Space)، بین دو نمونه اقلیت، یک نمونه مصنوعی قرار می‌دهد:</p>
+
+        <h3>۱۲.۳.۲ الگوریتم گام‌به‌گام</h3>
         <ol>
-            <li>یک نمونه تصادفی از کلاس اقلیت انتخاب کن</li>
-            <li>K همسایه نزدیک آن را پیدا کن</li>
-            <li>یک همسایه تصادفی انتخاب کن</li>
-            <li>نقطه جدید بین آن‌ها تولید کن</li>
+            <li>یک نمونه تصادفی x از کلاس اقلیت انتخاب کن</li>
+            <li>K نزدیک‌ترین همسایه x (که همگی اقلیت هستند) را پیدا کن</li>
+            <li>از بین K همسایه، یکی را تصادفی انتخاب کن (x<sub>nn</sub>)</li>
+            <li>نمونه مصنوعی بین x و x<sub>nn</sub> تولید کن</li>
         </ol>
 
-        <h3>فرمول:</h3>
+        <h3>۱۲.۳.۳ فرمول ریاضی</h3>
         <div class="formula">
-            x_new = x + rand(0,1) × (x_nearest - x)
+            x<sub>new</sub> = x + λ × (x<sub>nn</sub> − x)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;که λ ∈ [0, 1] تصادفی
         </div>
 
-        <h3>انواع SMOTE:</h3>
-        <ul>
-            <li>Borderline-SMOTE</li>
-            <li>SMOTE-NC (برای داده ترکیبی)</li>
-            <li>SMOTE-N (برای داده فقط اسمی)</li>
-        </ul>
+        <p>اگر λ = 0 → همان x، اگر λ = 1 → همان x<sub>nn</sub>، اگر λ = 0.5 → وسط.</p>
+
+        <h3>۱۲.۳.۴ مثال بصری</h3>
+        <div class="example">
+            <p>دو نمونه اقلیت داریم: (۲، ۳) و (۴، ۵).</p>
+            <p>اگر λ = 0.3 باشد:</p>
+            <p>x<sub>new</sub> = (۲، ۳) + 0.3 × ((۴، ۵) − (۲، ۳)) = (۲، ۳) + 0.3 × (۲، ۲) = (۲٫۶، ۳٫۶)</p>
+            <p>نقطه جدید: (۲٫۶، ۳٫۶) — بین دو نقطه اصلی ولی نه کپی.</p>
+        </div>
+
+        <h3>۱۲.۳.۵ انواع SMOTE</h3>
+
+        <h4>الف) Borderline-SMOTE</h4>
+        <p>فقط روی نمونه‌های اقلیتی که در <strong>مرز</strong> با کلاس اکثریت هستند کار می‌کند. فرض: این نمونه‌ها اطلاعات بیشتری دارند.</p>
+
+        <h4>ب) SMOTE-NC (Numerical + Categorical)</h4>
+        <p>نسخه‌ای برای داده‌هایی که هم عددی و هم طبقه‌ای دارند. برای ستون‌های طبقه‌ای، از Mode (پرتکرارترین مقدار) استفاده می‌کند.</p>
+
+        <h4>ج) SMOTE-N (Categorical Only)</h4>
+        <p>وقتی همه ویژگی‌ها طبقه‌ای هستند. روش خاص برای ساخت نمونه.</p>
+
+        <h3>۱۲.۳.۶ هشدارهای مهم</h3>
+        <div class="warning">
+            <strong>هشدار ۱:</strong> SMOTE فقط روی ویژگی‌های عددی کار می‌کند. ویژگی‌های طبقه‌ای باید به‌صورت جداگانه Encode شوند.</p>
+            <strong>هشدار ۲:</strong> SMOTE نمونه‌های «واقعی» تولید نمی‌کند، بلکه نمونه‌های «مصنوعی» در فضای ویژگی می‌سازد. این می‌تواند در بعضی مسائل منجر به نمونه‌های عجیب شود.</p>
+            <strong>هشدار ۳:</strong> SMOTE قبل از Train/Val/Test split اعمال شود (وگرنه Data Leakage رخ می‌دهد).</p>
+            <strong>هشدار ۴:</strong> اگر نمونه‌های اقلیت بسیار کم باشد (مثلاً ۵ نمونه)، SMOTE نمی‌تواند همسایه پیدا کند.</p>
+        </div>
+
+        <h3>۱۲.۳.۷ پیاده‌سازی</h3>
+        <div class="formula" style="text-align: left; direction: ltr;">
+            <code>
+# در Python با کتابخانه imbalanced-learn<br>
+from imblearn.over_sampling import SMOTE, ADASYN<br>
+from imblearn.under_sampling import RandomUnderSampler, TomekLinks<br>
+from imblearn.combine import SMOTETomek<br>
+from imblearn.pipeline import Pipeline as ImbPipeline<br>
+<br>
+# ساده<br>
+smote = SMOTE(sampling_strategy='auto', k_neighbors=5, random_state=42)<br>
+X_resampled, y_resampled = smote.fit_resample(X_train, y_train)<br>
+<br>
+# ترکیبی<br>
+smt = SMOTETomek(smote=SMOTE(k_neighbors=5), tomek=TomekLinks())<br>
+X_resampled, y_resampled = smt.fit_resample(X_train, y_train)<br>
+<br>
+# به همراه مدل در Pipeline<br>
+pipeline = ImbPipeline([<br>
+&nbsp;&nbsp;&nbsp;('smote', SMOTE(k_neighbors=5)),<br>
+&nbsp;&nbsp;&nbsp;('scaler', StandardScaler()),<br>
+&nbsp;&nbsp;&nbsp;('clf', RandomForestClassifier())<br>
+])
+            </code>
+        </div>
     </div>
 
-    <button class="accordion">داده‌های پرت (Outliers)</button>
+    <button class="accordion">بخش ۱۲.۴ — راهکار دوم: Class Weight (وزن‌دهی کلاس)</button>
     <div class="panel">
         <div class="key-concept">
-            <strong>داده پرت:</strong> نقاطی که از الگوی کلی داده‌ها خارج هستند.
+            <strong>Class Weight:</strong> در تابع هزینه، به اشتباهات روی کلاس اقلیت جریمه بیشتر بده. این کار مدل را به سمت یادگیری بهتر کلاس اقلیت سوق می‌دهد — بدون تغییر داده‌ها.
         </div>
 
-        <h3>انواع:</h3>
-        <ul>
-            <li><strong>Global Outliers:</strong> خیلی متفاوت از همه داده‌ها</li>
-            <li><strong>Contextual Outliers:</strong> متفاوت در یک بافت خاص</li>
-            <li><strong>Collective Outliers:</strong> مجموعه‌ای از داده‌ها که با هم متفاوت‌اند</li>
-        </ul>
-
-        <h3>دلایل:</h3>
-        <ul>
-            <li>خطای اندازه‌گیری</li>
-            <li>خطای ورود داده</li>
-            <li>پدیده‌های نادر واقعی</li>
-        </ul>
-    </div>
-
-    <button class="accordion">روش‌های تشخیص پرت</button>
-    <div class="panel">
-        <h3>۱. Z-Score:</h3>
+        <h3>۱۲.۴.۱ تابع هزینه با وزن</h3>
+        <p>تابع هزینه استاندارد:</p>
         <div class="formula">
-            z = (x - μ) / σ
+            J = Σ L(y<sub>i</sub>, ŷ<sub>i</sub>)
         </div>
-        <p>اگر |z| > 3 → پرت</p>
 
-        <h3>۲. IQR (Interquartile Range):</h3>
+        <p>تابع هزینه با وزن‌دهی:</p>
         <div class="formula">
-            IQR = Q3 - Q1
+            J = Σ w<sub>i</sub> × L(y<sub>i</sub>, ŷ<sub>i</sub>)
         </div>
-        <p>مرزها:</p>
-        <ul>
-            <li>Lower: Q1 - 1.5 × IQR</li>
-            <li>Upper: Q3 + 1.5 × IQR</li>
-        </ul>
 
-        <h3>۳. Isolation Forest:</h3>
-        <p>الگوریتم مبتنی بر درخت که نقاط پرت را سریع‌تر جدا می‌کند.</p>
+        <p>اگر برای کلاس اقلیت w = 50 و اکثریت w = 1، مدل باید برای تشخیص اقلیت خیلی بیشتر تلاش کند.</p>
 
-        <h3>۴. DBSCAN:</h3>
-        <p>نقاطی که در هیچ خوشه‌ای نیستند → پرت</p>
-    </div>
+        <h3>۱۲.۴.۲ محاسبه خودکار وزن</h3>
+        <p>در scikit-learn، پارامتر <code>class_weight='balanced'</code> وزن‌ها را خودکار محاسبه می‌کند:</p>
 
-    <button class="accordion">مدیریت داده‌های پرت</button>
-    <div class="panel">
-        <h3>۱. حذف:</h3>
-        <p>ساده‌ترین روش</p>
-        <ul>
-            <li>حذف سطر (اگر تعداد کم)</li>
-            <li>حذف ستون (اگر تعداد زیاد)</li>
-        </ul>
+        <div class="formula">
+            w<sub>j</sub> = N / (K × N<sub>j</sub>)
+        </div>
 
-        <h3>۲. جایگزینی:</h3>
-        <ul>
-            <li>با میانگین/میانه</li>
-            <li>با مقدار قبلی/بعدی</li>
-            <li>با مدل پیش‌بینی</li>
-        </ul>
+        <p>که N تعداد کل، K تعداد کلاس‌ها، N<sub>j</sub> تعداد نمونه‌های کلاس j.</p>
 
-        <h3>۳. تبدیل:</h3>
-        <ul>
-            <li>Log Transform: x' = log(x+1)</li>
-            <li>Box-Cox Transform</li>
-            <li>Winsorization: محدود کردن به مقادیر آستانه</li>
-        </ul>
-
-        <h3>نکته:</h3>
         <div class="example">
-            <p>گاهی داده پرت اطلاعات ارزشمندی دارد!</p>
-            <p>مثلاً در تشخیص تقلب</p>
-            <p>→ حذف نکنید، با دقت بررسی کنید</p>
+            <p>مثال: ۱٬۰۰۰ نمونه، ۲ کلاس</p>
+            <ul>
+                <li>کلاس ۰: ۹۹۰ نمونه → w = ۱۰۰۰ / (۲ × ۹۹۰) ≈ ۰٫۵</li>
+                <li>کلاس ۱: ۱۰ نمونه → w = ۱۰۰۰ / (۲ × ۱۰) = ۵۰</li>
+            </ul>
+            <p>هر اشتباه روی کلاس اقلیت، ۱۰۰ برابر جریمه دارد!</p>
+        </div>
+
+        <h3>۱۲.۴.۳ پیاده‌سازی</h3>
+        <div class="formula" style="text-align: left; direction: ltr;">
+            <code>
+# Logistic Regression با وزن خودکار<br>
+from sklearn.linear_model import LogisticRegression<br>
+model = LogisticRegression(class_weight='balanced')<br>
+<br>
+# وزن دستی<br>
+weights = {0: 1, 1: 100}<br>
+model = LogisticRegression(class_weight=weights)<br>
+<br>
+# در Random Forest<br>
+from sklearn.ensemble import RandomForestClassifier<br>
+model = RandomForestClassifier(class_weight='balanced')<br>
+<br>
+# در XGBoost<br>
+import xgboost as xgb<br>
+model = xgb.XGBClassifier(scale_pos_weight=ratio)
+            </code>
+        </div>
+
+        <h3>۱۲.۴.۴ مزایا و معایب</h3>
+        <table>
+            <tr>
+                <th>مزایا</th>
+                <th>معایب</th>
+            </tr>
+            <tr>
+                <td>داده‌ها بدون تغییر (مناسب برای حجم زیاد)</td>
+                <td>ممکن است Overfit در اقلیت شود</td>
+            </tr>
+            <tr>
+                <td>ساده، یک پارامتر</td>
+                <td>وزن‌دهی بیش‌ازحد → Recall بالا ولی Precision پایین</td>
+            </tr>
+            <tr>
+                <td>قابل ترکیب با سایر تکنیک‌ها</td>
+                <td>نیاز به تنظیم دقیق وزن</td>
+            </tr>
+            <tr>
+                <td>بدون از دست دادن اطلاعات</td>
+                <td>فقط در بعضی الگوریتم‌ها قابل‌تنظیم است</td>
+            </tr>
+            <tr>
+                <td>در XGBoost خیلی مؤثر</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">بخش ۱۲.۵ — راهکار سوم: Threshold Tuning</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>Threshold Tuning:</strong> به جای default threshold = 0.5، آستانه‌ای انتخاب کنید که بین Precision و Recall تعادل ایجاد کند. این روش، مدل را تغییر نمی‌دهد، فقط تصمیم‌گیری را.
+        </div>
+
+        <h3>۱۲.۵.۱ مفهوم</h3>
+        <p>بیشتر مدل‌های دسته‌بندی، احتمال P(y=1) می‌دهند. پیش‌فرض: اگر P > 0.5 → کلاس ۱. ولی این آستانه در مسائل نامتوازن خوب نیست.</p>
+
+        <div class="example">
+            <p>مثال: مدلی که احتمال تقلب را پیش‌بینی می‌کند:</p>
+            <ul>
+                <li>P = 0.3 → پیش‌فرض: «عادی»</li>
+                <li>P = 0.3 → با threshold = 0.2: «مشکوک»</li>
+            </ul>
+            <p>با کاهش threshold، Recall بالا می‌رود (بیشتر تقلب‌ها شناسایی می‌شوند) ولی ممکن است Precision کاهش یابد.</p>
+        </div>
+
+        <h3>۱۲.۵.۲ روش‌های انتخاب Threshold</h3>
+
+        <h4>الف) Youden's J Statistic</h4>
+        <p>Threshold که J = Recall + Specificity − ۱ را بیشینه می‌کند.</p>
+
+        <h4>ب) F1-Optimal Threshold</h4>
+        <p>Threshold که F1-Score را بیشینه می‌کند.</p>
+
+        <h4>ج) Cost-Sensitive Threshold</h4>
+        <p>با توجه به هزینه‌های FN و FP در کسب‌وکار، threshold بهینه محاسبه می‌شود.</p>
+
+        <div class="formula">
+            Threshold_optimal = argmax<sub>t</sub> [Cost_FN × FN(t) + Cost_FP × FP(t)]
+        </div>
+
+        <h3>۱۲.۵.۳ نمودار Precision-Recall</h3>
+        <p>برای مسائل نامتوازن، این نمودار مفیدتر از ROC است:</p>
+        <ul>
+            <li>محور X: Recall</li>
+            <li>محور Y: Precision</li>
+            <li>هدف: بیشینه کردن هر دو</li>
+        </ul>
+
+        <p><strong>Average Precision (AP):</strong> مساحت زیر منحنی P-R. بالاتر = بهتر.</p>
+    </div>
+
+    <button class="accordion">بخش ۱۲.۶ — معیارهای ارزیابی برای داده نامتوازن</button>
+    <div class="panel">
+        <div class="key-concept">
+            در مسائل نامتوازن، Accuracy کاملاً گمراه‌کننده است. از معیارهایی استفاده کنید که عملکرد روی کلاس اقلیت را مستقل اندازه می‌گیرند.
+        </div>
+
+        <h3>۱۲.۶.۱ چرا Accuracy بد است؟</h3>
+        <p>در مسئله‌ای با ۹۹٪ کلاس اکثریت:</p>
+        <ul>
+            <li>مدل همیشه «اکثریت» → Accuracy = ۹۹٪</li>
+            <li>ولی هیچ نمونه اقلیتی شناسایی نمی‌شود → Recall کلاس اقلیت = ۰</li>
+            <li>F1 کلاس اقلیت = ۰</li>
+        </ul>
+
+        <h3>۱۲.۶.۲ معیارهای توصیه‌شده</h3>
+
+        <h4>الف) F1-Score (میانگین هارمونیک)</h4>
+        <div class="formula">
+            F1 = 2 × (Precision × Recall) / (Precision + Recall)
+        </div>
+        <p>اگر Recall یا Precision صفر باشد، F1 = ۰. مدلی که هیچ اقلیتی شناسایی نکند، F1 = ۰ می‌گیرد.</p>
+
+        <h4>ب) Balanced Accuracy</h4>
+        <div class="formula">
+            Balanced Accuracy = (Recall<sub>majority</sub> + Recall<sub>minority</sub>) / 2
+        </div>
+        <p>میانگین Recall هر کلاس. اگر مدل فقط اکثریت را پیش‌بینی کند، این مقدار ≈ ۵۰٪ است.</p>
+
+        <h4>ج) Matthews Correlation Coefficient (MCC)</h4>
+        <div class="formula">
+            MCC = (TP×TN − FP×FN) / √[(TP+FP)(TP+FN)(TN+FP)(TN+FN)]
+        </div>
+        <p>ضریب همبستگی بین پیش‌بینی و واقعیت. بین −۱ و +۱. در مسائل نامتوازن، قابل‌اعتمادترین معیار.</p>
+
+        <h4>د) Cohen's Kappa</h4>
+        <p>مشابه MCC، توافق بین پیش‌بینی و واقعیت را اندازه می‌گیرد.</p>
+
+        <h4>ه) AUC-PR (Average Precision)</h4>
+        <p>مساحت زیر منحنی Precision-Recall. بهتر از AUC-ROC در نامتوازن شدید.</p>
+
+        <h3>۱۲.۶.۴ جدول مقایسه</h3>
+        <table>
+            <tr>
+                <th>معیار</th>
+                <th>مناسب نامتوازن؟</th>
+                <th>توضیح</th>
+            </tr>
+            <tr>
+                <td>Accuracy</td>
+                <td>✗ بسیار بد</td>
+                <td>متحمیل کلاس اکثریت می‌شود</td>
+            </tr>
+            <tr>
+                <td>F1-Score</td>
+                <td>✓ خوب</td>
+                <td>متعادل بین P و R</td>
+            </tr>
+            <tr>
+                <td>Balanced Accuracy</td>
+                <td>✓ خوب</td>
+                <td>میانگین Recall هر کلاس</td>
+            </tr>
+            <tr>
+                <td>MCC</td>
+                <td>✓✓ عالی</td>
+                <td>قابل‌اعتمادترین، بین -۱ تا +۱</td>
+            </tr>
+            <tr>
+                <td>AUC-ROC</td>
+                <td>✓ قابل‌قبول</td>
+                <td>ممکن است در شدید، بیش‌بین باشد</td>
+            </tr>
+            <tr>
+                <td>AUC-PR</td>
+                <td>✓✓ عالی</td>
+                <td>بهترین برای شدید</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">بخش ۱۲.۷ — Outliers: تشخیص و تحلیل</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>Outlier (داده پرت):</strong> نقطه‌ای که از الگوی کلی داده‌ها فاصله زیادی دارد. این نقاط می‌توانند خطا، نویز، یا رویدادهای واقعی نادر باشند.
+        </div>
+
+        <h3>۱۲.۷.۱ سه نوع Outlier</h3>
+
+        <h4>الف) Global Outliers (سراسری)</h4>
+        <p>از کل توزیع دور است.</p>
+        <div class="example">
+            <p>مثال: در داده‌های دمای تهران (میانگین ۲۰°C)، ثبت ۵۰°C قطعاً خطاست.</p>
+        </div>
+
+        <h4>ب) Contextual Outliers (متنی)</h4>
+        <p>در یک زمینه خاص عجیب است ولی در کل داده عادی.</p>
+        <div class="example">
+            <p>دمای ۳۰°C در تهران در تابستان طبیعی، ولی در زمستان عجیب است.</p>
+            <p>مصرف ۱۰۰ کیلووات در ساعت ۳ بامداد طبیعی نیست (ولی در ساعت ۷ عصر طبیعی است).</p>
+        </div>
+
+        <h4>ج) Collective Outliers (جمعی)</h4>
+        <p>مجموعه‌ای از داده‌ها که با هم عجیب‌اند.</p>
+        <div class="example">
+            <p>در یک ساعت خاص، ۱۰۰ تراکنش مشکوک از یک کارت صادر شده (نه یکی یکی، بلکه به‌صورت burst).</p>
+        </div>
+
+        <h3>۱۲.۷.۲ علل ایجاد Outlier</h3>
+        <ul>
+            <li><strong>خطای اندازه‌گیری:</strong> سنسور خراب، GPS دقیق نبودن</li>
+            <li><strong>خطای ورود داده:</strong> عدد اشتباه تایپ شد</li>
+            <li><strong>خطای پردازش:</strong> باگ در کد</li>
+            <li><strong>پدیده واقعی نادر:</strong> اتفاق نادر ولی واقعی</li>
+            <li><strong>توزیع ذاتاً Tail-Heavy:</strong> درآمد، ثروت</li>
+        </ul>
+
+        <h3>۱۲.۷.۳ روش‌های تشخیص</h3>
+
+        <h4>الف) Z-Score (آماری)</h4>
+        <div class="formula">
+            Z = (x − μ) / σ
+        </div>
+
+        <table>
+            <tr>
+                <th>آستانه |Z|</th>
+                <th>سطح اطمینان</th>
+                <th>کاربرد</th>
+            </tr>
+            <tr>
+                <td>> ۲</td>
+                <td>۹۵٪</td>
+                <td>تشخیص ساده</td>
+            </tr>
+            <tr>
+                <td>> ۳</td>
+                <td>۹۹٫۷٪</td>
+                <td>استاندارد صنعتی</td>
+            </tr>
+            <tr>
+                <td>> ۴</td>
+                <td>۹۹٫۹۹٪</td>
+                <td>تشخیص بسیار سخت‌گیرانه</td>
+            </tr>
+        </table>
+
+        <p><strong>محدودیت:</strong> فقط برای توزیع نرمال (یا تقریبی). برای توزیع‌های نامتقارن مناسب نیست.</p>
+
+        <h4>ب) IQR (روش چارکی)</h4>
+        <div class="formula">
+            IQR = Q3 − Q1<br>
+            Lower Bound = Q1 − 1.5 × IQR<br>
+            Upper Bound = Q3 + 1.5 × IQR
+        </div>
+        <p>هر نقطه بیرون از بازه [Lower Bound, Upper Bound] پرت محسوب می‌شود.</p>
+
+        <p><strong>مزیت:</strong> مناسب داده‌های غیرنرمال، مقاوم به خود پرت‌ها.</p>
+
+        <h4>ج) Modified Z-Score (برای توزیع‌های نامتقارن)</h4>
+        <div class="formula">
+            M = 0.6745 × (x − median) / MAD
+        </div>
+        <p>که MAD = Median Absolute Deviation. اگر |M| > ۳.۵ → پرت.</p>
+
+        <h4>د) Isolation Forest (مبتنی بر ML)</h4>
+        <p>ایده: Outlierها سریع‌تر از نقاط عادی جدا می‌شوند (با درخت‌های تصادفی).</p>
+        <p>نقطه عادی → عمق زیاد، نقطه پرت → عمق کم.</p>
+        <p>Anomaly Score بالا → پرت بودن.</p>
+
+        <h4>ه) Local Outlier Factor (LOF)</h4>
+        <p>ایده: Outlier نسبت به همسایگانش چگالی کمتری دارد.</p>
+        <p>مناسب داده‌هایی با چگالی‌های متفاوت در مناطق مختلف.</p>
+
+        <h4>و) DBSCAN</h4>
+        <p>نقاط Noise در DBSCAN = Outlier.</p>
+
+        <h4>ز) One-Class SVM</h4>
+        <p>یاد می‌گیرد مرز «عادی» را مشخص کند. هر چیز بیرون = outlier.</p>
+
+        <h3>۱۲.۷.۴ جدول مقایسه</h3>
+        <table>
+            <tr>
+                <th>روش</th>
+                <th>نوع</th>
+                <th>مزیت</th>
+                <th>محدودیت</th>
+            </tr>
+            <tr>
+                <td>Z-Score</td>
+                <td>آماری</td>
+                <td>ساده، تفسیرپذیر</td>
+                <td>فقط نرمال</td>
+            </tr>
+            <tr>
+                <td>IQR</td>
+                <td>آماری</td>
+                <td>بدون فرض توزیع</td>
+                <td>فقط تک‌بعدی</td>
+            </tr>
+            <tr>
+                <td>Isolation Forest</td>
+                <td>ML</td>
+                <td>چندبعدی، سریع</td>
+                <td>ابرپارامتر contamination</td>
+            </tr>
+            <tr>
+                <td>LOF</td>
+                <td>ML</td>
+                <td>چگالی متغیر</td>
+                <td>کند، حساس به K</td>
+            </tr>
+            <tr>
+                <td>DBSCAN</td>
+                <td>ML</td>
+                <td>خوشه‌بندی + تشخیص همزمان</td>
+                <td>نیاز به ε و MinPts</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">بخش ۱۲.۸ — مدیریت Outliers: حذف، تبدیل، نگهداری</button>
+    <div class="panel">
+
+        <h3>۱۲.۸.۱ قانون طلایی</h3>
+        <div class="warning">
+            <strong>قبل از هر اقدامی:</strong> تحلیل کنید که Outlier خطاست یا واقعیت. گاهی Outlier ارزشمندترین نقطه داده است (مثلاً در تشخیص تقلب).
+        </div>
+
+        <h3>۱۲.۸.۲ روش‌ها</h3>
+
+        <h4>الف) حذف (Trimming)</h4>
+        <p>ساده‌ترین روش. وقتی Outliner مطمئناً خطاست (مثلاً سن = ۲۰۰ یا دما = ۱۰۰۰°C).</p>
+        <p><strong>خطر:</strong> ممکن است اطلاعات ارزشمندی از دست برود.</p>
+
+        <h4>ب) Winsorization (کپسوله‌سازی)</h4>
+        <p>به جای حذف، مقدار را به آستانه محدود کنید:</p>
+        <div class="example">
+            <p>داده‌ها: [10, 12, 13, 14, 15, 200] (۲۰۰ پرت است)</p>
+            <p>Q3 = 14.75, Q1 + 1.5×IQR = 11.75</p>
+            <p>Winsorize: [10, 12, 13, 14, 15, 15.75] ← ۲۰۰ با ۱۵٫۷۵ جایگزین شد</p>
+        </div>
+
+        <h4>ج) تبدیل ریاضی</h4 Information preserved, "outliers" loses meaning
+        <ul>
+            <li><strong>Log Transform:</strong> x' = log(x + 1). دنباله بلند → کوتاه</li>
+            <li><strong>Square Root:</strong> برای داده‌های شمارش</li>
+            <li><strong>Box-Cox:</strong> تبدیل خودکار برای نرمال‌سازی</li>
+            <li><strong>Yeo-Johnson:</strong> نسخه Box-Cox برای داده‌های منفی</li>
+        </ul>
+
+        <h4>د) جایگزینی (Imputation)</h4>
+        <p>با مقدار معقول جایگزین شود:</p>
+        <ul>
+            <li>میانگین / میانه</li>
+            <li>مقدار همسایه (در سری زمانی)</li>
+            <li>پیش‌بینی با مدل (KNN، Random Forest)</li>
+        </ul>
+
+        <h4>ه) نگه‌داری با مدل مقاوم</h4>
+        <p>از الگوریتم‌هایی استفاده کنید که نسبت به Outlier مقاوم‌اند:</p>
+        <ul>
+            <li>Huber Loss (در رگرسیون، ترکیب MSE و MAE)</li>
+            <li>Random Forest (درخت‌ها robust هستند)</li>
+            <li>RANSAC (تکرار با حذف پرت)</li>
+            <li>Median Absolute Deviation (آماری)</li>
+        </ul>
+
+        <h4>و) مدل‌سازی جداگانه</h4>
+        <p>Outlierها را به‌عنوان کلاس جداگانه در نظر بگیرید (یا طبقه‌بندی «پرت/عادی»).</p>
+
+        <h3>۱۲.۸.۳ مثال: تشخیص تقلب بانکی</h3>
+        <div class="example">
+            <p><strong>داده:</strong> ۱۰٬۰۰۰ تراکنش، ویژگی «مبلغ»</p>
+            <ul>
+                <li>۹۹ تراکنش مبلغ کمتر از ۱ میلیون</li>
+                <li>۱ تراکنش مبلغ ۵۰۰ میلیون! (آیا پرت؟)</li>
+            </ul>
+            <p>اگر با Z-Score آن را حذف کنیم، ممکن است بزرگ‌ترین تراکنش تقلبی را از دست داده باشیم!</p>
+            <p>راه‌حل: Outlier را نگه داریم، ولی از Robust Scaler یا Log Transform استفاده کنیم تا تأثیر آن کم شود.</p>
         </div>
     </div>
 
-    <button class="accordion">یادداشت‌های استاد</button>
+    <button class="accordion">بخش ۱۲.۹ — کاربردهای ایرانی</button>
+    <div class="panel">
+        <h3>۱۲.۹.۱ تشخیص تقلب در بانک پاسارگاد</h3>
+        <p>مسئله: از ۱۰۰٬۰۰۰ تراکنش روزانه، فقط ۵۰ تا مشکوک.</p>
+        <ul>
+            <li>Imbalance Ratio = ۲۰۰۰:۱</li>
+            <li>استفاده از SMOTE + Class Weight + Threshold Tuning</li>
+            <li>معیار ارزیابی: MCC و AUC-PR</li>
+            <li>مدل: XGBoost با scale_pos_weight</li>
+        </ul>
+
+        <h3>۱۲.۹.۲ تشخیص عیب در تولید (ایران‌خودرو)</h3>
+        <p>مسئله: از ۱ میلیون قطعه تولیدی، ۱۰۰۰ تا معیوب.</p>
+        <ul>
+            <li>Imbalance Ratio = ۱۰۰۰:۱</li>
+            <li>ترکیب: SMOTE + Tomek Links</li>
+            <li>Isolation Forest برای تشخیص الگوهای عیب جدید</li>
+        </ul>
+
+        <h3>۱۲.۹.۳ تشخیص هرزنامه در پیام‌رسان‌های ایرانی</h3>
+        <p>مسئله: در ۱ میلیون پیام، ۳۰٪ اسپم هستند (نسبتاً متعادل‌تر).</p>
+        <ul>
+            <li>TF-IDF + Logistic Regression با class_weight</li>
+            <li>Outlier: پیام‌هایی با ۱۰۰ لینک حذف</li>
+        </ul>
+
+        <h3>۱۲.۹.۴ تشخیص ریزش مشتری در اسنپ</h3>
+        <p>مسئله: از ۱۰۰٬۰۰۰ راننده، ۵۰۰۰ ریزش می‌کنند.</p>
+        <ul>
+            <li>Imbalance Ratio = ۲۰:۱</li>
+            <li>SMOTE-ENN ترکیبی</li>
+            <li>معیار: F1-Score کلاس ریزش</li>
+        </ul>
+
+        <h3>۱۲.۹.۵ پیش‌بینی قیمت مسکن (Outlier)</h3>
+        <p><strong>مسئله:</strong> در داده‌های دیوار، قیمت ۱ میلیارد تومان برای آپارتمان ۵۰ متری در منطقه ۳.</p>
+        <ul>
+            <li>ممکن است اشتباه باشد → Winsorize</li>
+            <li>یا ممکن است واقعی و لوکس باشد → نگه‌داری</li>
+        </ul>
+    </div>
+
+    <button class="accordion">یادداشت‌های استاد (Instructor Notes)</button>
     <div class="panel">
         <div class="instructor-note">
             <strong>مقدمه و معرفی مشکل (۸ دقیقه):</strong>
-            <p>با یک مثال شروع کنید: «فرض کنید می‌خواهیم مدلی بسازیم که تقلب در تراکنش‌های بانکی را تشخیص دهد. اگر از ۱۰۰۰ تراکنش، فقط ۱۰ تا تقلبی باشد، مدل می‌تواند همیشه بگوید تقلب نیست و ۹۹٪ دقت داشته باشد!». این مشکل داده نامتوازن است. تأکید کنید که دقت بالا همیشه خوب نیست - باید به کلاس اقلیت توجه کنیم.</p>
+            <p>با یک مثال شروع کنید: «فرض کنید می‌خواهیم مدلی بسازیم که تقلب در تراکنش‌های بانکی را تشخیص دهد. اگر از ۱۰۰۰ تراکنش، فقط ۱۰ تا تقلبی باشد، مدل می‌تواند همیشه بگوید تقلب نیست و ۹۹٪ دقت داشته باشد!». این مشکل داده نامتوازن است. تأکید کنید که دقت بالا همیشه خوب نیست — باید به کلاس اقلیت توجه کنیم.</p>
         </div>
         <div class="instructor-note">
-            <strong>تکنیک‌های مواجهه (۱۲ دقیقه):</strong>
-            <p>Undersampling را با کاهش کلاس اکثریت توضیح دهید: مثلاً از ۱۰۰۰ نمونه سالم، فقط ۱۰۰ تا نگه داریم. عیب: از دست دادن اطلاعات. Oversampling: از ۱۰ نمونه تقلبی، ۱۰۰ تا بسازیم. SMOTE: نقطه جدید بین نقاط اقلیت تولید می‌کند - نه دقیقاً کپی. این بهتر از کپی کردن است چینتنوع ایجاد می‌کند.</p>
+            <strong>تکنیک‌های Resampling (۱۲ دقیقه):</strong>
+            <p>Undersampling را با کاهش کلاس اکثریت توضیح دهید: مثلاً از ۱۰۰۰ نمونه سالم، فقط ۱۰۰ تا نگه داریم. عیب: از دست دادن اطلاعات. Oversampling: از ۱۰ نمونه تقلبی، ۱۰۰ تا بسازیم. SMOTE: نقطه جدید بین نقاط اقلیت تولید می‌کند — نه دقیقاً کپی. این بهتر از کپی کردن است چون تنوع ایجاد می‌کند.</p>
+            <p><strong>نکته کلیدی:</strong> تأکید کنید که Resampling باید فقط روی Train Set انجام شود.</p>
         </div>
         <div class="instructor-note">
             <strong>SMOTE جزئیات (۸ دقیقه):</strong>
-            <p>SMOTE را با یک مثال گرافیکی توضیح دهید: دو نقطه اقلیت داریم، SMOTE یک نقطه جدید بین آنها قرار می‌دهد. این مثل «插值» است. مزیت: داده جدید واقعی نیست ولی واقعی به نظر می‌رسد. انواع: Borderline-SMOTE فقط روی نقاط مرزی کار می‌کند که مهم‌ترند.</p>
+            <p>SMOTE را با یک مثال گرافیکی توضیح دهید: دو نقطه اقلیت داریم، SMOTE یک نقطه جدید بین آنها قرار می‌دهد. این مثل Interpolation است. مزیت: داده جدید واقعی نیست ولی واقعی به نظر می‌رسد. Borderline-SMOTE فقط روی نقاط مرزی کار می‌کند که مهم‌ترند.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>Class Weight و Threshold (۶ دقیقه):</strong>
+            <p>Class Weight را با یک تشبیه توضیح دهید: «معلمی که به دانش‌آموز ضعیف‌تر بیشتر توجه می‌کند». در مدل، یعنی اشتباه روی کلاس اقلیت جریمه بیشتر دارد. Threshold Tuning ساده‌ترین راه است: آستانه ۰٫۵ را به ۰٫۳ کاهش دهید تا نمونه‌های مشکوک بیشتر شناسایی شوند.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>معیارهای ارزیابی (۶ دقیقه):</strong>
+            <div class="warning">
+                مثال آموزشی: «اگر در تشخیص سرطان، مدلی بسازیم که همیشه «سرطان ندارد» بگوید، ۹۹٫۹٪ دقت خواهد داشت (چون سرطان نادر است) — ولی هیچ بیماری را شناسایی نمی‌کند!»
+            </div>
+            <p>F1 و MCC را معرفی کنید. بگویید: در مسائل نامتوازن، MCC قابل‌اعتمادترین است.</p>
         </div>
         <div class="instructor-note">
             <strong>داده‌های پرت (۸ دقیقه):</strong>
-            <p>پرت‌ها می‌توانند مهم باشند! مثال: در تشخیص تقلب، یک تراکنش خیلی بزرگ ممکن است تقلب باشد - نباید حذف شود. انواع: Global (از کل داده‌ها دور)، Contextual (در یک موقعیت خاص عجیب)، Collective (گروهی که با هم عجیب‌اند). مثلاً در یک بازار سهام، یک نقطه پرت ممکن است crash باشد.</p>
+            <p>پرت‌ها می‌توانند مهم باشند! مثال: در تشخیص تقلب، یک تراکنش خیلی بزرگ ممکن است تقلب باشد — نباید حذف شود. انواع: Global (از کل داده‌ها دور)، Contextual (در یک موقعیت خاص عجیب)، Collective (گروهی که با هم عجیب‌اند).</p>
         </div>
         <div class="instructor-note">
             <strong>تشخیص و مدیریت پرت (۸ دقیقه):</strong>
-            <p>Z-Score: اگر نقطه‌ای بیشتر از ۳ انحراف معیار از میانگین فاصله داشته باشد، پرت است. IQR: برای داده‌های غیرنرمال بهتر است - از چارک‌ها استفاده می‌کند. Winsorization: به جای حذف، مقدار را به آستانه محدود کنیم. تأکید کنید: قبل از حذف پرت، دلیلش را پیدا کنید!</p>
+            <p>Z-Score: اگر نقطه‌ای بیشتر از ۳ انحراف معیار از میانگین فاصله داشته باشد، پرت است. IQR: برای داده‌های غیرنرمال بهتر است — از چارک‌ها استفاده می‌کند. Winsorization: به جای حذف، مقدار را به آستانه محدود کنیم. تأکید کنید: قبل از حذف پرت، دلیلش را پیدا کنید!</p>
         </div>
         <div class="instructor-note">
             <strong>جمع‌بندی (۴ دقیقه):</strong>
-            <p>خلاصه: داده نامتوازن مشکل رایجی است - از SMOTE یا وزن‌دهی استفاده کنیم. داده‌های پرت را با دقت بررسی کنیم - گاهی اطلاعات مهمی دارند. همیشه معیارهای مناسب (Precision, Recall, F1) را به جای Accuracy استفاده کنیم. تکلیف: دانشجویان باید یک دیتاست نامتوازن پیدا کنند و راه‌حل پیشنهاد دهند.</p>
+            <p>خلاصه: داده نامتوازن مشکل رایجی است — از SMOTE یا وزن‌دهی استفاده کنیم. داده‌های پرت را با دقت بررسی کنیم — گاهی اطلاعات مهمی دارند. همیشه معیارهای مناسب (F1, MCC, AUC-PR) را به جای Accuracy استفاده کنیم. تکلیف: دانشجویان باید یک دیتاست نامتوازن پیدا کنند و راه‌حل پیشنهاد دهند.</p>
         </div>
     </div>
 
@@ -226,147 +796,75 @@
             <h2>فصل دوازدهم: مدیریت داده‌های نامتوازن و پرت</h2>
 
             <h3>۱۲.۱ داده نامتوازن</h3>
-            <p>داده نامتوازن زمانی رخ می‌دهد که توزیع کلاس‌ها در یک مجموعه داده یکسان نباشد.</p>
+            <p>تعریف: Imbalance Ratio بالا. چالش: Accuracy گمراه‌کننده، Bias به سمت کلاس اکثریت، کلاس اقلیت مهم‌تر. مثال‌ها: تقلب، بیماری نادر، نقص تولید.</p>
 
-            <h4>مثال:</h4>
-            <p>تشخیص تقلب در تراکنش‌های بانکی:</p>
+            <h3>۱۲.۲ راهکارها</h3>
+            <p><strong>Resampling:</strong></p>
             <ul>
-                <li>۹۹٪ تراکنش: سالم</li>
-                <li>۱٪ تراکنش: تقلبی</li>
+                <li>Undersampling: Random, NearMiss, Tomek Links, ENN</li>
+                <li>Oversampling: Random (ضعیف), SMOTE (پیش‌فرض), ADASYN</li>
+                <li>ترکیب: SMOTETomek, SMOTEENN</li>
             </ul>
+            <p><strong>Class Weight:</strong> وزن بیشتر به اقلیت در تابع هزینه. ساده، یک‌خط کد.</p>
+            <p><strong>Threshold Tuning:</strong> آستانه بهینه به جای ۰٫۵ پیش‌فرض.</p>
+            <p><strong>معیارهای مناسب:</strong> F1, MCC, Balanced Accuracy, AUC-PR.</p>
 
-            <h4>مشکل:</h4>
-            <ul>
-                <li>مدل به کلاس اکثریت bias پیدا می‌کند</li>
-                <li>معیار accuracy گمراه‌کننده می‌شود</li>
-                <li>کلاس اقلیت که معمولاً مهم‌تر است، نادیده گرفته می‌شود</li>
-            </ul>
+            <h3>۱۲.۳ SMOTE</h3>
+            <p>ایده: نمونه مصنوعی بین دو نمونه اقلیت x_new = x + λ(x_nn - x). انواع: Borderline, SMOTE-NC, SMOTE-N. فقط عددی. فقط قبل از Split.</p>
 
-            <h3>۱۲.۲ تکنیک‌های مواجهه با داده نامتوازن</h3>
+            <h3>۱۲.۴ Outliers</h3>
+            <p>سه نوع: Global, Contextual, Collective. علل: خطا یا واقعیت نادر.</p>
 
-            <h4>۱. کاهش نمونه (Undersampling):</h4>
-            <p>کاهش نمونه‌های کلاس اکثریت.</p>
-            <ul>
-                <li>Random Undersampling: حذف تصادفی نمونه‌ها</li>
-                <li>NearMiss: انتخاب نمونه‌های نزدیک به مرز</li>
-                <li>Tomek Links: حذف جفت‌های نزدیک از کلاس‌های مختلف</li>
-            </ul>
+            <h3>۱۲.۵ تشخیص Outlier</h3>
+            <p>Z-Score (|z|>3)، IQR (1.5×IQR)، Isolation Forest، LOF، DBSCAN، One-Class SVM.</p>
 
-            <h4>۲. افزایش نمونه (Oversampling):</h4>
-            <p>افزایش نمونه‌های کلاس اقلیت.</p>
-            <ul>
-                <li>Random Oversampling: کپی تصادفی نمونه‌ها</li>
-                <li>SMOTE: تولید نمونه‌های جدید بین نمونه‌های اقلیت</li>
-                <li>ADASYN: نسخه تطبیقی SMOTE</li>
-            </ul>
-
-            <h4>۳. وزن‌دهی کلاس:</h4>
-            <p>اختصاص وزن بیشتر به کلاس اقلیت در تابع هزینه.</p>
-
-            <h3>۱۲.۳ الگوریتم SMOTE</h3>
-
-            <p>SMOTE (Synthetic Minority Over-sampling Technique) نمونه‌های مصنوعی برای کلاس اقلیت تولید می‌کند.</p>
-
-            <h4>مراحل:</h4>
-            <ol>
-                <li>یک نمونه تصادفی از کلاس اقلیت انتخاب کن</li>
-                <li>K همسایه نزدیک آن را پیدا کن</li>
-                <li>یک همسایه تصادفی انتخاب کن</li>
-                <li>نقطه جدید بین آن‌ها تولید کن</li>
-            </ol>
-
-            <h4>فرمول:</h4>
-            <p>x_new = x + rand(0,1) × (x_nearest - x)</p>
-
-            <h4>انواع SMOTE:</h4>
-            <ul>
-                <li>Borderline-SMOTE: فقط روی نقاط مرزی کار می‌کند</li>
-                <li>SMOTE-NC: برای داده ترکیبی (عددی و اسمی)</li>
-                <li>SMOTE-N: برای داده فقط اسمی</li>
-            </ul>
-
-            <h3>۱۲.۴ داده‌های پرت (Outliers)</h3>
-
-            <p>داده پرت نقطه‌ای است که از الگوی کلی داده‌ها خارج است.</p>
-
-            <h4>انواع داده پرت:</h4>
-            <ul>
-                <li><strong>Global Outliers:</strong> نقاطی که از کل داده‌ها خیلی متفاوت‌اند</li>
-                <li><strong>Contextual Outliers:</strong> نقاطی که در یک بافت خاص متفاوت‌اند</li>
-                <li><strong>Collective Outliers:</strong> مجموعه‌ای از داده‌ها که با هم متفاوت‌اند</li>
-            </ul>
-
-            <h4>دلایل ایجاد داده پرت:</h4>
-            <ul>
-                <li>خطای اندازه‌گیری</li>
-                <li>خطای ورود داده</li>
-                <li>پدیده‌های نادر واقعی</li>
-            </ul>
-
-            <h3>۱۲.۵ روش‌های تشخیص پرت</h3>
-
-            <h4>۱. Z-Score:</h4>
-            <p>z = (x - μ) / σ</p>
-            <p>اگر |z| > 3 → پرت</p>
-
-            <h4>۲. IQR (Interquartile Range):</h4>
-            <p>IQR = Q3 - Q1</p>
-            <p>مرزها:</p>
-            <ul>
-                <li>پایین: Q1 - 1.5 × IQR</li>
-                <li>بالا: Q3 + 1.5 × IQR</li>
-            </ul>
-
-            <h4>۳. Isolation Forest:</h4>
-            <p>الگوریتم مبتنی بر درخت که نقاط پرت را سریع‌تر جدا می‌کند.</p>
-
-            <h4>۴. DBSCAN:</h4>
-            <p>نقاطی که در هیچ خوشه‌ای نیستند به عنوان پرت شناسایی می‌شوند.</p>
-
-            <h3>۱۲.۶ مدیریت داده‌های پرت</h3>
-
-            <h4>۱. حذف:</h4>
-            <ul>
-                <li>حذف سطر (اگر تعداد کم باشد)</li>
-                <li>حذف ستون (اگر تعداد زیاد باشد)</li>
-            </ul>
-
-            <h4>۲. جایگزینی:</h4>
-            <ul>
-                <li>با میانگین/میانه</li>
-                <li>با مقدار قبلی/بعدی</li>
-                <li>با مدل پیش‌بینی</li>
-            </ul>
-
-            <h4>۳. تبدیل:</h4>
-            <ul>
-                <li>Log Transform: x' = log(x+1)</li>
-                <li>Box-Cox Transform</li>
-                <li>Winsorization: محدود کردن به مقادیر آستانه</li>
-            </ul>
-
-            <h4>نکته مهم:</h4>
-            <p>گاهی داده پرت اطلاعات ارزشمندی دارد! مثلاً در تشخیص تقلب، یک تراکنش خیلی بزرگ ممکن است تقلب باشد.</p>
+            <h3>۱۲.۶ مدیریت Outlier</h3>
+            <p>حذف (خطرناک)، Winsorization (جایگزینی با آستانه)، تبدیل (Log, Box-Cox)، جایگزینی (Imputation)، مدل مقاوم (Huber, Random Forest, RANSAC).</p>
 
             <h3>خلاصه فصل:</h3>
             <ol>
-                <li>داده نامتوازن مشکل رایجی است که نیاز به تکنیک‌های خاص دارد</li>
-                <li>SMOTE نمونه‌های مصنوعی برای کلاس اقلیت تولید می‌کند</li>
-                <li>داده‌های پرت را باید با دقت بررسی کرد</li>
-                <li>روش‌های تشخیص: Z-Score، IQR، Isolation Forest</li>
-                <li>قبل از حذف پرت، دلیلش را پیدا کنید</li>
+                <li>داده نامتوازن در مسائل واقعی بسیار رایج است</li>
+                <li>SMOTE محبوب‌ترین تکنیک Oversampling</li>
+                <li>Class Weight ساده‌ترین راه برای تنظیم مدل</li>
+                <li>Accuracy در نامتوازن گمراه‌کننده — از F1, MCC, AUC-PR استفاده کنید</li>
+                <li>Outlier می‌تواند خطا یا واقعیت ارزشمند باشد — قبل از اقدام، تحلیل کنید</li>
+                <li>Isolation Forest و LOF قدرتمندترین روش‌های ML برای تشخیص Outlier</li>
             </ol>
 
             <h3>تمرین‌های خودآزمایی:</h3>
             <ol>
-                <li>چرا Accuracy برای داده نامتوازن معیار مناسبی نیست؟</li>
-                <li>تفاوت Oversampling و Undersampling چیست؟</li>
-                <li>SMOTE چگونه نمونه جدید تولید می‌کند؟</li>
-                <li>یک مثال از داده پرت در دنیای واقعی بزنید</li>
-                <li>چرا نباید همیشه داده‌های پرت را حذف کرد؟</li>
+                <li>چرا Accuracy برای داده نامتوازن معیار مناسبی نیست؟ یک مثال عددی بزنید.</li>
+                <li>تفاوت Oversampling و Undersampling چیست؟ کدام برای حجم داده زیاد مناسب‌تر است؟</li>
+                <li>SMOTE چگونه نمونه جدید تولید می‌کند؟ فرمول آن را بنویسید.</li>
+                <li>چرا Borderline-SMOTE از SMOTE معمولی بهتر است؟</li>
+                <li>Class Weight چه زمانی بهتر از Resampling است؟</li>
+                <li>یک مثال واقعی از Outlier بزنید و توضیح دهید چه تصمیمی باید گرفت.</li>
+                <li>تفاوت Z-Score و IQR چیست؟ کدام برای داده با Outlier مناسب‌تر است؟</li>
+                <li>MCC چه مزیتی نسبت به F1 دارد؟</li>
             </ol>
 
-            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۲۰ دقیقه</p>
+            <h3>پروژه عملی پیشنهادی:</h3>
+            <p>دیتاست Credit Card Fraud از Kaggle (۲۸۴٬۸۰۷ تراکنش، فقط ۰٫۱۷٪ تقلب):</p>
+            <ul>
+                <li>داده بسیار نامتوازن — Imbalance Ratio ≈ ۵۷۷:۱</li>
+                <li>Stratified Train/Test Split</li>
+                <li>مدل پایه بدون Resampling → بسیار بد (F1 ≈ 0)</li>
+                <li>اعمال SMOTE فقط روی Train → بهبود F1</li>
+                <li>مقایسه با Class Weight → کدام بهتر؟</li>
+                <li>آزمایش Threshold = ۰٫۳ به جای ۰٫۵</li>
+                <li>ارزیابی با F1, MCC, AUC-PR (نه Accuracy)</li>
+                <li>Isolation Forest برای Outlier → مقایسه نتایج</li>
+            </ul>
+
+            <h3>منابع پیشنهادی برای مطالعه بیشتر:</h3>
+            <ul>
+                <li>کتاب «Imbalanced Learning» نوشته He & Garcia</li>
+                <li>مستندات imbalanced-learn: <code>imbalanced-learn.org</code></li>
+                <li>مستندات PyOD (Python Outlier Detection): <code>pyod.readthedocs.io</code></li>
+                <li>Kaggle — راه‌حل‌های برتر در مسابقات Credit Card Fraud</li>
+            </ul>
+
+            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۸۰ دقیقه</p>
         </div>
     </div>
 

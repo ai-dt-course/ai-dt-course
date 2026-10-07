@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جلسه ۱۱ - آماده‌سازی و پیش‌پردازش داده</title>
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; line-height: 1.9; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
         h3 { color: #16a085; margin-top: 20px; }
+        h4 { color: #34495e; margin-top: 15px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
         .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
-        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 10px; margin: 10px 0; }
-        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 15px; margin: 10px 0; }
+        .warning { background: #fdecea; border-right: 4px solid #e74c3c; padding: 10px; margin: 10px 0; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+        .stat-box { background: #f4ecf7; border-right: 4px solid #8e44ad; padding: 10px; margin: 10px 0; }
+        .quote { background: #fdf2e9; border-right: 4px solid #e67e22; padding: 10px; margin: 10px 0; font-style: italic; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: monospace; color: #c0392b; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
         .accordion.active { background-color: #3498db; color: white; }
@@ -25,231 +30,746 @@
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
         th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
     </style>
 </head>
 <body>
     <a href="../plan.html" class="back-link">← بازگشت به برنامه درسی</a>
 
-    <h1>جلسه ۱۱: آماده‌سازی مجموعه داده و پیش‌پردازش</h1>
+    <h1>جلسه ۱۱: آماده‌سازی و پیش‌پردازش داده (Data Preparation & Preprocessing)</h1>
 
     <div class="phase">
         <h2>اهداف یادگیری</h2>
+        <p>در پایان این جلسه، دانشجو باید بتواند:</p>
         <ul>
-            <li>آشنایی با مراحل آماده‌سازی داده</li>
-            <li>یادگیری تکنیک‌های پیش‌پردازش</li>
-            <li>درک اهمیت کیفیت داده</li>
+            <li>اهمیت حیاتی آماده‌سازی داده در پروژه‌های ML را درک کند</li>
+            <li>انواع مشکلات داده (Missing, Outliers, Duplicates, Inconsistent) را تشخیص دهد</li>
+            <li>سه روش اصلی مقیاس‌گذاری (Standardization, Min-Max, Robust) را اعمال کند</li>
+            <li>روش‌های مختلف Encoding (Label, One-Hot, Ordinal, Target) را برای داده‌های طبقه‌ای به‌کار گیرد</li>
+            <li>تقسیم صحیح داده (Train/Val/Test) و تکنیک Cross-Validation را اجرا کند</li>
+            <li>تکنیک‌های Feature Engineering را در مسائل عملی پیاده‌سازی کند</li>
+            <li>Data Leakage را بشناسد و از آن اجتناب کند</li>
+        </ul>
+
+        <h2>پیش‌نیازهای جلسه</h2>
+        <ul>
+            <li>آشنایی با الگوریتم‌های یادگیری ماشین (جلسات ۶، ۹)</li>
+            <li>درک مفهوم Overfitting (پیش‌نیاز جلسه ۱۳)</li>
+            <li>دانش پایه‌ای از Python و Pandas</li>
         </ul>
     </div>
 
-    <button class="accordion">مراحل آماده‌سازی داده</button>
+    <button class="accordion">بخش ۱۱.۱ — چرا آماده‌سازی داده حیاتی است؟</button>
     <div class="panel">
         <div class="key-concept">
-            ۸۰٪ زمان پروژه‌های ML صرف آماده‌سازی داده می‌شود!
+            <strong>قانون طلایی:</strong> ۸۰ درصد زمان پروژه‌های یادگیری ماشین صرف آماده‌سازی داده می‌شود، و ۲۰ درصد صرف مدل‌سازی.
         </div>
 
-        <h3>مراحل اصلی:</h3>
-        <ol>
-            <li><strong>جمع‌آوری داده:</strong> از منابع مختلف</li>
-            <li><strong>بررسی اولیه:</strong> شناخت ساختار و کیفیت</li>
-            <li><strong>پاکسازی:</strong> رفع مشکلات داده</li>
-            <li><strong>تبدیل:</strong> آماده‌سازی برای مدل</li>
-            <li><strong>تقسیم:</strong>Train/Validation/Test</li>
-        </ol>
-
-        <h3>نکته مهم:</h3>
-        <div class="example">
-            <p>داده بد = مدل بد</p>
-            <p>"Garbage In, Garbage Out"</p>
+        <h3>۱۱.۱.۱ آمارهای واقعی</h3>
+        <div class="stat-box">
+            <p>طبق نظرسنجی‌های صنعتی:</p>
+            <ul>
+                <li><strong>Anaconda (2022):</strong> ۶۶٪ دانشمندان داده می‌گویند جمع‌آوری و آماده‌سازی داده بیشترین زمان پروژه را می‌گیرد</li>
+                <li><strong>CrowdFlower (2016):</strong> ۶۰٪ زمان صرف آماده‌سازی، ۹٪ صرف مدل‌سازی</li>
+                <li><strong>IBM Data Science:</strong> ۸۰٪ "داده کاوی" عملاً "داده‌کاری" است</li>
+            </ul>
         </div>
-    </div>
 
-    <button class="accordion">پاکسازی داده</button>
-    <div class="panel">
-        <h3>مقادیر از دست رفته (Missing Values):</h3>
+        <h3>۱۱.۱.۲ چرا اینقدر مهم است؟</h3>
+        <div class="quote">
+            "داده بد بهترین الگوریتم را هم نابود می‌کند. بهترین مدل با داده بد، نتیجه بد می‌دهد. به عبارت ساده: Garbage In, Garbage Out." — اصل بنیادی علم داده
+        </div>
+
+        <p><strong>مثال تأثیرگذار:</strong></p>
         <ul>
-            <li><strong>حذف:</strong> حذف سطر یا ستون</li>
-            <li><strong>جایگزینی:</strong> با میانگین، میانه، یا مد</li>
-            <li><strong>پیش‌بینی:</strong> با مدل ML</li>
+            <li>مصرف ۱۰٪ زمان بیشتر روی پاکسازی داده، معمولاً ۱۰-۲۰٪ بهبود دقت مدل می‌دهد</li>
+            <li>برعکس، امتحان ۱۰ الگوریتم مختلف بدون پاکسازی، معمولاً فقط ۱-۲٪ بهبود می‌دهد</li>
         </ul>
 
-        <h3>روش‌های جایگزینی:</h3>
+        <h3>۱۱.۱.۳ شش مرحله اصلی</h3>
+        <ol>
+            <li><strong>جمع‌آوری داده (Data Collection):</strong> از منابع مختلف</li>
+            <li><strong>بررسی و کاوش (EDA):</strong> شناخت ساختار، توزیع، کیفیت</li>
+            <li><strong>پاکسازی (Data Cleaning):</strong> رفع مشکلات</li>
+            <li><strong>تبدیل (Transformation):</strong> مقیاس‌گذاری، کدگذاری</li>
+            <li><strong>مهندسی ویژگی (Feature Engineering):</strong> ایجاد ویژگی‌های مفید</li>
+            <li><strong>تقسیم (Splitting):</strong> Train/Validation/Test</li>
+        </ol>
+
+        <h3>۱۱.۱.۴ هزینه واقعی داده بد در صنعت</h3>
         <table>
             <tr>
-                <th>نوع داده</th>
-                <th>روش پیشنهادی</th>
+                <th>مشکل</th>
+                <th>هزینه نمونه</th>
+                <th>منبع</th>
             </tr>
             <tr>
-                <td>عددی</td>
-                <td>میانگین یا میانه</td>
+                <td>IBM: "داده بد ۳.۱ تریلیون دلار در سال برای اقتصاد آمریکا هزینه دارد"</td>
+                <td>سالانه</td>
+                <td>IBM Big Data Study</td>
             </tr>
             <tr>
-                <td>طبقه‌ای</td>
-                <td>مد (بیشترین تکرار)</td>
+                <td>جلوگیری از تقلب: داده ناقص = از دست رفتن ۶۰٪ تقلب‌ها</td>
+                <td>روزانه</td>
+                <td>بانکداری</td>
             </tr>
             <tr>
-                <td>زمانی</td>
-                <td>Interpolate</td>
+                <td>در مراقبت‌های بهداشتی: خطای داده = سالانه ۲۵۰٬۰۰۰ مرگ قابل پیشگیری</td>
+                <td>سالانه</td>
+                <td>مجله پزشکی</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">بخش ۱۱.۲ — پاکسازی داده (Data Cleaning)</button>
+    <div class="panel">
+        <h3>۱۱.۲.۱ مقادیر از دست رفته (Missing Values)</h3>
+
+        <h4>الف) انواع Missing</h4>
+        <table>
+            <tr>
+                <th>نوع</th>
+                <th>توضیح</th>
+                <th>مثال</th>
+            </tr>
+            <tr>
+                <td><strong>MCAR</strong> (Missing Completely at Random)</td>
+                <td>کاملاً تصادفی، هیچ الگویی ندارد</td>
+                <td>سنسور خراب شده</td>
+            </tr>
+            <tr>
+                <td><strong>MAR</strong> (Missing at Random)</td>
+                <td>الگو به سایر متغیرها وابسته است</td>
+                <td>مردان کمتر «درآمد» را گزارش می‌دهند</td>
+            </tr>
+            <tr>
+                <td><strong>MNAR</strong> (Missing Not at Random)</td>
+                <td>الگو به خود مقدار گم‌شده وابسته</td>
+                <td>افراد پردرآمد درآمد را گزارش نمی‌دهند</td>
             </tr>
         </table>
 
-        <h3>داده‌های تکراری:</h3>
+        <h4>ب) راهکارها</h4>
+        <table>
+            <tr>
+                <th>راهکار</th>
+                <th>زمان استفاده</th>
+                <th>معایب</th>
+            </tr>
+            <tr>
+                <td><strong>حذف کلی (Listwise)</strong></td>
+                <td>Missing &lt; ۵٪ از کل داده</td>
+                <td>از دست دادن اطلاعات</td>
+            </tr>
+            <tr>
+                <td><strong>حذف ستون</strong></td>
+                <td>ستونی با Missing &gt; ۸۰٪</td>
+                <td>از دست رفتن متغیر مهم</td>
+            </tr>
+            <tr>
+                <td><strong>جایگزینی با میانگین/میانه</strong></td>
+                <td>عددی، MCAR، Missing &lt; ۲۰٪</td>
+                <td>کاهش واریانس، سوگیری</td>
+            </tr>
+            <tr>
+                <td><strong>جایگزینی با مد</strong></td>
+                <td>طبقه‌ای (Categorical)</td>
+                <td>ایجاد Classes مصنوعی</td>
+            </tr>
+            <tr>
+                <td><strong>KNN Imputation</strong></td>
+                <td>K نزدیک‌ترین نمونه برای جایگزینی</td>
+                <td>کند، حساس به K</td>
+            </tr>
+            <tr>
+                <td><strong>MICE</strong> (Multiple Imputation)</td>
+                <td>پیش‌بینی با مدل — دقیق‌ترین</td>
+                <td>پیچیده، زمان‌بر</td>
+            </tr>
+        </table>
+
+        <h4>ج) نکات عملی</h4>
+        <div class="warning">
+            <strong>هشدار:</strong> جایگزینی با میانگین می‌تواند روابط بین متغیرها را تضعیف کند. در پروژه‌های جدی، از MICE یا KNN Imputation استفاده کنید.
+        </div>
+
+        <p><strong>قانون سرانگشتی:</strong></p>
         <ul>
-            <li>شناسایی و حذف داده‌های تکراری</li>
-            <li>حذف سطرهای کاملاً یکسان</li>
+            <li>Missing < ۵٪: حذف سطرها</li>
+            <li>Missing ۵-۱۵٪: جایگزینی ساده یا KNN</li>
+            <li>Missing ۱۵-۴۰٪: MICE یا ساخت ستون شاخص</li>
+            <li>Missing > ۴۰٪: حذف ستون یا نگه‌داری به‌عنوان یک دسته مجزا</li>
         </ul>
-    </div>
 
-    <button class="accordion">مقیاس‌گذاری ویژگی‌ها</button>
-    <div class="panel">
-        <div class="key-concept">
-            مقیاس‌گذاری = تبدیل ویژگی‌ها به محدوده یا توزیع مشخص
-        </div>
-
-        <h3>اهمیت:</h3>
+        <h3>۱۱.۲.۲ داده‌های تکراری (Duplicates)</h3>
         <ul>
-            <li>بسیاری از الگوریتم‌ها به مقیاس حساس هستند</li>
-            <li>KNN، SVM، Neural Networks نیاز دارند</li>
-            <li>Linear Regression، Decision Tree نیاز ندارند</li>
+            <li><strong>تکرار کامل:</strong> همه ستون‌ها یکسان — معمولاً باید حذف شود</li>
+            <li><strong>تکرار جزئی:</strong> برخی ستون‌ها یکسان — نیاز به بررسی</li>
+            <li><strong>علل:</strong> خطای ورود داده، ادغام منابع مختلف، double-click</li>
         </ul>
 
-        <h3>انواع مقیاس‌گذاری:</h3>
+        <h3>۱۱.۲.۳ نقاط پرت (Outliers)</h3>
+        <p>تشخیص با روش‌های:</p>
+        <ul>
+            <li><strong>IQR:</strong> نقطه پرت = بیرون از [Q1 − 1.5×IQR, Q3 + 1.5×IQR]</li>
+            <li><strong>Z-score:</strong> |z| > 3</li>
+            <li><strong>Isolation Forest:</strong> مبتنی بر ML</li>
+            <li><strong>Local Outlier Factor (LOF):</strong> چگالی محلی</li>
+        </ul>
 
-        <h4>۱. استانداردسازی (Standardization):</h4>
-        <div class="formula">
-            x' = (x - μ) / σ
-        </div>
-        <p>میانگین = ۰، انحراف معیار = ۱</p>
-
-        <h4>۲. نرمال‌سازی (Min-Max Scaling):</h4>
-        <div class="formula">
-            x' = (x - min) / (max - min)
-        </div>
-        <p>محدوده [0, 1]</p>
-
-        <h4>۳. Robust Scaling:</h4>
-        <div class="formula">
-            x' = (x - median) / IQR
-        </div>
-        <p>مقاوم در برابر نقاط پرت</p>
-
-        <h3>مقایسه:</h3>
+        <p><strong>برخورد:</strong></p>
         <table>
             <tr>
                 <th>روش</th>
+                <th>زمان استفاده</th>
+            </tr>
+            <tr>
+                <td>حذف</td>
+                <td>قطعاً خطا (مثلاً سن ۲۰۰)</td>
+            </tr>
+            <tr>
+                <td>کپسوله‌سازی (Capping)</td>
+                <td>جایگزینی با مقادیر حد آستانه</td>
+            </tr>
+            <tr>
+                <td>تبدیل لگاریتمی</td>
+                <td>توزیع با دنباله بلند (درآمد)</td>
+            </tr>
+            <tr>
+                <td>نگه‌داری</td>
+                <td>معمولاً بهترین گزینه در صورت شک</td>
+            </tr>
+        </table>
+
+        <h3>۱۱.۲.۴ ناسازگاری‌ها (Inconsistencies)</h3>
+        <ul>
+            <li>"تهران" در یک ردیف، "tehran" در ردیف دیگر، "Tehran" در ردیف سوم</li>
+            <li>تاریخ به دو فرمت مختلف: ۱۴۰۲/۰۵/۱۰ و 2023-08-01</li>
+            <li>واحدهای مختلف: قیمت به ریال در یک ستون، به تومان در ستون دیگر</li>
+            <li>مقادیر غیرمنطقی: سن منفی، درصد > ۱۰۰</li>
+        </ul>
+    </div>
+
+    <button class="accordion">بخش ۱۱.۳ — مقیاس‌گذاری ویژگی‌ها (Feature Scaling)</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>مقیاس‌گذاری:</strong> تبدیل ویژگی‌ها به محدوده یا توزیع مشخص، به‌طوری‌که هیچ ویژگی به‌خاطر بزرگی عدد بر دیگری غلبه نکند.
+        </div>
+
+        <h3>۱۱.۳.۱ چرا مهم است؟</h3>
+        <div class="example">
+            <p>فرض کنید دو ویژگی داریم:</p>
+            <ul>
+                <li>سن: بین ۰ تا ۱۰۰</li>
+                <li>درآمد: بین ۰ تا ۱۰۰٬۰۰۰٬۰۰۰ تومان</li>
+            </ul>
+            <p>در KNN، فاصله اقلیدسی تقریباً فقط به «درآمد» بستگی دارد چون اعدادش بزرگ‌تر است. سن عملاً نادیده گرفته می‌شود!</p>
+        </div>
+
+        <p><strong>چه الگوریتم‌هایی نیاز دارند؟</strong></p>
+        <table>
+            <tr>
+                <th>نیاز دارند</th>
+                <th>نیاز ندارند</th>
+            </tr>
+            <tr>
+                <td>KNN، SVM، Neural Networks</td>
+                <td>Decision Tree، Random Forest</td>
+            </tr>
+            <tr>
+                <td>Logistic Regression</td>
+                <td>XGBoost (درختی)</td>
+            </tr>
+            <tr>
+                <td>PCA، K-Means</td>
+                <td>Naive Bayes</td>
+            </tr>
+            <tr>
+                <td>Linear Regression (با Regularization)</td>
+                <td>درخت‌های boosting</td>
+            </tr>
+        </table>
+
+        <h3>۱۱.۳.۲ سه روش اصلی</h3>
+
+        <h4>الف) استانداردسازی (Standardization / Z-score)</h4>
+        <div class="formula">
+            x' = (x − μ) / σ
+        </div>
+        <p>ویژگی‌های توزیع: میانگین ≈ ۰، انحراف معیار ≈ ۱</p>
+        <p><strong>مناسب:</strong> SVM، Logistic Regression، PCA، توزیع نرمال</p>
+        <p><strong>نامناسب:</strong> وقتی Outlier زیاد داریم (میانگین و σ تحت تأثیر قرار می‌گیرند)</p>
+
+        <h4>ب) نرمال‌سازی (Min-Max Scaling)</h4>
+        <div class="formula">
+            x' = (x − min) / (max − min)
+        </div>
+        <p>خروجی در محدوده [0, 1]</p>
+        <p><strong>مناسب:</strong> Neural Networks (activation sigmoid/tanh)، تصویر (پیکسل‌ها در ۰-۲۵۵)</p>
+        <p><strong>نامناسب:</strong> Outlierها (مقادیر جدید ممکن است خارج از [0,1] شوند در داده جدید)</p>
+
+        <h4>ج) Robust Scaling</h4>
+        <div class="formula">
+            x' = (x − median) / IQR
+        </div>
+        <p>که IQR = Q3 − Q1</p>
+        <p><strong>مناسب:</strong> داده‌هایی با Outlier زیاد (مثلاً درآمد، قیمت ملک)</p>
+
+        <h3>۱۱.۳.۳ جدول مقایسه</h3>
+        <table>
+            <tr>
+                <th>روش</th>
+                <th>خروجی</th>
+                <th>حساس به Outlier</th>
+                <th>کاربرد اصلی</th>
+            </tr>
+            <tr>
+                <td>StandardScaler</td>
+                <td>میانگین ۰، sd ۱</td>
+                <td>بله</td>
+                <td>SVM، Logistic Regression، PCA</td>
+            </tr>
+            <tr>
+                <td>MinMaxScaler</td>
+                <td>[0, 1]</td>
+                <td>بله</td>
+                <td>Neural Networks، تصویر</td>
+            </tr>
+            <tr>
+                <td>RobustScaler</td>
+                <td>میانه ۰، IQR ۱</td>
+                <td>خیر</td>
+                <td>داده با Outlier زیاد</td>
+            </tr>
+            <tr>
+                <td>MaxAbsScaler</td>
+                <td>[-1, 1]</td>
+                <td>بله</td>
+                <td>داده‌های sparse</td>
+            </tr>
+            <tr>
+                <td>QuantileTransformer</td>
+                <td>توزیع یکنواخت یا نرمال</td>
+                <td>خیر</td>
+                <td>توزیع‌های نامتعارف</td>
+            </tr>
+        </table>
+
+        <h3>۱۱.۳.۴ قانون مهم</h3>
+        <div class="warning">
+            <strong>نکته بسیار مهم:</strong> پارامترهای مقیاس‌گذاری (μ و σ یا min و max) را فقط از داده آموزش (Train) محاسبه کنید، سپس روی تمام داده‌ها (Train, Val, Test) اعمال کنید. اگر از کل داده محاسبه کنید، Data Leakage رخ می‌دهد و مدل بیش از حد خوش‌بین می‌شود.
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۱۱.۴ — کدگذاری داده‌های طبقه‌ای (Categorical Encoding)</button>
+    <div class="panel">
+        <p>الگوریتم‌های ML فقط با اعداد کار می‌کنند. ولی داده‌های زیادی مانند رنگ، شهر، نوع خودرو، رشته تحصیلی به‌صورت متن هستند.</p>
+
+        <h3>۱۱.۴.۱ Label Encoding</h3>
+        <p>تبدیل هر مقدار یکتا به یک عدد (۰، ۱، ۲، ...).</p>
+        <div class="example">
+            <p>["red", "green", "blue"] → [0, 1, 2]</p>
+            <p>["تهران", "اصفهان", "شیراز"] → [0, 1, 2]</p>
+        </div>
+        <p><strong>مشکل:</strong> مدل تصور می‌کند ترتیب و فاصله معنادار است. مثلاً فکر می‌کند "red" < "green" < "blue" از نظر ریاضی.</p>
+        <p><strong>مناسب:</strong> درخت‌های تصمیم (می‌توانند ترتیب را بفهمند، نه نیاز به ترتیب خاصی دارند).</p>
+
+        <h3>۱۱.۴.۲ One-Hot Encoding</h3>
+        <p>هر مقدار → یک ستون باینری.</p>
+        <div class="example">
+            <p>ستون اولیه: رنگ</p>
+            <table>
+                <tr><th>رنگ</th><th>is_red</th><th>is_green</th><th>is_blue</th></tr>
+                <tr><td>red</td><td>1</td><td>0</td><td>0</td></tr>
+                <tr><td>green</td><td>0</td><td>1</td><td>0</td></tr>
+                <tr><td>blue</td><td>0</td><td>0</td><td>1</td></tr>
+            </table>
+            <p>هیچ ترتیبی القا نمی‌شود. عیب: اگر تعداد مقادیر زیاد باشد (مثلاً ۱۰٬۰۰۰ شهر)، ماتریس بسیار بزرگ می‌شود (Curse of Dimensionality).</p>
+        </div>
+
+        <p><strong>راه‌حل برای مقادیر زیاد:</strong></p>
+        <ul>
+            <li><strong>Top-K:</strong> فقط K مقدار پرتکرار + یک دسته "سایر"</li>
+            <li><strong>Target Encoding:</strong> جایگزینی با میانگین هدف هر دسته</li>
+            <li><strong>Binary Encoding:</strong> تبدیل Label به کد باینری</li>
+        </ul>
+
+        <h3>۱۱.۴.۳ Ordinal Encoding</h3>
+        <p>وقتی ترتیب واقعاً معنادار است، به جای One-Hot از اعداد ترتیبی استفاده کنید.</p>
+        <div class="example">
+            <p>تحصیلات: ["دیپلم", "لیسانس", "فوق‌لیسانس", "دکتری"] → [0, 1, 2, 3]</p>
+            <p>رضایت: ["خیلی بد", "بد", "متوسط", "خوب", "عالی"] → [0, 1, 2, 3, 4]</p>
+        </div>
+
+        <h3>۱۱.۴.۴ Target Encoding (Mean Encoding)</h3>
+        <p>هر مقدار دسته‌ای با میانگین متغیر هدف جایگزین می‌شود.</p>
+        <div class="formula">
+            encode(category) = mean(target | category)
+        </div>
+        <p><strong>مناسب:</strong> ویژگی‌هایی با مقادیر زیاد (مثلاً مدل خودرو)</p>
+        <p><strong>خطر:</strong> Data Leakage — باید با Cross-Validation محاسبه شود</p>
+
+        <h3>۱۱.۴.۵ جدول مقایسه</h3>
+        <table>
+            <tr>
+                <th>روش</th>
+                <th>زمان استفاده</th>
                 <th>مزایا</th>
                 <th>معایب</th>
             </tr>
             <tr>
-                <td>StandardScaler</td>
-                <td>خوب برای توزیع نرمال</td>
-                <td>حساس به پرت</td>
+                <td>Label</td>
+                <td>درخت‌ها، ترتیب ذاتی</td>
+                <td>ساده، فشرده</td>
+                <td>ترتیب مصنوعی</td>
             </tr>
             <tr>
-                <td>MinMaxScaler</td>
-                <td>محدوده مشخص</td>
-                <td>حساس به پرت</td>
+                <td>One-Hot</td>
+                <td>بدون ترتیب، تعداد کم</td>
+                <td>بدون سوگیری</td>
+                <td>ابعاد بالا</td>
             </tr>
             <tr>
-                <td>RobustScaler</td>
-                <td>مقاوم به پرت</td>
-                <td>پیچیده‌تر</td>
+                <td>Ordinal</td>
+                <td>ترتیب معنادار</td>
+                <td>فشرده، سریع</td>
+                <td>فاصله‌های مساوی فرض می‌شود</td>
+            </tr>
+            <tr>
+                <td>Target</td>
+                <td>مقادیر زیاد</td>
+                <td>فشرده، با اطلاعات هدف</td>
+                <td>Data Leakage risk</td>
+            </tr>
+            <tr>
+                <td>Frequency</td>
+                <td>هر نوع</td>
+                <td>ساده، بدون Leakage</td>
+                <td>ممکن است دو دسته فرکانس یکسان گیج شوند</td>
             </tr>
         </table>
     </div>
 
-    <button class="accordion">کدگذاری ویژگی‌های طبقه‌ای</button>
-    <div class="panel">
-        <h3>۱. Label Encoding:</h3>
-        <p>تبدیل هر مقدار به یک عدد:</p>
-        <div class="example">
-            <p>["red", "green", "blue"] → [0, 1, 2]</p>
-        </div>
-        <p>مشکل: مدل فکر می‌کند red < green < blue</p>
-
-        <h3>۲. One-Hot Encoding:</h3>
-        <p>یک ستون برای هر مقدار:</p>
-        <div class="example">
-            <p>["red", "green", "blue"]</p>
-            <p>→ red: [1, 0, 0]</p>
-            <p>→ green: [0, 1, 0]</p>
-            <p>→ blue: [0, 0, 1]</p>
-        </div>
-
-        <h3>۳. Ordinal Encoding:</h3>
-        <p>برای ترتیب معنادار:</p>
-        <div class="example">
-            <p>["low", "medium", "high"] → [0, 1, 2]</p>
-        </div>
-    </div>
-
-    <button class="accordion">تقسیم داده</button>
+    <button class="accordion">بخش ۱۱.۵ — مهندسی ویژگی (Feature Engineering)</button>
     <div class="panel">
         <div class="key-concept">
-            تقسیم داده به مجموعه‌های مجزا برای آموزش و ارزیابی
+            <strong>مهندسی ویژگی:</strong> هنر ایجاد ویژگی‌های جدید از ویژگی‌های موجود، برای بهبود عملکرد مدل. گفته می‌شود "مهندسی ویژگی مهم‌تر از مدل‌سازی است."
         </div>
 
-        <h3>تقسیم استاندارد:</h3>
-        <ul>
-            <li>Train: 70-80%</li>
-            <li>Validation: 10-15%</li>
-            <li>Test: 10-15%</li>
-        </ul>
+        <h3>۱۱.۵.۱ تکنیک‌های اصلی</h3>
 
-        <h3>روش‌های تقسیم:</h3>
-        <ul>
-            <li><strong>Random Split:</strong> تصادفی</li>
-            <li><strong>Stratified Split:</strong> حفظ توزیع کلاس‌ها</li>
-            <li><strong>Time-based Split:</strong> بر اساس زمان</li>
-        </ul>
-
-        <h3>نکته مهم:</h3>
+        <h4>الف) ویژگی‌های چندجمله‌ای (Polynomial Features)</h4>
+        <p>ایجاد x², x³, x₁×x₂:</p>
         <div class="example">
-            <p>هیچگاه مدل را با داده Test ارزیابی نکنید!</p>
-            <p>از Validation برای تنظیم استفاده کنید.</p>
+            <p>ورودی: [قد، وزن]</p>
+            <p>خروجی: [قد، وزن، قد²، وزن²، قد × وزن]</p>
+        </div>
+
+        <h4>ب) ویژگی‌های تعاملی (Interaction Features)</h4>
+        <p>ترکیب دو یا چند ویژگی برای بیان رابطه:</p>
+        <div class="example">
+            <p>قد و وزن → BMI = وزن / قد²</p>
+            <p>طول و عرض → مساحت = طول × عرض</p>
+            <p>سن و درآمد → درآمد به ازای هر سال سن</p>
+        </div>
+
+        <h4>ج) تبدیل‌های ریاضی</h4>
+        <ul>
+            <li><strong>Log:</strong> برای توزیع با دنباله بلند (درآمد)</li>
+            <li><strong>Square Root:</strong> برای شمارش (تعداد فرزند)</li>
+            <li><strong>Box-Cox:</strong> تبدیل خودکار برای نرمال‌سازی</li>
+        </ul>
+
+        <h4>د) Binning (گسسته‌سازی)</h4>
+        <p>تبدیل عدد پیوسته به دسته‌های مجزا:</p>
+        <div class="example">
+            <p>سن: ۳-۱۲ (کودک)، ۱۳-۱۹ (نوجوان)، ۲۰-۶۰ (بزرگسال)، ۶۰+ (سالمند)</p>
+            <p>درآمد: کم، متوسط، زیاد، خیلی زیاد</p>
+        </div>
+
+        <h4>ه) ویژگی‌های زمانی</h4>
+        <p>از تاریخ، ویژگی‌های مفید استخراج کنید:</p>
+        <ul>
+            <li>روز هفته، ماه، فصل</li>
+            <li>تعطیل بودن / نبودن</li>
+            <li>فاصله از رویداد خاص (مثلاً عید نوروز)</li>
+        </ul>
+
+        <h4>و) ویژگی‌های متنی (Text → Number)</h4>
+        <ul>
+            <li>تعداد کلمات، تعداد حروف بزرگ، تعداد علامت تعجب</li>
+            <li>TF-IDF (روش پیشرفته‌تر — در جلسه NLP)</li>
+            <li>Word Embedding (Word2Vec، BERT)</li>
+        </ul>
+
+        <h3>۱۱.۵.۲ چرا Feature Engineering مهم‌ترین است؟</h3>
+        <div class="quote">
+            "ویژگی‌های خوب + مدل ساده، از ویژگی‌های بد + مدل پیچیده بهتر عمل می‌کند. در بسیاری از Kaggle، مهندسی ویژگی ۸۰٪ امتیاز را تعیین می‌کند." — تجربه Kaggle
+        </div>
+
+        <h3>۱۱.۵.۳ مثال عملی: پیش‌بینی ریزش مشتری</h3>
+        <div class="example">
+            <p><strong>ویژگی‌های اولیه:</strong> سن، درآمد ماهانه، مدت عضویت</p>
+            <p><strong>ویژگی‌های مهندسی‌شده:</strong></p>
+            <ul>
+                <li>نسبت درآمد به سن (نسبت فعالیت اقتصادی)</li>
+                <li>آیا درآمد زیر میانه است (Boolean)</li>
+                <li>سابقه تماس با پشتیبانی (از log سیستم)</li>
+                <li>تعداد تراکنش در ۳ ماه اخیر</li>
+                <li>میانگین فاصله بین تراکنش‌ها</li>
+                <li>آیا کاربر در ۳۰ روز اخیر فعال بوده (Boolean)</li>
+            </ul>
+            <p>این ویژگی‌های جدید، قدرت پیش‌بینی را ۲-۳ برابر افزایش می‌دهند.</p>
         </div>
     </div>
 
-    <button class="accordion">مهندسی ویژگی</button>
+    <button class="accordion">بخش ۱۱.۶ — تقسیم داده (Train/Validation/Test Split)</button>
     <div class="panel">
         <div class="key-concept">
-            ایجاد ویژگی‌های جدید از ویژگی‌های موجود
+            <strong>هدف:</strong> تخمین عملکرد واقعی مدل در داده‌های آینده. اگر مدل را با همان داده‌ای که آموزش دیده ارزیابی کنیم، نتیجه بیش از حد خوش‌بینانه خواهد بود.
         </div>
 
-        <h3>روش‌ها:</h3>
-        <ul>
-            <li><strong>Polynomial Features:</strong> x², x³, x₁x₂</li>
-            <li><strong>Interaction Features:</strong> ترکیب ویژگی‌ها</li>
-            <li><strong>Domain-specific:</strong> دانش تخصصی</li>
-        </ul>
+        <h3>۱۱.۶.۱ سه مجموعه داده</h3>
+        <table>
+            <tr>
+                <th>مجموعه</th>
+                <th>نسبت معمول</th>
+                <th>هدف</th>
+                <th>چند بار استفاده؟</th>
+            </tr>
+            <tr>
+                <td><strong>Train</strong></td>
+                <td>۶۰-۸۰٪</td>
+                <td>آموزش مدل</td>
+                <td>یک بار</td>
+            </tr>
+            <tr>
+                <td><strong>Validation</strong></td>
+                <td>۱۰-۲۰٪</td>
+                <td>تنظیم ابرپارامترها، انتخاب مدل</td>
+                <td>چند بار (تا تنظیم شود)</td>
+            </tr>
+            <tr>
+                <td><strong>Test</strong></td>
+                <td>۱۰-۲۰٪</td>
+                <td>ارزیابی نهایی مدل</td>
+                <td>فقط یک بار (در انتها)</td>
+            </tr>
+        </table>
 
-        <h3>مثال:</h3>
+        <h3>۱۱.۶.۲ روش‌های تقسیم</h3>
+
+        <h4>الف) Random Split</h4>
+        <p>نمونه‌ها به‌صورت تصادفی به سه مجموعه تقسیم می‌شوند.</p>
+        <p><strong>مناسب:</strong> داده IID (مستقل و هم‌توزیع)</p>
+
+        <h4>ب) Stratified Split</h4>
+        <p>توزیع کلاس‌ها در هر سه مجموعه حفظ می‌شود.</p>
+        <p><strong>مناسب:</strong> مسائل نامتعادل (Imbalanced) — مثلاً تشخیص تقلب (۹۹٪ عادی، ۱٪ تقلب)</p>
+
+        <h4>ج) Time-based Split</h4>
+        <p>بر اساس زمان (مثلاً داده‌های ۲۰۱۸-۲۰۲۱ برای Train، ۲۰۲۲ برای Validation، ۲۰۲۳ برای Test).</p>
+        <p><strong>مناسب:</strong> سری‌های زمانی (پیش‌بینی قیمت، فروش)</p>
+
+        <h4>د) K-Fold Cross-Validation</h4>
+        <p>داده به K قسمت تقسیم می‌شود. K بار آموزش می‌بینیم، هر بار K−1 قسمت آموزش و ۱ قسمت ارزیابی.</p>
         <div class="example">
-            <p>ویژگی‌های اولیه: قد، وزن</p>
-            <p>ویژگی جدید: BMI = وزن / قد²</p>
+            <p>K = 5: ۵ بار آموزش، هر بار با ۸۰٪ داده آموزش و ۲۰٪ ارزیابی. نتیجه نهایی = میانگین نتایج.</p>
+            <p>مزایا: استفاده کامل از داده، تخمین پایدارتر</p>
+            <p>معایب: K بار زمان محاسباتی</p>
+        </div>
+
+        <p><strong>Stratified K-Fold:</strong> در مسائل نامتعادل، توزیع کلاس در هر Fold حفظ می‌شود.</p>
+
+        <h3>۱۱.۶.۳ پیاده‌سازی</h3>
+        <div class="formula" style="text-align: left; direction: ltr;">
+            <code>
+# روش ۱: ساده<br>
+from sklearn.model_selection import train_test_split<br>
+X_train, X_temp, y_train, y_temp = \<br>
+&nbsp;&nbsp;&nbsp;train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)<br>
+X_val, X_test, y_val, y_test = \<br>
+&nbsp;&nbsp;&nbsp;train_test_split(X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp)<br>
+<br>
+# روش ۲: Cross-Validation<br>
+from sklearn.model_selection import StratifiedKFold<br>
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)<br>
+for train_idx, val_idx in skf.split(X, y):<br>
+&nbsp;&nbsp;&nbsp;X_train, X_val = X[train_idx], X[val_idx]<br>
+&nbsp;&nbsp;&nbsp;y_train, y_val = y[train_idx], y[val_idx]<br>
+&nbsp;&nbsp;&nbsp;model.fit(X_train, y_train)<br>
+&nbsp;&nbsp;&nbsp;score = model.score(X_val, y_val)
+            </code>
         </div>
     </div>
 
-    <button class="accordion">یادداشت‌های استاد</button>
+    <button class="accordion">بخش ۱۱.۷ — Data Leakage: دشمن خاموش</button>
+    <div class="panel">
+        <div class="warning">
+            <strong>Data Leakage (نشت داده):</strong> وقتی اطلاعاتی از Test Set به Train Set "نشت" کند. این باعث می‌شود مدل در آموزش عالی به نظر برسد ولی در عمل شکست بخورد.
+        </div>
+
+        <h3>۱۱.۷.۱ انواع رایج</h3>
+
+        <table>
+            <tr>
+                <th>نوع</th>
+                <th>مثال</th>
+                <th>راه‌حل</th>
+            </tr>
+            <tr>
+                <td><strong>Target Leakage</strong></td>
+                <td>استفاده از «کمیسیون پرداختی به بیمار» برای تشخیص «بیماری» (بعد از بیماری مشخص شده)</td>
+                <td>حذف ویژگی‌هایی که پس از Target تولید می‌شوند</td>
+            </tr>
+            <tr>
+                <td><strong>Train-Test Contamination</strong></td>
+                <td>محاسبه میانگین/SD روی کل داده، سپس استفاده در Train</td>
+                <td>محاسبه فقط روی Train، اعمال روی همه</td>
+            </tr>
+            <tr>
+                <td><strong>Lag Leakage</strong></td>
+                <td>در سری زمانی، استفاده از آینده برای پیش‌بینی گذشته</td>
+                <td>رعایت ترتیب زمانی</td>
+            </tr>
+        </table>
+
+        <h3>۱۱.۷.۲ چک‌لیست جلوگیری</h3>
+        <ul>
+            <li>✓ مقیاس‌گذاری را فقط روی Train محاسبه کن</li>
+            <li>✓ Target Encoding را درون Cross-Loop محاسبه کن</li>
+            <li>✓ در سری زمانی، هیچ‌گاه از آینده استفاده نکن</li>
+            <li>✓ ویژگی‌های به‌شدت همبسته با Target را بررسی کن</li>
+            <li>✓ اگر عملکرد روی Train خیلی بالاتر از Validation است، مشکوک شو</li>
+        </ul>
+
+        <h3>۱۱.۷.۳ مثال واقعی</h3>
+        <div class="example">
+            <p><strong>اشتباه رایج:</strong></p>
+            <ul>
+                <li>پزشکی: «داروی تجویزشده» به‌عنوان ویژگی برای تشخیص بیماری → این ویژگی معلول بیماری است، نه علت</li>
+                <li>پیش‌بینی ریزش: «تمدید قرارداد در ماه آینده» به‌عنوان ویژگی برای تشخیص ریزش → Data Leakage واضح</li>
+                <li>مالی: قیمت سهام در t+1 به‌عنوان ویژگی برای پیش‌بینی در t → استفاده از آینده</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۱۱.۸ — Pipeline: یکپارچه‌سازی مراحل</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>Pipeline (خط لوله):</strong> ترکیب مراحل پیش‌پردازش و مدل در یک شیء واحد، برای جلوگیری از Data Leakage و ساده‌سازی فرایند.
+        </div>
+
+        <div class="formula" style="text-align: left; direction: ltr;">
+            <code>
+from sklearn.pipeline import Pipeline<br>
+from sklearn.preprocessing import StandardScaler<br>
+from sklearn.impute import SimpleImputer<br>
+from sklearn.compose import ColumnTransformer<br>
+from sklearn.preprocessing import OneHotEncoder<br>
+from sklearn.ensemble import RandomForestClassifier<br>
+<br>
+numeric_features = ['age', 'income']<br>
+categorical_features = ['city', 'job']<br>
+<br>
+numeric_transformer = Pipeline(steps=[<br>
+&nbsp;&nbsp;&nbsp;('imputer', SimpleImputer(strategy='median')),<br>
+&nbsp;&nbsp;&nbsp;('scaler', StandardScaler())<br>
+])<br>
+<br>
+categorical_transformer = Pipeline(steps=[<br>
+&nbsp;&nbsp;&nbsp;('imputer', SimpleImputer(strategy='constant', fill_value='missing')),<br>
+&nbsp;&nbsp;&nbsp;('onehot', OneHotEncoder(handle_unknown='ignore'))<br>
+])<br>
+<br>
+preprocessor = ColumnTransformer(transformers=[<br>
+&nbsp;&nbsp;&nbsp;('num', numeric_transformer, numeric_features),<br>
+&nbsp;&nbsp;&nbsp;('cat', categorical_transformer, categorical_features)<br>
+])<br>
+<br>
+full_pipeline = Pipeline(steps=[<br>
+&nbsp;&nbsp;&nbsp;('preprocessor', preprocessor),<br>
+&nbsp;&nbsp;&nbsp;('classifier', RandomForestClassifier())<br>
+])<br>
+<br>
+full_pipeline.fit(X_train, y_train)<br>
+score = full_pipeline.score(X_val, y_val)
+            </code>
+        </div>
+
+        <p><strong>مزایای Pipeline:</strong></p>
+        <ul>
+            <li>جلوگیری از Data Leakage (پارامترها فقط روی Train محاسبه می‌شوند)</li>
+            <li>استفاده مجدد آسان (فقط یک خط برای predict)</li>
+            <li>هماهنگی با Cross-Validation و GridSearch</li>
+            <li>نگهداری و اشکال‌زدایی ساده‌تر</li>
+        </ul>
+    </div>
+
+    <button class="accordion">بخش ۱۱.۹ — کاربرد در صنایع ایرانی</button>
+    <div class="panel">
+        <h3>۱۱.۹.۱ بانکداری (تشخیص تقلب)</h3>
+        <p>در بانک پاسارگاد:</p>
+        <ul>
+            <li>مقادیر گم‌شده در «کد پستی» → جایگزینی با میانه</li>
+            <li>مقادیر پرت در «مبلغ تراکنش» → RobustScaler</li>
+            <li>ویژگی‌های متنی «توضیحات تراکنش» → TF-IDF + Logistic Regression</li>
+            <li>Stratified Split به‌خاطر نامتعادل بودن (تقلب &lt; ۰.۱٪)</li>
+        </ul>
+
+        <h3>۱۱.۹.۲ دیجی‌کالا (سیستم توصیه‌گر)</h3>
+        <p>ویژگی‌های مهندسی‌شده:</p>
+        <ul>
+            <li>تعداد محصولات دیده‌شده در ۷ روز گذشته</li>
+            <li>میانگین قیمت محصولات سبد خرید قبلی</li>
+            <li>زمان آخرین خرید (روز)</li>
+            <li>تعداد دسته‌بندی‌های مختلف خریداری‌شده</li>
+        </ul>
+
+        <h3>۱۱.۹.۳ اسنپ (Snapp)</h3>
+        <ul>
+            <li>مقیاس‌گذاری GPS (طول و عرض جغرافیایی به‌صورت استاندارد)</li>
+            <li>باین کردن زمان سفر (صبح، ظهر، عصر، شب)</li>
+            <li>ویژگی تعاملی: «فاصله × ترافیک»</li>
+            <li>One-Hot برای مناطق شهر (تهران، اصفهان، ...)</li>
+        </ul>
+
+        <h3>۱۱.۹.۴ پزشکی (بیمارستان‌های ایران)</h3>
+        <ul>
+            <li>مقادیر گم‌شده در نتایج آزمایش → KNN Imputation</li>
+            <li>ویژگی محاسبه‌شده: «سن × فشار خون» (ریسک سکته)</li>
+            <li>Binning سن به گروه‌های پزشکی استاندارد</li>
+            <li>Stratified K-Fold به‌خاطر نامتعادل بودن بیماری‌های نادر</li>
+        </ul>
+    </div>
+
+    <button class="accordion">یادداشت‌های استاد (Instructor Notes)</button>
     <div class="panel">
         <div class="instructor-note">
             <strong>مقدمه و اهمیت داده (۱۰ دقیقه):</strong>
-            <p>با آمار شروع کنید: «۸۰٪ زمان پروژه‌های ML صرف آماده‌سازی داده می‌شود!» این خیلی مهم است. تأکید کنید که بهترین مدل هم اگر داده بد داشته باشد، نتیجه بد می‌دهد - این مثل این است که با ماشین معیوب مسابقه بدهید. مثال: اگر داده‌های آموزشی تبعیض داشته باشند (مثلاً فقط مردان)، مدل هم تبعیض یاد می‌گیرد.</p>
+            <p>با آمار شروع کنید: «۸۰٪ زمان پروژه‌های ML صرف آماده‌سازی داده می‌شود!» این خیلی مهم است. تأکید کنید که بهترین مدل هم اگر داده بد داشته باشد، نتیجه بد می‌دهد — این مثل این است که با ماشین معیوب مسابقه بدهید. مثال: اگر داده‌های آموزشی تبعیض داشته باشند (مثلاً فقط مردان)، مدل هم تبعیض یاد می‌گیرد.</p>
         </div>
         <div class="instructor-note">
             <strong>پاکسازی داده (۸ دقیقه):</strong>
-            <p>با مثال مقادیر از دست رفته شروع کنید: فرض کنید در یک فرم، خیلی‌ها شماره تماس را پر نکرده‌اند. چه کنیم؟ روش‌ها: حذف (اگر تعداد کم بود)، جایگزینی با میانگین (برای عدد)، یا پیش‌بینی با مدل (اگر داده مهم باشد). تأکید کنید که روش انتخابی به نوع داده و مقدار از دست رفته بستگی دارد.</p>
+            <p>با مثال مقادیر از دست رفته شروع کنید: فرض کنید در یک فرم، خیلی‌ها شماره تماس را پر نکرده‌اند. چه کنیم؟ روش‌ها: حذف (اگر تعداد کم بود)، جایگزینی با میانگین (برای عدد)، یا پیش‌بینی با مدل (اگر داده مهم باشد).</p>
         </div>
         <div class="instructor-note">
             <strong>مقیاس‌گذاری (۱۰ دقیقه):</strong>
-            <p>با یک مثال ملموس: قد افراد ۱۵۰-۲۰۰ سانتی‌متر است، درآمد ۱-۱۰۰ میلیون تومان. اگر مدلی داشته باشیم، فکر می‌کند درآمد خیلی مهم‌تر است چون اعداد بزرگ‌تری دارد. مقیاس‌گذاری این را درست می‌کند. تفاوت استانداردسازی (میانگین ۰) و نرمال‌سازی (محدوده ۰-۱) را توضیح دهید. کدام را کی استفاده کنیم؟ نرمال‌سازی وقتی محدوده مشخص داریم، استانداردسازی وقتی توزیع نرمال می‌خواهیم.</p>
+            <p>با یک مثال ملموس: قد افراد ۱۵۰-۲۰۰ سانتی‌متر است، درآمد ۱-۱۰۰ میلیون تومان. اگر مدلی داشته باشیم، فکر می‌کند درآمد خیلی مهم‌تر است چون اعداد بزرگ‌تری دارد. مقیاس‌گذاری این را درست می‌کند. تفاوت استانداردسازی (میانگین ۰) و نرمال‌سازی (محدوده ۰-۱) را توضیح دهید.</p>
+            <p><strong>نکته کلیدی:</strong> تأکید کنید که پارامترهای مقیاس‌گذاری فقط از Train محاسبه شود — در غیر این صورت Data Leakage رخ می‌دهد.</p>
         </div>
         <div class="instructor-note">
             <strong>کدگذاری (۶ دقیقه):</strong>
-            <p>مثال رنگ‌ها: اگر بگوییم قرمز=۰، سبز=۱، آبی=۲، مدل فکر می‌کند قرمز < سبز < آبی - این اشتباه است. One-Hot Encoding این مشکل را حل می‌کند. اما اگر ترتیب معنادار داشته باشیم (کم=۰، متوسط=۱، زیاد=۲) می‌توانیم از Ordinal Encoding استفاده کنیم.</p>
+            <p>مثال رنگ‌ها: اگر بگوییم قرمز=۰، سبز=۱، آبی=۲، مدل فکر می‌کند قرمز < سبز < آبی — این اشتباه است. One-Hot Encoding این مشکل را حل می‌کند. اما اگر ترتیب معنادار داشته باشیم (کم=۰، متوسط=۱، زیاد=۲) می‌توانیم از Ordinal Encoding استفاده کنیم.</p>
         </div>
         <div class="instructor-note">
             <strong>تقسیم داده (۶ دقیقه):</strong>
-            <p>خیلی مهم: داده Test را کنار بگذارید و فقط در انتها استفاده کنید! مثال: دانش‌آموزی که تمام سؤال‌های امتحان را قبلاً دیده، نمی‌تواند نشان دهد که یاد گرفته. Validation برای تنظیم مدل است، Test برای ارزیابی نهایی. Stratified Split را توضیح دهید: وقتی کلاس‌های نامتعادل داریم (مثلاً ۹۵٪ منفی، ۵٪ مثبت)، باید توزیع را حفظ کنیم.</p>
+            <p>خیلی مهم: داده Test را کنار بگذارید و فقط در انتها استفاده کنید! مثال: دانش‌آموزی که تمام سؤال‌های امتحان را قبلاً دیده، نمی‌تواند نشان دهد که یاد گرفته. Validation برای تنظیم مدل است، Test برای ارزیابی نهایی.</p>
+            <p>Stratified Split را توضیح دهید: وقتی کلاس‌های نامتعادل داریم (مثلاً ۹۵٪ منفی، ۵٪ مثبت)، باید توزیع را حفظ کنیم.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>مهندسی ویژگی (۵ دقیقه):</strong>
+            <p>با مثال BMI شروع کنید: داشتن قد و وزن به‌تنهایی ممکن است اطلاعات کافی ندهد، ولی BMI = وزن / قد² این رابطه را صریح‌تر می‌کند. مهندسی ویژگی گاهی به اندازه یک مدل خوب اهمیت دارد.</p>
         </div>
         <div class="instructor-note">
             <strong>جمع‌بندی (۵ دقیقه):</strong>
@@ -260,132 +780,73 @@
     <button class="accordion">مطالعه شخصی (Self-Read)</button>
     <div class="panel">
         <div class="self-read">
-            <h2>فصل یازدهم: آماده‌سازی داده و پیش‌پردازش</h2>
+            <h2>فصل یازدهم: آماده‌سازی و پیش‌پردازش داده</h2>
 
-            <h3>۱۱.۱ اهمیت آماده‌سازی داده</h3>
-            <p>آماده‌سازی داده یکی از مهم‌ترین مراحل در هر پروژه یادگیری ماشین است. طبق آمارها، حدود ۸۰٪ زمان پروژه‌های ML صرف آماده‌سازی داده می‌شود.</p>
-
-            <p>کیفیت داده مستقیماً بر عملکرد مدل تأثیر می‌گذارد. داده بد منجر به مدل بد می‌شود (Garbage In, Garbage Out).</p>
-
-            <h4>مراحل اصلی آماده‌سازی داده:</h4>
-            <ol>
-                <li><strong>جمع‌آوری داده:</strong> گردآوری داده از منابع مختلف</li>
-                <li><strong>بررسی اولیه:</strong> شناخت ساختار و کیفیت داده</li>
-                <li><strong>پاکسازی:</strong> رفع مشکلات داده مانند مقادیر از دست رفته</li>
-                <li><strong>تبدیل:</strong> آماده‌سازی داده برای مدل</li>
-                <li><strong>تقسیم:</strong> جدا کردن داده‌های آموزش، اعتبارسنجی و آزمایش</li>
-            </ol>
+            <h3>۱۱.۱ اهمیت آماده‌سازی</h3>
+            <p>۸۰٪ زمان پروژه‌های ML. قوانین: Garbage In, Garbage Out. شش مرحله: جمع‌آوری، بررسی، پاکسازی، تبدیل، مهندسی ویژگی، تقسیم.</p>
 
             <h3>۱۱.۲ پاکسازی داده</h3>
+            <p>مقادیر گم‌شده: MCAR, MAR, MNAR. روش‌ها: حذف، جایگزینی (میانگین/میانه/مد/KNN/MICE). Outlier: IQR, Z-score. تکرار: حذف.</p>
 
-            <h4>مقادیر از دست رفته (Missing Values):</h4>
-            <p>مقادیر از دست رفته یکی از رایج‌ترین مشکلات در داده‌های واقعی هستند.</p>
+            <h3>۱۱.۳ مقیاس‌گذاری</h3>
+            <p>الگوریتم‌های حساس: KNN, SVM, Neural Network. سه روش: StandardScaler (Z-score)، MinMaxScaler (۰-۱)، RobustScaler (مقاوم به outlier).</p>
 
-            <p><strong>روش‌های برخورد با مقادیر از دست رفته:</strong></p>
-            <ul>
-                <li><strong>حذف:</strong> حذف سطر یا ستون دارای مقدار از دست رفته</li>
-                <li><strong>جایگزینی با میانگین/میانه:</strong> برای داده‌های عددی</li>
-                <li><strong>جایگزینی با مد:</strong> برای داده‌های طبقه‌ای</li>
-                <li><strong>پیش‌بینی با مدل:</strong> استفاده از مدل ML برای پیش‌بینی مقدار از دست رفته</li>
-            </ul>
+            <h3>۱۱.۴ کدگذاری</h3>
+            <p>Label (ساده، خطرناک)، One-Hot (بدون ترتیب، ابعاد بالا)، Ordinal (ترتیب)، Target (مقادیر زیاد، خطر Leakage).</p>
 
-            <h4>داده‌های تکراری:</h4>
-            <p>داده‌های تکراری می‌توانند باعث بیش‌برازش شوند. باید شناسایی و حذف شوند.</p>
+            <h3>۱۱.۵ مهندسی ویژگی</h3>
+            <p>Polynomial Features، Interaction Features، تبدیل‌های ریاضی، Binning، ویژگی‌های زمانی، ویژگی‌های متنی.</p>
 
-            <h3>۱۱.۳ مقیاس‌گذاری ویژگی‌ها</h3>
+            <h3>۱۱.۶ تقسیم داده</h3>
+            <p>Train (۷۰٪)، Validation (۱۵٪)، Test (۱۵٪). روش‌ها: Random، Stratified (Imbalanced)، Time-based (سری زمانی)، K-Fold CV.</p>
 
-            <p>مقیاس‌گذاری ویژگی‌ها تبدیل ویژگی‌ها به محدوده یا توزیع مشخص است.</p>
-
-            <h4>اهمیت مقیاس‌گذاری:</h4>
-            <ul>
-                <li>بسیاری از الگوریتم‌ها به مقیاس داده حساس هستند</li>
-                <li>KNN، SVM، و شبکه‌های عصبی نیاز به مقیاس‌گذاری دارند</li>
-                <li>درخت تصمیم و جنگل تصادفی نیاز به مقیاس‌گذاری ندارند</li>
-            </ul>
-
-            <h4>انواع مقیاس‌گذاری:</h4>
-
-            <p><strong>۱. استانداردسازی (Standardization):</strong></p>
-            <p>x' = (x - μ) / σ</p>
-            <p>میانگین = ۰، انحراف معیار = ۱</p>
-
-            <p><strong>۲. نرمال‌سازی (Min-Max Scaling):</strong></p>
-            <p>x' = (x - min) / (max - min)</p>
-            <p>محدوده [0, 1]</p>
-
-            <p><strong>۳. Robust Scaling:</strong></p>
-            <p>x' = (x - median) / IQR</p>
-            <p>مقاوم در برابر نقاط پرت</p>
-
-            <h3>۱۱.۴ کدگذاری ویژگی‌های طبقه‌ای</h3>
-
-            <p>الگوریتم‌های ML معمولاً به داده عددی نیاز دارند.</p>
-
-            <p><strong>۱. Label Encoding:</strong></p>
-            <p>تبدیل هر مقدار به یک عدد:</p>
-            <p>["red", "green", "blue"] → [0, 1, 2]</p>
-            <p>مشکل: مدل ممکن است فکر کند red < green < blue</p>
-
-            <p><strong>۲. One-Hot Encoding:</strong></p>
-            <p>یک ستون برای هر مقدار:</p>
-            <p>["red", "green", "blue"] → [1,0,0], [0,1,0], [0,0,1]</p>
-
-            <p><strong>۳. Ordinal Encoding:</strong></p>
-            <p>برای ترتیب معنادار:</p>
-            <p>["low", "medium", "high"] → [0, 1, 2]</p>
-
-            <h3>۱۱.۵ تقسیم داده</h3>
-
-            <p>تقسیم داده به مجموعه‌های مجزا برای آموزش و ارزیابی مدل.</p>
-
-            <h4>تقسیم استاندارد:</h4>
-            <ul>
-                <li>آموزش (Train): ۷۰-۸۰٪</li>
-                <li>اعتبارسنجی (Validation): ۱۰-۱۵٪</li>
-                <li>آزمایش (Test): ۱۰-۱۵٪</li>
-            </ul>
-
-            <h4>روش‌های تقسیم:</h4>
-            <ul>
-                <li><strong>تقسیم تصادفی:</strong> انتخاب تصادفی داده‌ها</li>
-                <li><strong>تقسیم طبقه‌ای (Stratified):</strong> حفظ توزیع کلاس‌ها</li>
-                <li><strong>تقسیم زمانی:</strong> بر اساس زمان</li>
-            </ul>
-
-            <h3>۱۱.۶ مهندسی ویژگی</h3>
-
-            <p>مهندسی ویژگی ایجاد ویژگی‌های جدید از ویژگی‌های موجود است.</p>
-
-            <h4>روش‌ها:</h4>
-            <ul>
-                <li><strong>ویژگی‌های چند جمله‌ای:</strong> x², x³, x₁x₂</li>
-                <li><strong>ویژگی‌های تعاملی:</strong> ترکیب ویژگی‌ها</li>
-                <li><strong>ویژگی‌های دامنه‌ای:</strong> استفاده از دانش تخصصی</li>
-            </ul>
-
-            <h4>مثال:</h4>
-            <p>ویژگی‌های اولیه: قد، وزن</p>
-            <p>ویژگی جدید: BMI = وزن / قد²</p>
+            <h3>۱۱.۷ Data Leakage</h3>
+            <p>سه نوع: Target Leakage، Train-Test Contamination، Lag Leakage. راه‌حل: Pipeline، محاسبه پارامترها فقط روی Train.</p>
 
             <h3>خلاصه فصل:</h3>
             <ol>
                 <li>آماده‌سازی داده ۸۰٪ زمان پروژه‌های ML را می‌گیرد</li>
-                <li>پاکسازی داده شامل برخورد با مقادیر از دست رفته و داده‌های تکراری است</li>
-                <li>مقیاس‌گذاری ویژگی‌ها برای بسیاری از الگوریتم‌ها ضروری است</li>
-                <li>کدگذاری ویژگی‌های طبقه‌ای به مدل‌ها کمک می‌کند</li>
-                <li>تقسیم درست داده برای ارزیابی مدل حیاتی است</li>
+                <li>سه نوع مقادیر گم‌شده: MCAR, MAR, MNAR</li>
+                <li>سه روش مقیاس‌گذاری: Standard, MinMax, Robust</li>
+                <li>چهار روش Encoding: Label, One-Hot, Ordinal, Target</li>
+                <li>Feature Engineering مهم‌تر از مدل‌سازی است</li>
+                <li>تقسیم داده حیاتی: Train/Val/Test + Cross-Validation</li>
+                <li>Data Leakage دشمن خاموش — از Pipeline استفاده کنید</li>
             </ol>
 
             <h3>تمرین‌های خودآزمایی:</h3>
             <ol>
-                <li>یک روش برای برخورد با مقادیر از دست رفته توضیح دهید</li>
-                <li>تفاوت استانداردسازی و نرمال‌سازی چیست؟</li>
-                <li>چه زمانی از One-Hot Encoding استفاده می‌کنیم؟</li>
+                <li>سه روش برخورد با مقادیر گم‌شده را توضیح دهید و بگویید هر کدام چه زمانی مناسب‌اند</li>
+                <li>تفاوت استانداردسازی و نرمال‌سازی چیست؟ کدام برای شبکه عصبی مناسب‌تر است؟</li>
+                <li>چه زمانی از One-Hot Encoding استفاده می‌کنیم و چه زمانی از Ordinal؟</li>
                 <li>چرا نباید مدل را با داده Test ارزیابی کرد؟</li>
-                <li>یک مثال از مهندسی ویژگی بزنید</li>
+                <li>Data Leakage یعنی چه؟ سه مثال واقعی بزنید.</li>
+                <li>Stratified Split چه تفاوتی با Random Split دارد؟</li>
+                <li>یک مثال از Feature Engineering بزنید و توضیح دهید چرا مفید است.</li>
+                <li>چرا Pipeline مهم است؟</li>
             </ol>
 
-            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۲۰ دقیقه</p>
+            <h3>پروژه عملی پیشنهادی:</h3>
+            <p>دیتاست Titanic از Kaggle را دانلود کنید:</p>
+            <ul>
+                <li><strong>بخش ۱:</strong> EDA — توزیع سن، جنسیت، کلاس را بررسی کنید. Missing values را شناسایی کنید.</li>
+                <li><strong>بخش ۲:</strong> پاکسازی — Imputation با KNN برای سن</li>
+                <li><strong>بخش ۳:</strong> Encoding — One-Hot برای جنسیت و بندر، Ordinal برای کلاس</li>
+                <li><strong>بخش ۴:</strong> Feature Engineering — FamilySize، IsAlone، Title از نام</li>
+                <li><strong>بخش ۵:</strong> ساخت Pipeline با ColumnTransformer</li>
+                <li><strong>بخش ۶:</strong> آموزش Random Forest با Stratified K-Fold (5 fold)</li>
+                <li><strong>بخش ۷:</strong> مقایسه دقت با و بدون Feature Engineering</li>
+            </ul>
+
+            <h3>منابع پیشنهادی برای مطالعه بیشتر:</h3>
+            <ul>
+                <li>کتاب «Hands-On Machine Learning» — فصل ۲ (End-to-End Project)</li>
+                <li>Kaggle — دوره رایگان "Data Cleaning"</li>
+                <li>مستندات scikit-learn: <code>scikit-learn.org/stable/data_transforms.html</code></li>
+                <li>وبلاگ Towards Data Science — مقالات متعدد درباره Feature Engineering</li>
+            </ul>
+
+            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۸۰ دقیقه</p>
         </div>
     </div>
 

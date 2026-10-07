@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جلسه ۱۳ - بیش‌برازش و زیربرازش</title>
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; line-height: 1.9; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
         h3 { color: #16a085; margin-top: 20px; }
+        h4 { color: #34495e; margin-top: 15px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         ul { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
         .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
         .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
-        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 10px; margin: 10px 0; }
-        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 15px; margin: 10px 0; }
+        .warning { background: #fdecea; border-right: 4px solid #e74c3c; padding: 10px; margin: 10px 0; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+        .stat-box { background: #f4ecf7; border-right: 4px solid #8e44ad; padding: 10px; margin: 10px 0; }
+        .quote { background: #fdf2e9; border-right: 4px solid #e67e22; padding: 10px; margin: 10px 0; font-style: italic; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: monospace; color: #c0392b; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
         .accordion.active { background-color: #3498db; color: white; }
@@ -25,212 +30,628 @@
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
         th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
     </style>
 </head>
 <body>
     <a href="../plan.html" class="back-link">← بازگشت به برنامه درسی</a>
 
-    <h1>جلسه ۱۳: بیش‌برازش و زیربرازش</h1>
+    <h1>جلسه ۱۳: بیش‌برازش و زیربرازش (Overfitting & Underfitting)</h1>
 
     <div class="phase">
         <h2>اهداف یادگیری</h2>
+        <p>در پایان این جلسه، دانشجو باید بتواند:</p>
         <ul>
-            <li>درک مفهوم بیش‌برازش و زیربرازش</li>
-            <li>یادگیری روش‌های تشخیص و رفع</li>
-            <li>آشنایی با اعتبارسنجی</li>
+            <li>مفهوم Overfitting و Underfitting را با مثال توضیح دهد</li>
+            <li>تفاوت Bias و Variance را درک کند (Bias-Variance Tradeoff)</li>
+            <li>Learning Curves را رسم و تحلیل کند</li>
+            <li>روش‌های جلوگیری از Overfitting (Regularization, Dropout, Early Stopping, Data Augmentation) را اجرا کند</li>
+            <li>Cross-Validation را برای ارزیابی پایدار به‌کار گیرد</li>
+            <li>مدل مناسب را با تنظیم Complexity انتخاب کند</li>
+            <li>از ابزارهای GridSearchCV برای یافتن بهترین ابرپارامترها استفاده کند</li>
+        </ul>
+
+        <h2>پیش‌نیازهای جلسه</h2>
+        <ul>
+            <li>آشنایی با رگرسیون و دسته‌بندی (جلسات ۶، ۹)</li>
+            <li>درک تابع هزینه (جلسه ۷)</li>
+            <li>دانش از Cross-Validation پایه (جلسه ۱۱)</li>
         </ul>
     </div>
 
-    <button class="accordion">بیش‌برازش (Overfitting)</button>
+    <button class="accordion">بخش ۱۳.۱ — معضل اصلی یادگیری ماشین</button>
     <div class="panel">
         <div class="key-concept">
-            <strong>بیش‌برازش:</strong> مدل داده‌های آموزش را حفظ می‌کند ولی روی داده‌های جدید ضعیف عمل می‌کند.
+            <strong>هدف واقعی ML:</strong> ساخت مدلی که نه فقط روی داده آموزش خوب عمل کند، بلکه بتواند الگوهای واقعی را یاد بگیرد و روی داده‌های دیده‌نشده (آینده) هم عملکرد خوبی داشته باشد. این یعنی تعمیم‌پذیری (Generalization).
         </div>
 
-        <h3>علل:</h3>
-        <ul>
-            <li>مدل خیلی پیچیده است</li>
-            <li>دسترسی به نویز داده‌ها</li>
-            <li>داده آموزش کم است</li>
-            <li>آموزش بیش از حد</li>
-        </ul>
-
-        <h3>علائم:</h3>
-        <ul>
-            <li>دقت روی train بالا، روی test پایین</li>
-            <li>مدل جزئیات ریز داده‌ها را یاد می‌گیرد</li>
-        </ul>
-
-        <h3>مثال تصویری:</h3>
+        <h3>۱۳.۱.۱ دو اشتباه متضاد</h3>
         <div class="example">
-            <p>در طبقه‌بندی: مدل مرز پیچیده‌ای رسم می‌کند که نقاط را کاملاً جدا می‌کند.</p>
-            <p>→ روی داده جدید شکست می‌خورد</p>
-        </div>
-    </div>
-
-    <button class="accordion">زیربرازش (Underfitting)</button>
-    <div class="panel">
-        <div class="key-concept">
-            <strong>زیربرازش:</strong> مدل خیلی ساده است و الگوهای مهم را هم یاد نمی‌گیرد.
+            <p>تصور کنید برای امتحان فیزیک درس می‌خوانید:</p>
+            <ul>
+                <li><strong>Overfitting:</strong> تمام سؤالات و جواب‌های کتاب را حفظ می‌کنید — امتحانی که دقیقاً همان سؤالات بیاید عالی، ولی سؤال جدید بد.</li>
+                <li><strong>Underfitting:</strong> فقط فرمول‌ها را بدون فهم حفظ می‌کنید — نه سؤال کتاب، نه سؤال جدید را درست حل نمی‌کنید.</li>
+                <li><strong>هدف:</strong> مفاهیم را بفهمید، فرمول‌ها را به‌کار ببرید — هم سؤال کتاب، هم سؤال جدید.</li>
+            </ul>
         </div>
 
-        <h3>علل:</h3>
-        <ul>
-            <li>مدل خیلی ساده است</li>
-            <li>آموزش کافی نیست</li>
-            <li>ویژگی‌های ناکافی</li>
-        </ul>
-
-        <h3>علائم:</h3>
-        <ul>
-            <li>دقت روی train و test هر دو پایین</li>
-            <li>مدل الگوهای اصلی را یاد نمی‌گیرد</li>
-        </ul>
-
-        <h3>مثال:</h3>
-        <div class="example">
-            <p>استفاده از یک خط برای داده‌های منحنی</p>
-            <p>→ مدل توانایی کافی ندارد</p>
-        </div>
-    </div>
-
-    <button class="accordion">منحني یادگیری (Learning Curves)</button>
-    <div class="panel">
-        <div class="key-concept">
-            رسم خطا بر حسب اندازه داده آموزش
-        </div>
-
-        <h3>تحلیل:</h3>
+        <h3>۱۳.۱.۲ تعریف</h3>
         <table>
             <tr>
-                <th>حالت</th>
-                <th>Train Error</th>
-                <th>Test Error</th>
-                <th>راه‌حل</th>
+                <th></th>
+                <th>Overfitting</th>
+                <th>Underfitting</th>
+            </tr>
+            <tr>
+                <td>تعریف</td>
+                <td>مدل الگوهای خاص داده آموزش (حتی نویز) را حفظ می‌کند</td>
+                <td>مدل حتی الگوهای اصلی را یاد نمی‌گیرد</td>
+            </tr>
+            <tr>
+                <td>علت اصلی</td>
+                <td>مدل خیلی پیچیده نسبت به داده</td>
+                <td>مدل خیلی ساده نسبت به مسئله</td>
+            </tr>
+            <tr>
+                <td>نشانه اصلی</td>
+                <td>Train Accuracy بالا، Test Accuracy پایین</td>
+                <td>هر دو Accuracy پایین</td>
+            </tr>
+            <tr>
+                <td>راه‌حل</td>
+                <td>ساده‌تر کردن مدل، Regularization، داده بیشتر</td>
+                <td>پیچیده‌تر کردن مدل، ویژگی بیشتر</td>
+            </tr>
+        </table>
+    </div>
+
+    <button class="accordion">بخش ۱۳.۲ — Bias-Variance Tradeoff: معضل مرکزی</button>
+    <div class="panel">
+        <div class="key-concept">
+            <strong>Bias (بایاس):</strong> خطای سیستماتیک مدل — فرضیات ساده‌کننده‌ای که باعث می‌شوند الگوهای واقعی را از دست بدهد.
+            <br><strong>Variance (واریانس):</strong> حساسیت مدل به نوسانات کوچک داده — اگر داده آموزش کمی تغییر کند، مدل چقدر تغییر می‌کند؟
+        </div>
+
+        <h3>۱۳.۲.۱ فرمول تجزیه خطا</h3>
+        <div class="formula">
+            Expected Error = Bias² + Variance + Irreducible Error
+        </div>
+
+        <p>هر خطای مدل را می‌توان به سه جزء تقسیم کرد:</p>
+        <table>
+            <tr>
+                <th>جزء</th>
+                <th>توضیح</th>
+                <th>قابل کاهش؟</th>
+            </tr>
+            <tr>
+                <td>Bias²</td>
+                <td>خطای سیستماتیک — مدل ساده است و نمی‌تواند الگو را بشناسد</td>
+                <td>بله (با مدل پیچیده‌تر)</td>
+            </tr>
+            <tr>
+                <td>Variance</td>
+                <td>تغییرات مدل با تغییر داده — مدل خیلی به داده خاص وابسته است</td>
+                <td>بله (با مدل ساده‌تر یا داده بیشتر)</td>
+            </tr>
+            <tr>
+                <td>Irreducible Error</td>
+                <td>نویز ذاتی داده — هیچ مدلی نمی‌تواند حذفش کند</td>
+                <td>خیر</td>
+            </tr>
+        </table>
+
+        <h3>۱۳.۲.۲ رابطه Bias و Variance</h3>
+        <div class="warning">
+            <strong>قانون بنیادی:</strong> کاهش یکی، معمولاً افزایش دیگری را به همراه دارد. مدل ایده‌آل، تعادل بین این دو است.
+        </div>
+
+        <div class="example">
+            <p>سه سناریو با مثال تیراندازی به هدف:</p>
+            <ul>
+                <li><strong>High Bias, Low Variance:</strong> همه تیرها یک نقطه می‌روند ولی دور از هدف (مثلاً همه به سمت چپ). مثل Linear Regression روی داده غیرخطی.</li>
+                <li><strong>Low Bias, High Variance:</strong> تیرها پراکنده‌اند ولی میانگین نزدیک هدف. مثل Decision Tree بدون عمق محدود.</li>
+                <li><strong>Low Bias, Low Variance:</strong> همه تیرها نزدیک هدف و متمرکز — مدل ایده‌آل.</li>
+            </ul>
+        </div>
+
+        <h3>۱۳.۲.۳ جدول تشخیص</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>Bias</th>
+                <th>Variance</th>
+                <th>مثال مدل</th>
+            </tr>
+            <tr>
+                <td>Underfitting</td>
+                <td>بالا</td>
+                <td>پایین</td>
+                <td>Linear Regression روی غیرخطی</td>
             </tr>
             <tr>
                 <td>Overfitting</td>
                 <td>پایین</td>
                 <td>بالا</td>
-                <td>Regularization, More data</td>
-            </tr>
-            <tr>
-                <td>Underfitting</td>
-                <td>بالا</td>
-                <td>بالا</td>
-                <td>Complex model, More features</td>
+                <td>Decision Tree بدون محدودیت</td>
             </tr>
             <tr>
                 <td>Good Fit</td>
                 <td>پایین</td>
                 <td>پایین</td>
-                <td>✓</td>
+                <td>Random Forest، XGBoost با تنظیم</td>
             </tr>
         </table>
+
+        <h3>۱۳.۲.۴ تشبیه ساده</h3>
+        <div class="quote">
+            دانش‌آموزی که فقط حفظ می‌کند (Low Bias پنداری، در عمل High Variance در عملکرد) چون به سؤال خاص وابسته است. دانش‌آموزی که اصلاً درس نخوانده (High Bias، پیش‌بینی‌پذیر ولی غلط). دانش‌آموزی که فهمیده (Low Bias, Low Variance) بهترین است.
+        </div>
     </div>
 
-    <button class="accordion">روش‌های جلوگیری از بیش‌برازش</button>
+    <button class="accordion">بخش ۱۳.۳ — Overfitting: علل، علائم، تشخیص</button>
     <div class="panel">
-        <h3>۱. منظم‌سازی (Regularization):</h3>
+        <h3>۱۳.۳.۱ تعریف دقیق</h3>
+        <div class="key-concept">
+            <strong>Overfitting:</strong> حالتی که خطای مدل روی داده آموزش بسیار کم ولی روی داده تست (جدید) زیاد است. شکاف بین Train و Test زیاد است — مدل تعمیم‌پذیری ضعیفی دارد.
+        </div>
+
+        <h3>۱۳.۳.۲ علل</h3>
+        <table>
+            <tr>
+                <th>علت</th>
+                <th>توضیح</th>
+                <th>مثال</th>
+            </tr>
+            <tr>
+                <td>مدل خیلی پیچیده</td>
+                <td>ظرفیت مدل (Capacity) بالا، ولی داده کم</td>
+                <td>درخت عمق ۲۰ با ۱۰۰ نمونه</td>
+            </tr>
+            <tr>
+                <td>ویژگی‌های زیاد</td>
+                <td>Curse of Dimensionality — مدل الگوی کاذب پیدا می‌کند</td>
+                <td>۱۰۰۰ ویژگی با ۵۰۰ نمونه</td>
+            </tr>
+            <tr>
+                <td>آموزش بیش از حد</td>
+                <td>Epoch زیاد در شبکه عصبی</td>
+                <td>۱۰۰۰ epoch در ResNet</td>
+            </tr>
+            <tr>
+                <td>نویز در داده</td>
+                <td>مدل نویز را هم یاد می‌گیرد</td>
+                <td>اندازه‌گیری اشتباه</td>
+            </tr>
+            <tr>
+                <td>تعداد نمونه کم</td>
+                <td>مدل الگوهای تصادفی را حفظ می‌کند</td>
+                <td>۵ نمونه در Decision Tree</td>
+            </tr>
+        </table>
+
+        <h3>۱۳.۳.۳ علائم</h3>
         <ul>
-            <li>L1 (Lasso): جریمه جمع قدرمطلق وزن‌ها</li>
-            <li>L2 (Ridge): جریمه مجذور وزن‌ها</li>
-            <li>Elastic Net: ترکیب L1 و L2</li>
+            <li>Train Accuracy ≈ ۱۰۰٪، Test Accuracy ≈ ۶۰٪</li>
+            <li>Train Loss → ۰، Validation Loss → افزایش</li>
+            <li>مدل جزئیات بسیار خاص داده آموزش را یاد می‌گیرد (در KNN: هر نقطه تست به خودش نزدیک)</li>
+            <li>اعمال Regularization یا کاهش پیچیدگی → بهبود چشمگیر</li>
         </ul>
 
-        <h3>۲. Dropout:</h3>
-        <p>در شبکه‌های عصبی: غیرفعال کردن تصادفی نورون‌ها در هنگام آموزش</p>
+        <h3>۱۳.۳.۴ مثال تصویری: Decision Tree</h3>
+        <div class="example">
+            <p>داده‌هایی با دو کلاس دایره‌ای:</p>
+            <ul>
+                <li><strong>درخت عمق ۲:</strong> مرز ساده، ممکن است کمی داده‌ها را اشتباه کند. ← خوب</li>
+                <li><strong>درخت عمق ۲۰:</strong> مرز پیچیده که هر نقطه آموزش را جدا می‌کند. ولی نقطه جدید → اشتباه. ← Overfit</li>
+            </ul>
+        </div>
 
-        <h3>۳. Early Stopping:</h3>
-        <p>توقف آموزش وقتی خطای validation افزایش یافت</p>
-
-        <h3>۴. افزایش داده (Data Augmentation):</h3>
+        <h3>۱۳.۳.۵ تشخیص با Learning Curve</h3>
+        <p>نمودار خطا برحسب اندازه داده آموزش:</p>
         <ul>
-            <li>چرخش، برش، تغییر رنگ تصاویر</li>
-            <li>Synonym replacement در متن</li>
+            <li>Train Error: پایین و تقریباً ثابت (حتی با کم شدن داده)</li>
+            <li>Validation Error: بالا و فاصله زیاد با Train</li>
         </ul>
 
-        <h3>۵. کاهش پیچیدگی مدل:</h3>
-        <ul>
-            <li>کم کردن درخت در Decision Tree</li>
-            <li>کم کردن تعداد نورون‌ها</li>
-        </ul>
+        <p>اگر با افزایش داده، فاصله Train-Val کم شود → مدل Overfit شدید.</p>
     </div>
 
-    <button class="accordion">اعتبارسنجی متقاطع (Cross-Validation)</button>
+    <button class="accordion">بخش ۱۳.۴ — Underfitting: علل، علائم، تشخیص</button>
     <div class="panel">
         <div class="key-concept">
-            روشی برای ارزیابی عملکرد مدل با تقسیم داده به چند بخش
+            <strong>Underfitting:</strong> مدل حتی الگوهای اصلی داده آموزش را یاد نمی‌گیرد. هر دو خطای Train و Test بالا هستند.
         </div>
 
-        <h3>K-Fold Cross-Validation:</h3>
-        <ol>
-            <li>داده را به K قسمت تقسیم کن</li>
-            <li>K-1 قسمت برای آموزش</li>
-            <li>۱ قسمت برای تست</li>
-            <li>این کار را K بار تکرار کن</li>
-            <li>میانگین نتایج را بگیر</li>
-        </ol>
-
-        <h3>مزایا:</h3>
+        <h3>۱۳.۴.۱ علل</h3>
         <ul>
-            <li>استفاده بهینه از داده</li>
-            <li>تخمین بهتر عملکرد</li>
-            <li>کاهش variance</li>
+            <li>مدل خیلی ساده برای مسئله</li>
+            <li>ویژگی‌های ناکافی (Missing Features)</li>
+            <li>آموزش کافی نبوده (Few Epochs)</li>
+            <li>Regularization بیش از حد (C بزرگ در SVM، α بزرگ در Ridge)</li>
+            <li>پیش‌پردازش نامناسب (مثل مقیاس‌گذاری اشتباه)</li>
         </ul>
 
-        <h3>انواع:</h3>
+        <p><strong>مثال‌های رایج:</strong></p>
         <ul>
-            <li>Stratified K-Fold: حفظ توزیع کلاس</li>
-            <li>Time Series Split: برای داده‌های زمانی</li>
-            <li>Leave-One-Out (LOO): K = n</li>
+            <li>Linear Regression روی داده‌های منحنی</li>
+            <li>Logistic Regression با C=0.001 روی مسئله پیچیده</li>
+            <li>KNN با K بزرگ (K=n) → همیشه اکثریت را پیش‌بینی می‌کند</li>
+        </ul>
+
+        <h3>۱۳.۴.۲ علائم</h3>
+        <ul>
+            <li>Train Accuracy پایین (≈ Test Accuracy)</li>
+            <li>Train و Test هر دو بد عمل می‌کنند</li>
+            <li>افزایش داده آموزش → کمک نمی‌کند (مدل ذاتاً ضعیف)</li>
+            <li>مدل ساده‌تر از آنکه لازم است</li>
+        </ul>
+
+        <h3>۱۳.۴.۳ راه‌حل</h3>
+        <ul>
+            <li>مدل پیچیده‌تر (افزایش Capacity)</li>
+            <li>ویژگی‌های بیشتر یا مهندسی ویژگی بهتر</li>
+            <li>کاهش Regularization</li>
+            <li>آموزش بیشتر (Epochs بیشتر)</li>
+            <li>تعویض الگوریتم به قوی‌تر</li>
         </ul>
     </div>
 
-    <button class="accordion">اعتبارسنجی (Validation)</button>
+    <button class="accordion">بخش ۱۳.۵ — Learning Curves: ابزار تشخیص</button>
     <div class="panel">
-        <h3>مفهوم:</h3>
-        <p>بخشی از داده که برای تنظیم هایپرپارامترها و انتخاب مدل استفاده می‌شود.</p>
+        <div class="key-concept">
+            <strong>Learning Curve:</strong> نمودار خطای Train و Validation برحسب تعداد نمونه‌های آموزشی. بهترین ابزار تشخیص Overfitting/Underfitting.
+        </div>
 
-        <h3>روش‌ها:</h3>
-        <ul>
-            <li><strong>Holdout:</strong> تقسیم ساده (60/20/20)</li>
-            <li><strong>K-Fold:</strong> تقسیم به K بخش</li>
-            <li><strong>Stratified:</strong> حفظ توزیع</li>
-        </ul>
+        <h3>۱۳.۵.۱ سه الگوی اصلی</h3>
 
-        <h3>نکته مهم:</h3>
+        <table>
+            <tr>
+                <th>سناریو</th>
+                <th>Train Error</th>
+                <th>Val Error</th>
+                <th>شکاف</th>
+                <th>تشخیص</th>
+            </tr>
+            <tr>
+                <td>Overfitting</td>
+                <td>پایین (≈۰)</td>
+                <td>بالا</td>
+                <td>زیاد</td>
+                <td>Regularization یا داده بیشتر</td>
+            </tr>
+            <tr>
+                <td>Underfitting</td>
+                <td>بالا</td>
+                <td>بالا</td>
+                <td>کم</td>
+                <td>مدل پیچیده‌تر یا ویژگی بیشتر</td>
+            </tr>
+            <tr>
+                <td>Good Fit</td>
+                <td>پایین</td>
+                <td>پایین</td>
+                <td>کم</td>
+                <td>✓ ایده‌آل</td>
+            </tr>
+        </table>
+
+        <h3>۱۳.۵.۲ نمونه واقعی</h3>
         <div class="example">
-            <p>→ Test نباید در آموزش استفاده شود!</p>
-            <p>→ Validation برای تنظیم است</p>
-            <p>→ Test برای ارزیابی نهایی</p>
+            <p>در طبقه‌بندی با Logistic Regression:</p>
+            <ul>
+                <li><strong>۱۰۰ نمونه:</strong> Train = 0.95, Val = 0.65 → Overfitting واضح</li>
+                <li><strong>۱۰۰۰ نمونه:</strong> Train = 0.88, Val = 0.83 → با داده بیشتر، Val بهتر شد</li>
+                <li><strong>۱۰٬۰۰۰ نمونه:</strong> Train = 0.86, Val = 0.85 → نزدیک → Good Fit</li>
+            </ul>
+        </div>
+
+        <h3>۱۳.۵.۳ پیاده‌سازی</h3>
+        <div class="formula" style="text-align: left; direction: ltr;">
+            <code>
+from sklearn.model_selection import learning_curve<br>
+import matplotlib.pyplot as plt<br>
+<br>
+train_sizes, train_scores, val_scores = learning_curve(<br>
+&nbsp;&nbsp;&nbsp;model, X, y, cv=5, scoring='accuracy',<br>
+&nbsp;&nbsp;&nbsp;train_sizes=np.linspace(0.1, 1.0, 10)<br>
+)<br>
+<br>
+plt.plot(train_sizes, train_scores.mean(axis=1), label='Train')<br>
+plt.plot(train_sizes, val_scores.mean(axis=1), label='Validation')<br>
+plt.xlabel('Training Size')<br>
+plt.ylabel('Score')<br>
+plt.legend()
+            </code>
         </div>
     </div>
 
-    <button class="accordion">یادداشت‌های استاد</button>
+    <button class="accordion">بخش ۱۳.۶ — هفت روش جلوگیری از Overfitting</button>
+    <div class="panel">
+
+        <h3>۱۳.۶.۱ روش ۱: Regularization (منظم‌سازی)</h3>
+        <div class="key-concept">
+            <strong>ایده:</strong> به تابع هزینه، جریمه‌ای برای بزرگی وزن‌ها اضافه کن. مدل مجبور می‌شود وزن‌های کوچک‌تر انتخاب کند → ساده‌تر → تعمیم‌پذیری بهتر.
+        </div>
+
+        <h4>الف) L2 Regularization (Ridge)</h4>
+        <div class="formula">
+            J = J<sub>original</sub> + λ × Σ w<sub>i</sub>²
+        </div>
+        <p>جریمه مجذور وزن‌ها. همه وزن‌ها کوچک می‌شوند.</p>
+        <p><strong>مناسب:</strong> وقتی همه ویژگی‌ها مهم‌اند ولی می‌خواهیم تأثیرشان تعدیل شود.</p>
+
+        <h4>ب) L1 Regularization (Lasso)</h4>
+        <div class="formula">
+            J = J<sub>original</sub> + λ × Σ |w<sub>i</sub>|
+        </div>
+        <p>جریمه قدرمطلق وزن‌ها. وزن‌های کم‌اهمیت → دقیقاً ۰ (انتخاب ویژگی خودکار).</p>
+        <p><strong>مناسب:</strong> وقتی تعداد زیادی ویژگی داریم و می‌خواهیم فقط مهم‌ها بمانند.</p>
+
+        <h4>ج) Elastic Net</h4>
+        <div class="formula">
+            J = J<sub>original</sub> + λ₁ × Σ |w<sub>i</sub>| + λ₂ × Σ w<sub>i</sub>²
+        </div>
+        <p>ترکیب L1 و L2 — مزایای هر دو.</p>
+
+        <h3>۱۳.۶.۲ روش ۲: Dropout (مخصوص شبکه‌های عصبی)</h3>
+        <div class="key-concept">
+            در هر Batch آموزش، هر نورون با احتمال p (مثلاً ۰٫۵) به‌صورت تصادفی غیرفعال می‌شود. مدل نمی‌تواند به نورون خاص وابسته شود → تعمیم بهتر.
+        </div>
+
+        <div class="example">
+            <p>در تست (Inference)، همه نورون‌ها فعال‌اند ولی خروجی‌ها در p ضرب می‌شوند تا تعادل حفظ شود.</p>
+        </div>
+
+        <h3>۱۳.۶.۳ روش ۳: Early Stopping</h3>
+        <p>آموزش را وقتی Validation Loss شروع به افزایش کرد، متوقف کن.</p>
+        <div class="formula" style="text-align: left; direction: ltr;">
+            <code>
+from keras.callbacks import EarlyStopping<br>
+early_stop = EarlyStopping(<br>
+&nbsp;&nbsp;&nbsp;monitor='val_loss', patience=10, restore_best_weights=True<br>
+)<br>
+model.fit(X_train, y_train, validation_data=(X_val, y_val),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;callbacks=[early_stop], epochs=100)
+            </code>
+        </div>
+
+        <p><strong>مزایا:</strong> ساده، بدون تغییر ابرپارامتر دیگر، خودکار</p>
+
+        <h3>۱۳.۶.۴ روش ۴: Data Augmentation</h3>
+        <p>افزایش مصنوعی داده آموزش:</p>
+
+        <h4>الف) در تصویر</h4>
+        <ul>
+            <li>چرخش (Rotation)</li>
+            <li>برش (Crop)</li>
+            <li>تغییر رنگ (Color Jitter)</li>
+            <li>آینه (Flip)</li>
+            <li>افزودن نویز</li>
+        </ul>
+
+        <h4>ب) در متن</h4>
+        <ul>
+            <li>جایگزینی با مترادف</li>
+            <li>حذف/جابجایی کلمات تصادفی</li>
+            <li>Back-translation (ترجمه به زبان دیگر و بازگشت)</li>
+        </ul>
+
+        <h3>۱۳.۶.۵ روش ۵: کاهش پیچیدگی مدل</h3>
+        <ul>
+            <li>Decision Tree: max_depth محدود</li>
+            <li>Neural Network: تعداد نورون/لایه کمتر</li>
+            <li>KNN: K بزرگ‌تر</li>
+            <li>Polynomial: درجه کمتر</li>
+        </ul>
+
+        <h3>۱۳.۶.۶ روش ۶: Cross-Validation برای تشخیص زودهنگام</h3>
+        <p>با CV، عملکرد واقعی مدل را تخمین می‌زنیم و اگر شکاف Train-Val زیاد بود، سریع متوجه Overfitting می‌شویم.</p>
+
+        <h3>۱۳.۶.۷ روش ۷: Batch Normalization در شبکه‌های عصبی</h3>
+        <p>نرمال‌سازی ورودی هر لایه در حین آموزش. به‌طور ضمنی Regularization می‌کند و آموزش را پایدارتر می‌کند.</p>
+    </div>
+
+    <button class="accordion">بخش ۱۳.۷ — Cross-Validation: ارزیابی پایدار</button>
+    <div class="panel">
+        <p>در جلسه ۱۱ به‌طور خلاصه معرفی شد؛ در اینجا عمیق‌تر بررسی می‌کنیم.</p>
+
+        <h3>۱۳.۷.۱ انواع CV</h3>
+
+        <h4>الف) K-Fold Cross-Validation</h4>
+        <p>K بار تکرار، هر بار K-1 قسمت Train و ۱ قسمت Validation.</p>
+
+        <table>
+            <tr>
+                <th>K</th>
+                <th>مزایا</th>
+                <th>معایب</th>
+                <th>کاربرد</th>
+            </tr>
+            <tr>
+                <td>K = 5</td>
+                <td>تعادل مناسب</td>
+                <td>—</td>
+                <td>پیش‌فرض</td>
+            </tr>
+            <tr>
+                <td>K = 10</td>
+                <td>استفاده بیشتر از داده</td>
+                <td>زمان ۲ برابر</td>
+                <td>مسابقات Kaggle</td>
+            </tr>
+            <tr>
+                <td>K = n (LOO)</td>
+                <td>کمترین Bias، بیشترین استفاده</td>
+                <td>کند، Variance بالا</td>
+                <td>داده بسیار کم</td>
+            </tr>
+        </table>
+
+        <h4>ب) Stratified K-Fold</h4>
+        <p>در مسائل نامتوازن — توزیع کلاس در هر Fold حفظ می‌شود.</p>
+
+        <h4>ج) Time Series Split</h4>
+        <p>در سری‌های زمانی — داده‌ها به ترتیب زمانی تقسیم می‌شوند (Train = گذشته، Test = آینده).</p>
+
+        <h3>۱۳.۷.۲ Grid Search + CV: یافتن بهترین ابرپارامترها</h3>
+        <div class="formula" style="text-align: left; direction: ltr;">
+            <code>
+from sklearn.model_selection import GridSearchCV<br>
+<br>
+param_grid = {<br>
+&nbsp;&nbsp;&nbsp;'C': [0.01, 0.1, 1, 10, 100],<br>
+&nbsp;&nbsp;&nbsp;'penalty': ['l1', 'l2']<br>
+}<br>
+<br>
+grid = GridSearchCV(<br>
+&nbsp;&nbsp;&nbsp;LogisticRegression(max_iter=1000),<br>
+&nbsp;&nbsp;&nbsp;param_grid, cv=5, scoring='f1', n_jobs=-1<br>
+)<br>
+grid.fit(X_train, y_train)<br>
+print(grid.best_params_)<br>
+print(grid.best_score_)
+            </code>
+        </div>
+
+        <h3>۱۳.۷.۳ Random Search: جایگزین سریع‌تر</h3>
+        <p>وقتی فضای ابرپارامترها بزرگ است، Random Search در زمان کمتر نتایج قابل‌قبول می‌دهد.</p>
+
+        <h3>۱۳.۷.۴ مثال: تنظیم Ridge Regression</h3>
+        <div class="example">
+            <p>فضای ابرپارامتر: α ∈ [0.001, 0.01, 0.1, 1, 10, 100]</p>
+            <ul>
+                <li>α کوچک → Ridge ≈ Linear Regression (ممکن است Overfit)</li>
+                <li>α بزرگ → همه وزن‌ها ≈ ۰ (Underfit شدید)</li>
+                <li>α بهینه با CV پیدا می‌شود</li>
+            </ul>
+            <p>در مسائل واقعی معمولاً log scale استفاده می‌شود.</p>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۱۳.۸ — راهکار عملی Bias-Variance Tradeoff</button>
+    <div class="panel">
+        <h3>۱۳.۸.۱ فلوچارت حل مسئله</h3>
+        <div class="example">
+            <ol>
+                <li>با یک مدل ساده شروع کن (Baseline) — مثل Logistic Regression یا Decision Tree کم‌عمق.</li>
+                <li>Learning Curve را رسم کن.</li>
+                <li>اگر هر دو خطا بالا → Underfitting → مدل پیچیده‌تر یا ویژگی بیشتر.</li>
+                <li>اگر Train کم، Val زیاد → Overfitting → Regularization/داده بیشتر/مدل ساده.</li>
+                <li>با تنظیم ابرپارامتر (Grid Search + CV) بهترین نقطه را پیدا کن.</li>
+                <li>در Test Set ارزیابی نهایی کن.</li>
+            </ol>
+        </div>
+
+        <h3>۱۳.۸.۲ جدول استراتژی</h3>
+        <table>
+            <tr>
+                <th>اگر مشکل Overfitting باشد</th>
+                <th>اگر مشکل Underfitting باشد</th>
+            </tr>
+            <tr>
+                <td>جمع‌آوری داده بیشتر</td>
+                <td>افزایش Capacity مدل</td>
+            </tr>
+                <tr>
+                    <td>کاهش تعداد ویژگی‌ها</td>
+                    <td>افزایش ویژگی‌ها / Feature Engineering</td>
+                </tr>
+                <tr>
+                    <td>افزایش λ در Regularization</td>
+                    <td>کاهش λ در Regularization</td>
+                </tr>
+                <tr>
+                    <td>Dropout (در شبکه‌های عصبی)</td>
+                    <td>آموزش بیشتر (Epochs بیشتر)</td>
+                </tr>
+                <tr>
+                    <td>Early Stopping</td>
+                    <td>تعویض الگوریتم به قوی‌تر</td>
+                </tr>
+                <tr>
+                    <td>Batch Normalization</td>
+                    <td>(LASSO/Elastic Net) کم‌اهمیت‌ها را حذف کن</td>
+                </tr>
+                <tr>
+                    <td>Data Augmentation</td>
+                    <td>Polynomial Features</td>
+                </tr>
+        </table>
+
+        <h3>۱۳.۸.۳ قانون مهم</h3>
+        <div class="warning">
+            ابتدا مشکل را با Learning Curve تشخیص دهید، سپس هدفمند راه‌حل را اعمال کنید. اعمال همه روش‌ها هم‌زمان می‌تواند نتیجه معکوس بدهد!
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۱۳.۹ — کاربردهای ایرانی</button>
+    <div class="panel">
+        <h3>۱۳.۹.۱ تشخیص تومور در تصاویر پزشکی</h3>
+        <p>در بیمارستان‌های ایران:</p>
+        <ul>
+            <li>مدل: ResNet برای تصاویر MRI</li>
+            <li>مشکل: Overfitting — چون داده آموزش هر بیمارستان کم است</li>
+            <li>راه‌حل: Data Augmentation (چرخش، برش، تغییر کنتراست)، Dropout، Early Stopping</li>
+        </ul>
+
+        <h3>۱۳.۹.۲ پیش‌بینی قیمت مسکن (دیوار)</h3>
+        <ul>
+            <li>مدل: XGBoost با ویژگی‌های بسیار زیاد</li>
+            <li>مشکل: Overfitting با ویژگی‌های زائد</li>
+                <li>راه‌حل: L1 Regularization (Lasso) برای حذف ویژگی‌های کم‌اهمیت، Cross-Validation</li>
+        </ul>
+
+        <h3>۱۳.۹.۳ تشخیص تقلب (بانکداری)</h3>
+        <ul>
+            <li>مدل: Random Forest با صدها درخت</li>
+            <li>مشکل: Underfitting اگر عمق درخت‌ها محدود باشد</li>
+            <li>راه‌حل: افزایش Capacity با عمق بیشتر، ولی تنظیم min_samples_leaf</li>
+        </ul>
+
+        <h3>۱۳.۹.۴ پیشنهاد فیلم (فیلیمو)</h3>
+        <ul>
+            <li>مدل: Neural Network برای Collaborative Filtering</li>
+            <li>مشکل: Overfitting به کاربران خاص</li>
+            <li>راه‌حل: Dropout، L2 Regularization، Early Stopping بر اساس val_loss</li>
+        </ul>
+
+        <h3>۱۳.۹.۵ تشخیص چهره (اپلیکیشن‌های ایرانی)</h3>
+        <ul>
+            <li>مدل: FaceNet (یادگیری عمیق)</li>
+            <li>مشکل: Overfitting در داده‌های چهره ایرانی</li>
+            <li>راه‌حل: Data Augmentation (چرخش، تغییر نور، آینه)</li>
+        </ul>
+    </div>
+
+    <button class="accordion">یادداشت‌های استاد (Instructor Notes)</button>
     <div class="panel">
         <div class="instructor-note">
             <strong>مقدمه و مفهوم بیش‌برازش (۸ دقیقه):</strong>
-            <p>با یک تشبیه شروع کنید: بیش‌برازش مثل دانش‌آموزی است که حفظ می‌کند نه یاد می‌گیرد. امتحان را که عیناً سؤال‌های تمرین باشد می‌تواند جواب دهد، اما سؤال جدید را نه! مدل هم همین‌طور است - اگر داده‌های آموزش را حفظ کند، روی داده جدید شکست می‌خورد. مثال: اگر درخت تصمیم خیلی عمیق باشد، می‌تواند هر داده آموزت را درست分类 کند ولی داده جدید را نه.</p>
+            <p>با یک تشبیه شروع کنید: بیش‌برازش مثل دانش‌آموزی است که حفظ می‌کند نه یاد می‌گیرد. امتحان را که عیناً سؤال‌های تمرین باشد می‌تواند جواب دهد، اما سؤال جدید را نه! مدل هم همین‌طور است — اگر داده‌های آموزش را حفظ کند، روی داده جدید شکست می‌خورد. مثال: اگر درخت تصمیم خیلی عمیق باشد، می‌تواند هر داده آموزشی را درست طبقه‌بندی کند ولی داده جدید را نه.</p>
         </div>
         <div class="instructor-note">
             <strong>زیربرازش (۶ دقیقه):</strong>
-            <p>زیربرازش برعکس است - مدل خیلی ساده است. مثال: می‌خواهیم یک منحنی را با یک خط فیت کنیم - هر چقدر خط بکشیم نمی‌تواند منحنی را دنبال کند. این هم بد است چون مدل الگوهای اصلی را هم یاد نمی‌گیرد. تعادل: مدلی که به اندازه کافی پیچیده باشد (نه خیلی ساده، نه خیلی پیچیده) - این مهم‌ترین چالش در ML است.</p>
+            <p>زیربرازش برعکس است — مدل خیلی ساده است. مثال: می‌خواهیم یک منحنی را با یک خط فیت کنیم — هر چقدر خط بکشیم نمی‌تواند منحنی را دنبال کند. این هم بد است چون مدل الگوهای اصلی را هم یاد نمی‌گیرد. تعادل: مدلی که به اندازه کافی پیچیده باشد (نه خیلی ساده، نه خیلی پیچیده) — این مهم‌ترین چالش در ML است.</p>
         </div>
         <div class="instructor-note">
-            <strong>منحني یادگیری (۸ دقیقه):</strong>
-            <p>Learning Curves را روی تخته رسم کنید: محور x اندازه داده، محور y خطا. بیش‌برازش: خطای train پایین، خطای test بالا - فاصله زیاد. زیربرازش: هر دو خطا بالا. Good fit: هر دو خطا پایین و نزدیک به هم. این نمودار به شما می‌گوید که مشکل کجاست و چه کاری باید انجام دهید.</p>
+            <strong>Learning Curves (۸ دقیقه):</strong>
+            <p>Learning Curves را روی تخته رسم کنید: محور x اندازه داده، محور y خطا. بیش‌برازش: خطای train پایین، خطای test بالا — فاصله زیاد. زیربرازش: هر دو خطا بالا. Good fit: هر دو خطا پایین و نزدیک به هم. این نمودار به شما می‌گوید که مشکل کجاست و چه کاری باید انجام دهید.</p>
+        </div>
+        <div class="instructor-note">
+            <strong>Bias-Variance Tradeoff (۶ دقیقه):</strong>
+            <p>این مفهوم کلیدی است. با تشبیه تیراندازی توضیح دهید: High Bias یعنی تیرها یک نقطه می‌روند ولی دور از هدف. High Variance یعنی تیرها پراکنده ولی میانگین نزدیک هدف. مدل ایده‌آل، Low Bias و Low Variance دارد. مدل‌های ساده معمولاً High Bias، مدل‌های پیچیده High Variance.</p>
         </div>
         <div class="instructor-note">
             <strong>روش‌های جلوگیری (۱۰ دقیقه):</strong>
-            <p>Regularization: مثل این است که به مدل بگوییم «ساده‌تر باش». L1 برخی وزن‌ها را صفر می‌کند (انتخاب ویژگی)، L2 همه را کوچک می‌کند. Dropout: در شبکه عصبی، هر بار نورون‌های تصادفی را خاموش کنیم - این باعث می‌شود شبکه یاد نگیرد به یک نورون خاص وابسته باشد. Early Stopping: وقتی خطای validation شروع به زیاد شدن کرد، آموزش را متوقف کنیم - این خیلی مهم است!</p>
+            <p>Regularization: مثل این است که به مدل بگوییم «ساده‌تر باش». L1 برخی وزن‌ها را صفر می‌کند (انتخاب ویژگی)، L2 همه را کوچک می‌کند. Dropout: در شبکه عصبی، هر بار نورون‌های تصادفی را خاموش کنیم — این باعث می‌شود شبکه یاد نگیرد به یک نورون خاص وابسته باشد. Early Stopping: وقتی خطای validation شروع به زیاد شدن کرد، آموزش را متوقف کنیم — این خیلی مهم است!</p>
         </div>
         <div class="instructor-note">
-            <strong>اعتبارسنجی (۸ دقیقه):</strong>
-            <p>K-Fold Cross-Validation را توضیح دهید: داده را به ۵ قسمت تقسیم کن، ۴ تا را آموزش بده، ۱ تا را تست کن، ۵ بار تکرار کن، میانگین بگیر. مزیت: همه داده‌ها هم train هم test می‌بینند - تخمین بهتری از عملکرد واقعی می‌دهد. معمولاً K=5 یا K=10 استفاده می‌شود. Stratified K-Fold برای داده نامتوازن مهم است.</p>
+            <strong>Cross-Validation (۸ دقیقه):</strong>
+            <p>K-Fold Cross-Validation را توضیح دهید: داده را به ۵ قسمت تقسیم کن، ۴ تا را آموزش بده، ۱ تا را تست کن، ۵ بار تکرار کن، میانگین بگیر. مزیت: همه داده‌ها هم train هم test می‌بینند — تخمین بهتری از عملکرد واقعی می‌دهد. معمولاً K=5 یا K=10 استفاده می‌شود. Stratified K-Fold برای داده نامتوازن مهم است.</p>
         </div>
         <div class="instructor-note">
-            <strong>جمع‌بندی (۵ دقیقه):</strong>
+            <strong>جمع‌بندی (۴ دقیقه):</strong>
             <p>خلاصه: بیش‌برازش = مدل پیچیده، زیربرازش = مدل ساده. از Learning Curves برای تشخیص استفاده کنید. راه‌حل‌ها: Regularization، Dropout، Early Stopping، داده بیشتر. از Cross-Validation برای ارزیابی بهتر استفاده کنید. تکلیف: دانشجویان باید یک مثال بسازند و نشان دهند که چطور با تغییر پیچیدگی مدل، بیش‌برازش یا زیربرازش ایجاد می‌شود.</p>
         </div>
     </div>
@@ -241,166 +662,64 @@
             <h2>فصل سیزدهم: بیش‌برازش و زیربرازش</h2>
 
             <h3>۱۳.۱ بیش‌برازش (Overfitting)</h3>
-            <p>بیش‌برازش زمانی رخ می‌دهد که مدل داده‌های آموزش را حفظ می‌کند ولی روی داده‌های جدید ضعیف عمل می‌کند.</p>
-
-            <h4>علل بیش‌برازش:</h4>
-            <ul>
-                <li>مدل خیلی پیچیده است</li>
-                <li>مدل به نویز داده‌ها دسترسی پیدا می‌کند</li>
-                <li>داده آموزش کم است</li>
-                <li>آموزش بیش از حد (بیش از حد epochs)</li>
-            </ul>
-
-            <h4>علائم بیش‌برازش:</h4>
-            <ul>
-                <li>دقت روی داده آموزش بالا، روی داده تست پایین</li>
-                <li>مدل جزئیات ریز داده‌ها را یاد می‌گیرد</li>
-            </ul>
-
-            <h4>مثال:</h4>
-            <p>در طبقه‌بندی، مدل مرز پیچیده‌ای رسم می‌کند که نقاط آموزش را کاملاً جدا می‌کند، اما روی داده جدید شکست می‌خورد.</p>
+            <p>تعریف: مدل داده آموزش را حفظ می‌کند ولی تعمیم نمی‌دهد. نشانه: Train ↑، Test ↓. علل: مدل پیچیده، داده کم، نویز، Epochs زیاد.</p>
 
             <h3>۱۳.۲ زیربرازش (Underfitting)</h3>
-            <p>زیربرازش زمانی رخ می‌دهد که مدل خیلی ساده است و الگوهای مهم را هم یاد نمی‌گیرد.</p>
+            <p>تعریف: مدل حتی الگو را یاد نمی‌گیرد. نشانه: Train ↓ و Test ↓. علل: مدل ساده، ویژگی کم، آموزش ناکافی.</p>
 
-            <h4>علل زیربرازش:</h4>
-            <ul>
-                <li>مدل خیلی ساده است</li>
-                <li>آموزش کافی نیست</li>
-                <li>ویژگی‌های ناکافی</li>
-            </ul>
+            <h3>۱۳.۳ Bias-Variance Tradeoff</h3>
+            <p>Error = Bias² + Variance + σ². مدل ساده: High Bias, Low Variance. مدل پیچیده: Low Bias, High Variance. هدف: تعادل.</p>
 
-            <h4>علائم زیربرازش:</h4>
-            <ul>
-                <li>دقت روی داده آموزش و تست هر دو پایین</li>
-                <li>مدل الگوهای اصلی را یاد نمی‌گیرد</li>
-            </ul>
+            <h3>۱۳.۴ Learning Curves</h3>
+            <p>نمودار خطا برحسب اندازه داده. سه الگو: Overfit (Train↓Val↑)، Underfit (Train↑Val↑)، Good Fit (Train↓Val↓).</p>
 
-            <h4>مثال:</h4>
-            <p>استفاده از یک خط برای داده‌های منحنی - مدل توانایی کافی ندارد.</p>
+            <h3>۱۳.۵ روش‌های جلوگیری از Overfitting</h3>
+            <p>۱. Regularization (L1، L2، Elastic Net)، ۲. Dropout، ۳. Early Stopping، ۴. Data Augmentation، ۵. کاهش پیچیدگی مدل، ۶. داده بیشتر.</p>
 
-            <h3>۱۳.۳ منحنی یادگیری (Learning Curves)</h3>
-            <p>منحنی یادگیری نمودار خطا بر حسب اندازه داده آموزش است.</p>
+            <h3>۱۳.۶ Cross-Validation</h3>
+            <p>K-Fold: K بار تکرار. Stratified: برای نامتوازن. Time Series Split: برای سری زمانی. LOO: K=n.</p>
 
-            <h4>تحلیل منحنی یادگیری:</h4>
-            <table>
-                <tr>
-                    <th>حالت</th>
-                    <th>خطای Train</th>
-                    <th>خطای Test</th>
-                    <th>راه‌حل</th>
-                </tr>
-                <tr>
-                    <td>بیش‌برازش</td>
-                    <td>پایین</td>
-                    <td>بالا</td>
-                    <td>منظم‌سازی، داده بیشتر</td>
-                </tr>
-                <tr>
-                    <td>زیربرازش</td>
-                    <td>بالا</td>
-                    <td>بالا</td>
-                    <td>مدل پیچیده‌تر، ویژگی بیشتر</td>
-                </tr>
-                <tr>
-                    <td>برازش خوب</td>
-                    <td>پایین</td>
-                    <td>پایین</td>
-                    <td>✓</td>
-                </tr>
-            </table>
-
-            <h3>۱۳.۴ روش‌های جلوگیری از بیش‌برازش</h3>
-
-            <h4>۱. منظم‌سازی (Regularization):</h4>
-            <ul>
-                <li>L1 (Lasso): جریمه جمع قدرمطلق وزن‌ها</li>
-                <li>L2 (Ridge): جریمه مجذور وزن‌ها</li>
-                <li>Elastic Net: ترکیب L1 و L2</li>
-            </ul>
-
-            <h4>۲. Dropout:</h4>
-            <p>در شبکه‌های عصبی: غیرفعال کردن تصادفی نورون‌ها در هنگام آموزش.</p>
-
-            <h4>۳. Early Stopping:</h4>
-            <p>توقف آموزش وقتی خطای validation افزایش یافت.</p>
-
-            <h4>۴. افزایش داده (Data Augmentation):</h4>
-            <ul>
-                <li>چرخش، برش، تغییر رنگ تصاویر</li>
-                <li>جایگزینی مترادف در متن</li>
-            </ul>
-
-            <h4>۵. کاهش پیچیدگی مدل:</h4>
-            <ul>
-                <li>کم کردن عمق درخت در Decision Tree</li>
-                <li>کم کردن تعداد نورون‌ها در شبکه عصبی</li>
-            </ul>
-
-            <h3>۱۳.۵ اعتبارسنجی متقاطع (Cross-Validation)</h3>
-
-            <p>اعتبارسنجی متقاطع روشی برای ارزیابی عملکرد مدل با تقسیم داده به چند بخش است.</p>
-
-            <h4>K-Fold Cross-Validation:</h4>
-            <ol>
-                <li>داده را به K قسمت تقسیم کن</li>
-                <li>K-1 قسمت برای آموزش</li>
-                <li>۱ قسمت برای تست</li>
-                <li>این کار را K بار تکرار کن</li>
-                <li>میانگین نتایج را بگیر</li>
-            </ol>
-
-            <h4>مزایا:</h4>
-            <ul>
-                <li>استفاده بهینه از داده</li>
-                <li>تخمین بهتر عملکرد واقعی</li>
-                <li>کاهش واریانس تخمین</li>
-            </ul>
-
-            <h4>انواع:</h4>
-            <ul>
-                <li>Stratified K-Fold: حفظ توزیع کلاس</li>
-                <li>Time Series Split: برای داده‌های زمانی</li>
-                <li>Leave-One-Out: K = n</li>
-            </ul>
-
-            <h3>۱۳.۶ اعتبارسنجی (Validation)</h3>
-
-            <p>اعتبارسنجی بخشی از داده است که برای تنظیم هایپرپارامترها و انتخاب مدل استفاده می‌شود.</p>
-
-            <h4>روش‌های اعتبارسنجی:</h4>
-            <ul>
-                <li><strong>Holdout:</strong> تقسیم ساده (مثلاً 60/20/20)</li>
-                <li><strong>K-Fold:</strong> تقسیم به K بخش</li>
-                <li><strong>Stratified:</strong> حفظ توزیع کلاس</li>
-            </ul>
-
-            <h4>نکته مهم:</h4>
-            <ul>
-                <li>داده Test نباید در آموزش استفاده شود!</li>
-                <li>داده Validation برای تنظیم مدل استفاده می‌شود</li>
-                <li>داده Test برای ارزیابی نهایی است</li>
-            </ul>
+            <h3>۱۳.۷ Grid Search + CV</h3>
+            <p>برای یافتن بهترین ترکیب ابرپارامترها با Cross-Validation. Random Search جایگزین سریع‌تر.</p>
 
             <h3>خلاصه فصل:</h3>
             <ol>
-                <li>بیش‌برازش = مدل پیچیده، زیربرازش = مدل ساده</li>
-                <li>از Learning Curves برای تشخیص مشکل استفاده کنید</li>
-                <li>راه‌حل‌ها: منظم‌سازی، Dropout، Early Stopping، داده بیشتر</li>
-                <li>Cross-Validation تخمین بهتری از عملکرد واقعی می‌دهد</li>
-                <li>داده Test فقط برای ارزیابی نهایی است</li>
+                <li>Overfitting: مدل پیچیده، داده حفظ شده، تعمیم ضعیف</li>
+                <li>Underfitting: مدل ساده، الگو یاد گرفته نشده</li>
+                <li>Bias-Variance Tradeoff: کاهش یکی، افزایش دیگری (معمولاً)</li>
+                <li>Learning Curves بهترین ابزار تشخیص</li>
+                <li>Reg، Dropout، Early Stop آموزش اضافی</li>
             </ol>
 
             <h3>تمرین‌های خودآزمایی:</h3>
             <ol>
-                <li>بیش‌برازش چیست و چه عللی دارد؟</li>
-                <li>چگونه می‌توان بیش‌برازش را تشخیص داد؟</li>
-                <li>تفاوت L1 و L2 regularization چیست؟</li>
+                <li>تفاوت Overfitting و Underfitting چیست؟ برای هر یک دو مثال بزنید.</li>
+                <li>Bias-Variance Tradeoff را توضیح دهید و با تشبیه تیراندازی بیان کنید.</li>
+                <li>Learning Curve چگونه رسم می‌شود؟ سه الگوی آن را توصیف کنید.</li>
+                <li>تفاوت L1 و L2 Regularization چیست؟ کدام ویژگی‌ها را حذف می‌کند؟</li>
                 <li>چرا Early Stopping مهم است؟</li>
-                <li>یک مثال از زیربرازش بزنید</li>
+                <li>چه موقع از Stratified K-Fold استفاده کنیم؟</li>
+                <li>اگر Train Accuracy = ۹۸٪ و Test Accuracy = ۶۰٪ باشد، مشکل چیست و چه راه‌حلی پیشنهاد می‌کنید؟</li>
+                <li>Dropout را توضیح دهید. چه تفاوتی بین آموزش و تست دارد؟</li>
             </ol>
 
-            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۲۰ دقیقه</p>
+            <h3>پروژه عملی پیشنهادی:</h3>
+            <ul>
+                <li><strong>بخش ۱:</strong> دیتاست Iris — Decision Tree با max_depth=2، ۵، ۲۰ آموزش بدهید. Learning Curve رسم کنید.</li>
+                <li><strong>بخش ۲:</strong> Logistic Regression با C = [0.001, 0.01, 0.1, 1, 10]، GridSearchCV با 5-Fold.</li>
+                <li><strong>بخش ۳:</strong> Polynomial Regression با درجه ۱، ۳، ۱۰. Overfitting را با چشم ببینید.</li>
+                <li><strong>بخش ۴:</strong> مقایسه L1 و L2 در Lasso vs Ridge روی داده با ویژگی‌های زیاد.</li>
+            </ul>
+
+            <h3>منابع پیشنهادی برای مطالعه بیشتر:</h3>
+            <ul>
+                <li>کتاب «Hands-On Machine Learning» — فصل‌های ۴، ۱۱</li>
+                <li>Andrew Ng — دوره Coursera، هفته‌های ۶-۸</li>
+                <li>وبلاگ Paperspace — مقالات متعدد درباره Bias-Variance</li>
+                <li>Scikit-learn: <code>scikit-learn.org/stable/model_selection.html</code></li>
+            </ul>
+
+            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۸۰ دقیقه</p>
         </div>
     </div>
 
