@@ -5,18 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جلسه ۱۵ - پارامترها و ابرپارامترها</title>
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; line-height: 1.9; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
         h3 { color: #16a085; margin-top: 20px; }
+        h4 { color: #34495e; margin-top: 15px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        ul { line-height: 1.8; }
+        ul, ol { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
-        .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
-        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
-        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 10px; margin: 10px 0; }
+        .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 15px; margin: 15px 0; border-radius: 5px; }
         .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+        .warning { background: #fde8e8; border-right: 4px solid #e74c3c; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .stat-box { background: #ecf0f1; border-right: 4px solid #95a5a6; padding: 10px; margin: 10px 0; font-weight: bold; border-radius: 5px; }
+        .quote { background: #f4ecf7; border-right: 4px solid #8e44ad; padding: 10px; margin: 10px 0; font-style: italic; border-radius: 5px; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
         .accordion.active { background-color: #3498db; color: white; }
@@ -25,214 +29,1315 @@
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
         th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        code { background-color: #f4f4f4; padding: 2px 6px; border-radius: 3px; color: #c0392b; font-family: "Courier New", monospace; }
+        pre { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto; direction: ltr; text-align: left; }
     </style>
 </head>
 <body>
     <a href="../plan.html" class="back-link">← بازگشت به برنامه درسی</a>
 
     <h1>جلسه ۱۵: پارامترها و ابرپارامترها</h1>
+    <p style="text-align: center; color: #7f8c8d; font-size: 14px;">زمان تقریبی: ۹۰ دقیقه | نوع: نظری-عملی | سطح: پیشرفته</p>
 
     <div class="phase">
         <h2>اهداف یادگیری</h2>
+        <p>در پایان این جلسه، دانشجو باید بتواند:</p>
         <ul>
-            <li>تفکیک پارامتر و ابرپارامتر</li>
-            <li>آشنایی با روش‌های تنظیم</li>
-            <li>یادگیری بهینه‌سازی هایپرپارامتر</li>
+            <li>تفاوت بنیادین بین پارامتر و ابرپارامتر را درک کند</li>
+            <li>انواع روش‌های تنظیم ابرپارامتر (Grid, Random, Bayesian, Optuna) را بشناسد</li>
+            <li>نرخ یادگیری و اهمیت حیاتی آن را بفهمد</li>
+            <li>ابرپارامترهای مهم مدل‌های مختلف (رگرسیون، درخت، شبکه عصبی) را بشناسد</li>
+            <li>Learning Rate Schedule ها را درک و استفاده کند</li>
+            <li>Early Stopping را برای جلوگیری از overfitting پیاده‌سازی کند</li>
+            <li>Batch Size و تاثیر آن بر آموزش را بفهمد</li>
+            <li>راهبردهای Regularization از طریق هایپرپارامترها را بشناسد</li>
+            <li>ابزارهای مدرن (Optuna، Hyperopt) را برای تنظیم خودکار به کار گیرد</li>
+            <li>بهترین شیوه‌های تنظیم ابرپارامتر را در عمل به کار ببندد</li>
         </ul>
     </div>
 
-    <button class="accordion">پارامتر vs ابرپارامتر</button>
+    <button class="accordion">بخش ۱: پارامتر در مقابل ابرپارامتر</button>
     <div class="panel">
-        <h3>پارامتر (Parameter):</h3>
+        <h3>تعاریف بنیادی</h3>
+
+        <h4>پارامتر (Parameter):</h4>
         <div class="key-concept">
-            مقداری که مدل از داده یاد می‌گیرد.
+            مقادیری که مدل در طول فرآیند آموزش از داده‌ها یاد می‌گیرد. این مقادیر خروجی الگوریتم یادگیری هستند.
         </div>
+        <p>مثال‌ها:</p>
         <ul>
-            <li>وزن‌ها در رگرسیون خطی</li>
-            <li>مراکز خوشه‌ها در K-Means</li>
-            <li>weights در شبکه عصبی</li>
+            <li><strong>وزن‌ها (w) و بایاس (b) در رگرسیون خطی</strong>: y = w·x + b - این w و b پارامتر هستند</li>
+            <li><strong>وزن‌ها در شبکه عصبی</strong>: میلیون‌ها عدد که در backpropagation تنظیم می‌شوند</li>
+            <li><strong>مراکز خوشه‌ها در K-Means</strong>: K نقطه مرکزی که از داده محاسبه می‌شوند</li>
+            <li><strong>بردارهای پشتیبان در SVM</strong>: نمونه‌های آموزشی موثر در مرز تصمیم</li>
+            <li><strong>شاخه‌های درخت تصمیم</strong>: ساختار درخت که از داده یاد گرفته می‌شود</li>
         </ul>
 
-        <h3>ابرپارامتر (Hyperparameter):</h3>
+        <h4>ابرپارامتر (Hyperparameter):</h4>
         <div class="key-concept">
-            مقداری که قبل از آموزش تنظیم می‌شود و از داده یاد نمی‌گیرد.
+            تنظیماتی که قبل از شروع آموزش مشخص می‌شوند و الگوریتم یادگیری قادر به تغییر آن‌ها نیست. این مقادیر توسط انسان یا جستجوی خودکار تعیین می‌شوند.
         </div>
+        <p>مثال‌ها:</p>
         <ul>
-            <li>نرخ یادگیری</li>
-            <li>تعداد لایه‌ها</li>
-            <li>تعداد همسایه‌ها در KNN</li>
+            <li><strong>نرخ یادگیری (Learning Rate)</strong>: α در گرادیان کاهشی</li>
+            <li><strong>تعداد لایه‌ها و نورون‌ها</strong> در شبکه عصبی</li>
+            <li><strong>تعداد همسایه‌ها K</strong> در KNN</li>
+            <li><strong>عمق درخت</strong> در Random Forest</li>
+            <li><strong>C و γ</strong> در SVM</li>
+            <li><strong>تعداد خوشه‌ها</strong> در K-Means</li>
+            <li><strong>پارامتر منظم‌سازی λ</strong></li>
         </ul>
 
-        <h3>تفاوت کلیدی:</h3>
+        <h3>تشبیه ساده برای درک</h3>
+        <div class="example">
+            <p>فرض کنید می‌خواهید رانندگی یاد بگیرید:</p>
+            <ul>
+                <li><strong>پارامترها:</strong> مهارت‌هایی که از تمرین یاد می‌گیرید - مثل عوض کردن دنده، پارک کردن</li>
+                <li><strong>ابرپارامترها:</strong> شرایطی که معلم تعیین می‌کند - مثل:
+                    <ul>
+                        <li>چند ساعت تمرین کنید؟ (epochs)</li>
+                        <li>در چه نوع جاده‌ای تمرین کنید؟ (نوع داده آموزش)</li>
+                        <li>چقدر سخت باشد تمرین؟ (Learning Rate)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>جدول مقایسه تفصیلی</h3>
         <table>
             <tr>
+                <th>ویژگی</th>
                 <th>پارامتر</th>
                 <th>ابرپارامتر</th>
             </tr>
             <tr>
-                <td>از داده یاد می‌گیرد</td>
-                <td>توسط انسان تنظیم می‌شود</td>
+                <td>منبع تعیین</td>
+                <td>از داده یاد گرفته می‌شود</td>
+                <td>توسط انسان/الگوریتم تنظیم می‌شود</td>
             </tr>
             <tr>
-                <td>در مدل ذخیره می‌شود</td>
-                <td>قبل از آموزش تعیین می‌شود</td>
+                <td>زمان تعیین</td>
+                <td>حین آموزش</td>
+                <td>قبل از آموزش</td>
+            </tr>
+            <tr>
+                <td>تعداد</td>
+                <td>معمولاً زیاد (میلیون‌ها در NN)</td>
+                <td>معمولاً کم (۵-۲۰ عدد)</td>
+            </tr>
+            <tr>
+                <td>ذخیره در مدل</td>
+                <td>بله (مثلا وزن‌ها در فایل .h5)</td>
+                <td>خیر (در کد/اسکریپت تنظیم)</td>
+            </tr>
+            <tr>
+                <td>نیاز به تنظیم مجدد</td>
+                <td>خیر (برای داده مشابه)</td>
+                <td>بله (برای هر مسئله)</td>
+            </tr>
+            <tr>
+                <td>نحوه بهینه‌سازی</td>
+                <td>Gradient Descent, Adam, etc.</td>
+                <td>Grid Search, Random, Bayesian</td>
             </tr>
         </table>
-    </div>
 
-    <button class="accordion">تنظیم ابرپارامتر - روش‌ها</button>
-    <div class="panel">
-        <h3>۱. Grid Search:</h3>
-        <p>جستجوی تمام ترکیبات ممکن</p>
-        <div class="example">
-            <p>learning_rate: [0.01, 0.1, 1]</p>
-            <p>n_estimators: [100, 200]</p>
-            <p>→ 3 × 2 = 6 ترکیب</p>
-        </div>
-        <ul>
-            <li>✓ جامع</li>
-            <li>✗ زمان‌بر برای فضای بزرگ</li>
-        </ul>
-
-        <h3>۲. Random Search:</h3>
-        <p>جستجوی تصادفی از فضای ابرپارامتر</p>
-        <ul>
-            <li>✓ سریع‌تر</li>
-            <li>✓ گاهی نتایج بهتر</li>
-            <li>✗ ممکن است بهینه را از دست بدهد</li>
-        </ul>
-
-        <h3>۳. Bayesian Optimization:</h3>
-        <p>استفاده از مدل احتمالی برای هدایت جستجو</p>
-        <ul>
-            <li>✓ هوشمند</li>
-            <li>✓ کمترین تکرار</li>
-            <li>✗ پیچیده‌تر</li>
-        </ul>
-    </div>
-
-    <button class="accordion">نرخ یادگیری (Learning Rate)</button>
-    <div class="panel">
+        <h3>چرا این تمایز مهم است؟</h3>
         <div class="key-concept">
-            مهم‌ترین ابرپارامتر - اندازه قدم در هر تکرار بهینه‌سازی
+            <ol>
+                <li><strong>بهینه‌سازی متفاوت:</strong> پارامترها با الگوریتم بهینه‌سازی (مثل SGD) یاد گرفته می‌شوند، اما ابرپارامترها نیاز به جستجوی جداگانه دارند</li>
+                <li><strong>زمان محاسباتی:</strong> تنظیم ابرپارامترها معمولاً بسیار زمان‌بر است</li>
+                <li><strong>تفسیرپذیری:</strong> ابرپارامترها قابل تفسیر هستند، پارامترها معمولاً نه</li>
+                <li><strong>انتخاب مدل:</strong> ابرپارامترها اساس انتخاب بین مدل‌ها هستند</li>
+                <li><strong>Reproducibility:</strong> برای بازتولید نتایج باید ابرپارامترها ثبت شوند</li>
+            </ol>
         </div>
 
-        <h3>مقادیر رایج:</h3>
-        <ul>
-            <li>0.001, 0.01, 0.1, 1</li>
-            <li>معمولاً کوچک‌تر از 1</li>
-        </ul>
-
-        <h3>Learning Rate Schedules:</h3>
-        <ul>
-            <li><strong>Step Decay:</strong> هر n اپoch نرخ را نصف کن</li>
-            <li><strong>Exponential Decay:</strong> نرخ به صورت نمایی کم شود</li>
-            <li><strong>Cosine Annealing:</strong> نرخ به صورت کسینوسی</li>
-            <li><strong>Reduce on Plateau:</strong> وقتی plateau شد، کم کن</li>
-        </ul>
+        <div class="instructor-note">
+            <strong>نکته برای استاد (۵ دقیقه):</strong>
+            <p>این بخش را با تشبیه آشپزی شروع کنید: «دستور پخت غذا (ابرپارامتر) را شما تعیین می‌کنید - مثلاً چند گرم نمک، چند دقیقه بپزد. ولی مزه نهایی (پارامتر) به مواد اولیه و اجرا بستگی دارد». سپس با مثال‌های ML این تشبیه را به دنیای واقعی وصل کنید. تأکید کنید که در عمل، ابرپارامترها را باید با تجربه یا جستجوی خودکار پیدا کنیم.</p>
+        </div>
     </div>
 
-    <button class="accordion">ابرپارامترهای شبکه عصبی</button>
+    <button class="accordion">بخش ۲: روش‌های تنظیم ابرپارامتر</button>
     <div class="panel">
-        <h3>مهم‌ترین‌ها:</h3>
+        <h3>چرا باید ابرپارامترها را تنظیم کنیم؟</h3>
+        <div class="warning">
+            ابرپارامترهای نامناسب می‌توانند مدل را خراب کنند:
+            <ul>
+                <li>نرخ یادگیری خیلی بالا → واگرایی (divergence)</li>
+                <li>عمق درخت خیلی زیاد → overfitting</li>
+                <li>K در KNN خیلی کم → حساس به نویز</li>
+                <li>Batch size خیلی بزرگ → همگرایی بد</li>
+            </ul>
+        </div>
+
+        <h3>۱. Grid Search (جستجوی شبکه‌ای)</h3>
+        <p>تمام ترکیبات ممکن ابرپارامترها را امتحان می‌کند.</p>
+
+        <div class="example">
+            <p>مثال: تنظیم Random Forest</p>
+            <ul>
+                <li>n_estimators: [50, 100, 200]</li>
+                <li>max_depth: [5, 10, 20, None]</li>
+                <li>min_samples_split: [2, 5, 10]</li>
+            </ul>
+            <p>تعداد ترکیب: 3 × 4 × 3 = <strong>36 حالت</strong></p>
+            <p>هر حالت با 5-Fold CV: 36 × 5 = 180 آموزش!</p>
+        </div>
+
+        <div class="key-concept">
+            <strong>مزایا:</strong>
+            <ul>
+                <li>جامع - همه حالت‌ها را بررسی می‌کند</li>
+                <li>قابل پیش‌بینی - خروجی قطعی</li>
+                <li>مناسب برای فضای کوچک (کمتر از ۱۰ ابرپارامتر)</li>
+            </ul>
+            <strong>معایب:</strong>
+            <ul>
+                <li>انفجار ترکیبی (Curse of Dimensionality)</li>
+                <li>کند - برای فضای بزرگ غیرقابل استفاده</li>
+                <li>بیشتر ترکیب‌ها در نواحی نامهم هستند</li>
+            </ul>
+        </div>
+
+        <h3>۲. Random Search (جستجوی تصادفی)</h3>
+        <p>به جای همه ترکیبات، تعدادی ترکیب تصادفی را امتحان می‌کند.</p>
+
+        <div class="example">
+            <p>تحقیق Bengio و Bergstra (2012):</p>
+            <p>«Random Search در عمل بهتر از Grid Search است»</p>
+            <p>چرا؟ در فضای با ابعاد بالا، اکثر ترکیبات بهینه نیستند. Random Search فضای وسیع‌تری را پوشش می‌دهد.</p>
+        </div>
+
+        <div class="key-concept">
+            <strong>مزایا:</strong>
+            <ul>
+                <li>سریع‌تر - تعداد ثابت آزمایش</li>
+                <li>پوشش بهتر فضا - در ابعاد بالا بهتر است</li>
+                <li>امکان تعریف توزیع پیوسته (مثلاً learning_rate از log-uniform)</li>
+            </ul>
+            <strong>معایب:</strong>
+            <ul>
+                <li>ممکن است بهینه سراسری را از دست بدهد</li>
+                <li>غیرقطعی - هر اجرا نتیجه متفاوت</li>
+            </ul>
+        </div>
+
+        <h3>۳. Bayesian Optimization (بهینه‌سازی بیزی)</h3>
+        <p>از نتایج آزمایش‌های قبلی یاد می‌گیرد و تصمیم می‌گیرد کجای فضا را امتحان کند.</p>
+
+        <div class="formula">
+            Bayesian Optimization:
+            <br>1. ساخت مدل احتمالی از تابع هدف
+            <br>2. استفاده از Acquisition Function برای انتخاب نقطه بعدی
+            <br>3. ارزیابی نقطه و به‌روزرسانی مدل
+            <br>4. تکرار تا رسیدن به بودجه محاسباتی
+        </div>
+
+        <h4>اجزای اصلی:</h4>
         <ul>
-            <li><strong>Learning Rate:</strong> نرخ یادگیری</li>
-            <li><strong>Batch Size:</strong> اندازه دسته</li>
-            <li><strong>Number of Epochs:</strong> تعداد تکرار آموزش</li>
-            <li><strong>Hidden Layers:</strong> تعداد لایه‌های پنهان</li>
-            <li><strong>Hidden Units:</strong> تعداد نورون‌ها در هر لایه</li>
-            <li><strong>Activation Function:</strong> تابع فعال‌سازی</li>
-            <li><strong>Dropout Rate:</strong> نرخ حذف</li>
-            <li><strong>Weight Initialization:</strong> نحوه مقداردهی اولیه</li>
+            <li><strong>Surrogate Model:</strong> معمولاً Gaussian Process یا Tree-structured Parzen Estimator (TPE)</li>
+            <li><strong>Acquisition Function:</strong> Expected Improvement, UCB, PI</li>
+            <li><strong>Prior:</strong> دانش اولیه درباره تابع هدف</li>
         </ul>
 
-        <h3>Batch Size:</h3>
+        <div class="example">
+            <p>مقایسه تعداد آزمایش‌ها برای رسیدن به مدل قابل قبول:</p>
+            <ul>
+                <li>Grid Search: 100 آزمایش</li>
+                <li>Random Search: 80 آزمایش</li>
+                <li>Bayesian: 20-30 آزمایش</li>
+            </ul>
+        </div>
+
+        <div class="key-concept">
+            <strong>مزایا:</strong>
+            <ul>
+                <li>هوشمند - از تاریخچه یاد می‌گیرد</li>
+                <li>کمترین تعداد آزمایش - صرفه‌جویی در زمان</li>
+                <li>مناسب برای مدل‌های کند (مثل شبکه‌های عصبی بزرگ)</li>
+            </ul>
+            <strong>معایب:</strong>
+            <ul>
+                <li>پیچیده‌تر در پیاده‌سازی</li>
+                <li>مشکل در فضاهای بسیار بزرگ</li>
+            </ul>
+        </div>
+
+        <h3>۴. روش‌های پیشرفته‌تر</h3>
+
+        <h4>Hyperband و BOHB:</h4>
+        <p>ترکیب Bayesian با Early Stopping. ابتدا با منابع کم امتحان می‌کند، سپس بهترین‌ها را با منابع بیشتر ادامه می‌دهد.</p>
+
+        <h4>Population Based Training (PBT):</h4>
+        <p>در یادگیری تقویتی، جمعیتی از مدل‌ها را به طور موازی آموزش می‌دهد و هایپرپارامترها را در حین آموزش تنظیم می‌کند.</p>
+
+        <h4>Neural Architecture Search (NAS):</h4>
+        <p>خود ساختار شبکه عصبی را هم جستجو می‌کند (نه فقط هایپرپارامترها). بسیار گران ولی نتایج عالی.</p>
+
+        <h3>مقایسه روش‌ها</h3>
         <table>
             <tr>
-                <th>کوچک</th>
-                <th>بزرگ</th>
+                <th>روش</th>
+                <th>سرعت</th>
+                <th>هوشمندی</th>
+                <th>مناسب برای</th>
             </tr>
             <tr>
-                <td>نویزدار</td>
-                <td>همگرایی صاف</td>
+                <td>Grid Search</td>
+                <td>کند</td>
+                <td>کم</td>
+                <td>فضای کوچک، کمتر از ۴ پارامتر</td>
             </tr>
             <tr>
-                <td>معمولاً بهتر generalizes</td>
+                <td>Random Search</td>
+                <td>سریع</td>
+                <td>متوسط</td>
+                <td>فضای بزرگ، جستجوی اولیه</td>
+            </tr>
+            <tr>
+                <td>Bayesian</td>
+                <td>متوسط</td>
+                <td>بالا</td>
+                <td>مدل‌های کند، منابع محدود</td>
+            </tr>
+            <tr>
+                <td>Hyperband</td>
+                <td>سریع</td>
+                <td>بالا</td>
+                <td>مدل‌های با آموزش تدریجی</td>
+            </tr>
+            <tr>
+                <td>Optuna (TPE)</td>
+                <td>سریع</td>
+                <td>خیلی بالا</td>
+                <td>همه‌منظوره، محبوب‌ترین</td>
+            </tr>
+        </table>
+
+        <h3>ابزارهای محبوب</h3>
+        <div class="key-concept">
+            <ul>
+                <li><strong>Scikit-learn:</strong> <code>GridSearchCV</code>, <code>RandomizedSearchCV</code> - ساده، درون‌ساختی</li>
+                <li><strong>Optuna:</strong> محبوب‌ترین، مدرن، بر اساس TPE</li>
+                <li><strong>Hyperopt:</strong> قدیمی‌تر، مبتنی بر TPE</li>
+                <li><strong>Ray Tune:</strong> توزیع‌شده، مقیاس‌پذیر</li>
+                <li><strong>Weights & Biases Sweeps:</strong> با UI گرافیکی</li>
+                <li><strong>Keras Tuner:</strong> برای TensorFlow/Keras</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۳: نرخ یادگیری (Learning Rate)</button>
+    <div class="panel">
+        <h3>چرا Learning Rate مهم‌ترین است؟</h3>
+        <div class="key-concept">
+            <strong>قانون طلایی:</strong> اگر فقط یک ابرپارامتر را تنظیم کنید، آن نرخ یادگیری باشد.
+        </div>
+        <p>LR تعیین می‌کند که مدل در هر تکرار چقدر از خطای خود «یاد بگیرد». اگر خیلی بالا باشد، مدل ناپایدار می‌شود. اگر خیلی پایین باشد، آموزش بسیار کند می‌شود یا در local minimum گیر می‌کند.</p>
+
+        <h3>مقادیر رایج</h3>
+        <table>
+            <tr>
+                <th>مقدار</th>
+                <th>کاربرد</th>
+                <th>یادداشت</th>
+            </tr>
+            <tr>
+                <td>0.1</td>
+                <td>مدل‌های ساده (رگرسیون، SVM)</td>
+                <td>نسبتاً بالا ولی برای SGD</td>
+            </tr>
+            <tr>
+                <td>0.01</td>
+                <td>شبکه‌های عصبی کوچک</td>
+                <td>پیش‌فرض رایج</td>
+            </tr>
+            <tr>
+                <td>0.001</td>
+                <td>شبکه‌های عصبی عمیق</td>
+                <td>پیش‌فرض Adam</td>
+            </tr>
+            <tr>
+                <td>0.0001</td>
+                <td>Fine-tuning، Transformer</td>
+                <td>برای transfer learning</td>
+            </tr>
+            <tr>
+                <td>0.00001</td>
+                <td>Fine-tuning خیلی دقیق</td>
+                <td>BERT، GPT</td>
+            </tr>
+        </table>
+
+        <h3>تاثیر LR با تشبیه</h3>
+        <div class="example">
+            <p>فرض کنید در تاریکی کوهستان هستید و می‌خواهید پایین بروید:</p>
+            <ul>
+                <li><strong>LR خیلی بزرگ (مثلا 1.0):</strong> هر قدم ۱۰ متر است. از کوه می‌افتید یا از آن می‌پرید. مدل واگرا می‌شود.</li>
+                <li><strong>LR متوسط (0.01):</strong> هر قدم نیم متر. رسیدن به پایین ولی ممکن است گاهی سُر بخورید.</li>
+                <li><strong>LR کوچک (0.0001):</strong> هر قدم ۱ سانت. خیلی طول می‌کشد ولی مطمئن.</li>
+                <li><strong>LR متغیر (Schedule):</strong> اول قدم‌های بزرگ (سرعت)، نزدیک پایین قدم‌های کوچک (دقت). بهترین استراتژی!</li>
+            </ul>
+        </div>
+
+        <h3>نمودارهای Loss در سه حالت</h3>
+        <div class="example">
+            <p><strong>LR خیلی بالا:</strong> Loss نوسانی، بالا، یا NaN می‌شود (واگرایی)</p>
+            <p><strong>LR ایده‌آل:</strong> Loss به آرامی کاهش می‌یابد، همگرا می‌شود</p>
+            <p><strong>LR خیلی کم:</strong> Loss خیلی آهسته کاهش می‌یابد، ممکن است زمان تمام شود</p>
+        </div>
+
+        <h3>Learning Rate Schedules</h3>
+        <p>تغییر LR در طول آموزش، یکی از مهم‌ترین تکنیک‌های بهبود عملکرد است.</p>
+
+        <h4>۱. Step Decay (کاهش پلکانی):</h4>
+        <div class="formula">
+            lr = lr_0 × drop^floor(epoch / step_size)
+            <br><br>
+            مثال: lr_0 = 0.1, drop = 0.5, step_size = 30
+            <br>epoch 0-29: lr = 0.1
+            <br>epoch 30-59: lr = 0.05
+            <br>epoch 60-89: lr = 0.025
+        </div>
+
+        <h4>۲. Exponential Decay (کاهش نمایی):</h4>
+        <div class="formula">
+            lr = lr_0 × γ^epoch
+            <br><br>
+            مثال: lr_0 = 0.1, γ = 0.95
+            <br>epoch 0: lr = 0.1
+            <br>epoch 10: lr = 0.06
+            <br>epoch 50: lr = 0.0077
+        </div>
+
+        <h4>۳. Cosine Annealing (کاهش کسینوسی):</h4>
+        <div class="formula">
+            lr = lr_min + 0.5 × (lr_max - lr_min) × (1 + cos(epoch / T_max × π))
+        </div>
+        <p>نمودار هموار، در انتهای آموزش آرام‌تر می‌شود.</p>
+
+        <h4>۴. Reduce on Plateau (کاهش در صورت توقف بهبود):</h4>
+        <p>اگر loss validation برای چند epoch بهتر نشد، LR را کاهش بده. تطبیقی است.</p>
+
+        <h4>۵. Warm Restart (Cosine Annealing with Warm Restarts):</h4>
+        <p>بعد از رسیدن به lr_min، دوباره lr را زیاد کن. برای فرار از local minimum.</p>
+
+        <h4>۶. One Cycle Policy:</h4>
+        <p>ابتدا LR زیاد می‌شود، سپس کاهش می‌یابد. خیلی سریع همگرا می‌شود.</p>
+
+        <h3>LR Warmup</h3>
+        <div class="key-concept">
+            <strong>چرا Warmup؟</strong> در شروع آموزش، وزن‌ها تصادفی هستند. اگر LR زیاد باشد، نوسان شدید ایجاد می‌شود. راه‌حل: ابتدا LR کم، سپس به تدریج زیاد، بعد طبق schedule کم شود.
+        </div>
+        <p>در Transformerها (BERT, GPT) و BatchNorm ضروری است.</p>
+
+        <h3>کد عملی</h3>
+        <div class="formula">
+            <pre>
+# PyTorch - Cosine Annealing with Warmup
+from torch.optim.lr_scheduler import (
+    CosineAnnealingLR, StepLR, ExponentialLR,
+    ReduceLROnPlateau
+)
+import torch.optim as optim
+
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+# Step Decay
+scheduler = StepLR(optimizer, step_size=30, gamma=0.1)
+
+# Cosine Annealing
+scheduler = CosineAnnealingLR(optimizer, T_max=100)
+
+# Reduce on Plateau
+scheduler = ReduceLROnPlateau(
+    optimizer, mode='min', factor=0.5,
+    patience=5, verbose=True
+)
+
+# حلقه آموزش
+for epoch in range(num_epochs):
+    train(...)
+    val_loss = validate(...)
+    scheduler.step(val_loss)  # برای ReduceLROnPlateau
+    # یا scheduler.step() برای بقیه
+            </pre>
+        </div>
+
+        <h3>مثال واقعی: آموزش مدل فارسی NLP</h3>
+        <div class="example">
+            <p>تیمی در یک شرکت ایرانی می‌خواهد مدل تحلیل احساس فارسی آموزش دهد:</p>
+            <ul>
+                <li>مدل: ParsBERT (مدل زبانی فارسی)</li>
+                <li>LR: 2e-5 با warmup</li>
+                <li>Batch size: 16</li>
+                <li>Epoch: 3 (چون مدل بزرگ)</li>
+                <li>Schedule: Linear warmup over 10% steps، سپس linear decay</li>
+                <li>نتیجه: F1 = 0.91 (با LR=2e-5) در مقابل F1 = 0.85 (با LR=2e-4)</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۴: ابرپارامترهای شبکه عصبی</button>
+    <div class="panel">
+        <h3>۱. Batch Size</h3>
+        <p>تعداد نمونه‌هایی که قبل از به‌روزرسانی وزن‌ها پردازش می‌شوند.</p>
+
+        <div class="formula">
+            1 epoch = n/batch_size تکرار
+            <br><br>
+            مثال: 60000 نمونه، batch_size=128 → 469 تکرار در هر epoch
+        </div>
+
+        <h4>مقایسه Batch Size:</h4>
+        <table>
+            <tr>
+                <th>ویژگی</th>
+                <th>کوچک (16-128)</th>
+                <th>بزرگ (512-4096)</th>
+            </tr>
+            <tr>
+                <td>نویز گرادیان</td>
+                <td>بالا</td>
+                <td>پایین</td>
+            </tr>
+            <tr>
+                <td>سرعت آموزش</td>
+                <td>آهسته‌تر (تکرار بیشتر)</td>
                 <td>سریع‌تر</td>
             </tr>
             <tr>
-                <td>32, 64, 128</td>
-                <td>256, 512, 1024</td>
+                <td>استفاده از حافظه GPU</td>
+                <td>کم</td>
+                <td>زیاد</td>
+            </tr>
+            <tr>
+                <td>عمومی‌سازی (Generalization)</td>
+                <td>معمولاً بهتر</td>
+                <td>گاهی بدتر</td>
+            </tr>
+            <tr>
+                <td>همگرایی</td>
+                <td>نوسانی ولی فرار از local min</td>
+                <td>صاف ولی گیر در local min</td>
+            </tr>
+            <tr>
+                <td>موارد استفاده</td>
+                <td>تصاویر، NLP با داده کم</td>
+                <td>مدل‌های بزرگ، سخت‌افزار قوی</td>
             </tr>
         </table>
-    </div>
 
-    <button class="accordion">Early Stopping</button>
-    <div class="panel">
+        <h4>Linear Scaling Rule:</h4>
         <div class="key-concept">
-            توقف زودهنگام آموزش وقتی عملکرد روی validation بهتر نشود
+            <strong>قاعده:</strong> وقتی Batch Size را دو برابر می‌کنید، Learning Rate را هم دو برابر کنید.
+            <p>برای SGD در شبکه‌های بزرگ (مثل ResNet). اولین بار توسط Facebook AI در ImageNet استفاده شد.</p>
         </div>
 
-        <h3>پارامترها:</h3>
+        <h4>Batch Size واقعی:</h4>
+        <p>در عمل، Gradient Accumulation اجازه می‌دهد batch size موثر بزرگ باشد حتی اگر حافظه GPU محدود باشد.</p>
+
+        <h3>۲. تعداد Epochs</h3>
+        <p>هر epoch = یک بار دیدن کل داده آموزشی.</p>
+        <div class="warning">
+            تعداد epoch زیاد → overfitting<br>
+            تعداد epoch کم → underfitting<br>
+            راه‌حل: Early Stopping یا Learning Rate Decay
+        </div>
+
+        <h3>۳. تعداد لایه‌ها و نورون‌ها</h3>
+
+        <h4>تعداد لایه‌ها (Depth):</h4>
         <ul>
-            <li><strong>Patience:</strong> چند epoch صبر کنیم</li>
-            <li><strong>Min Delta:</strong> چقدر بهبود مهم است</li>
-            <li><strong>Monitor:</strong> کدام معیار</li>
+                <li><strong>۱ لایه:</strong> Logistic regression (خطی)</li>
+                <li><strong>۲-۳ لایه:</strong> MLP ساده</li>
+                <li><strong>۵-۱۰ لایه:</strong> CNN برای تصاویر</li>
+                <li><strong>۵۰-۲۰۰ لایه:</strong> ResNet، شبکه‌های خیلی عمیق</li>
+                <li><strong>۱۲-۹۶ لایه:</strong> Transformer (BERT, GPT)</li>
         </ul>
 
-        <h3>مزایا:</h3>
+        <h4>تعداد نورون‌ها (Width):</h4>
+        <p>معمولاً به صورت هرمی: عرض لایه‌ها به تدریج کم می‌شود.</p>
+        <div class="example">
+            <p>مثال برای تصویر 28x28:</p>
+            <ul>
+                <li>Input: 784</li>
+                <li>Hidden 1: 256</li>
+                <li>Hidden 2: 128</li>
+                <li>Hidden 3: 64</li>
+                <li>Output: 10</li>
+            </ul>
+        </div>
+
+        <h3>۴. توابع فعال‌سازی (Activation Functions)</h3>
+        <table>
+            <tr>
+                <th>تابع</th>
+                <th>محدوده</th>
+                <th>کاربرد</th>
+            </tr>
+            <tr>
+                <td>ReLU</td>
+                <td>(0, ∞)</td>
+                <td>پیش‌فرض لایه‌های مخفی</td>
+            </tr>
+            <tr>
+                <td>Leaky ReLU</td>
+                <td>(-∞, ∞)</td>
+                <td>جلوگیری از dying ReLU</td>
+            </tr>
+            <tr>
+                <td>Sigmoid</td>
+                <td>(0, 1)</td>
+                <td>خروجی باینری (قدیمی)</td>
+            </tr>
+            <tr>
+                <td>Tanh</td>
+                <td>(-1, 1)</td>
+                <td>مخفی (قدیمی)</td>
+            </tr>
+            <tr>
+                <td>Softmax</td>
+                <td>(0, 1) جمع=1</td>
+                <td>خروجی چندکلاسه</td>
+            </tr>
+            <tr>
+                <td>GELU</td>
+                <td>(-∞, ∞)</td>
+                <td>Transformer (BERT, GPT)</td>
+            </tr>
+        </table>
+
+        <h3>۵. Weight Initialization (مقداردهی اولیه وزن‌ها)</h3>
+        <p>مقداردهی اولیه بد می‌تواند آموزش را مختل کند.</p>
         <ul>
-            <li>جلوگیری از بیش‌برازش</li>
-            <li>کاهش زمان آموزش</li>
-            <li>انتخاب خودکار تعداد epochs</li>
+            <li><strong>Zeros:</strong> هرگز! مدل تقارن را نمی‌شکند</li>
+            <li><strong>Random Normal:</strong> ممکن است خیلی بزرگ/کوچک باشد</li>
+            <li><strong>Xavier (Glorot):</strong> برای sigmoid/tanh</li>
+            <li><strong>He:</strong> برای ReLU</li>
+            <li><strong>Pre-trained:</strong> برای Transfer Learning</li>
+        </ul>
+
+        <h3>۶. Dropout Rate</h3>
+        <p>احتمال غیرفعال کردن هر نورون در طول آموزش.</p>
+        <ul>
+                <li><strong>0.0:</strong> بدون dropout (ممکن است overfit)</li>
+                <li><strong>0.2-0.3:</strong> برای لایه‌های ورودی</li>
+                <li><strong>0.5:</strong> برای لایه‌های مخفی (استاندارد)</li>
+                <li><strong>0.7+:</strong> خیلی زیاد، یادگیری مختل می‌شود</li>
+        </ul>
+
+        <h3>۷. Optimizer</h3>
+        <p>خود Optimizer هم ابرپارامترهایی دارد:</p>
+        <ul>
+                <li><strong>SGD:</strong> lr, momentum (0.9), weight_decay, nesterov</li>
+                <li><strong>Adam:</strong> lr, betas=(0.9, 0.999), eps=1e-8, weight_decay</li>
+                <li><strong>AdamW:</strong> Adam + weight decay جداگانه (بهتر برای Transformer)</li>
+                <li><strong>RMSprop:</strong> lr, alpha=0.9, momentum=0</li>
         </ul>
     </div>
 
-    <button class="accordion">بهترین عملکردها</button>
+    <button class="accordion">بخش ۵: Early Stopping</button>
     <div class="panel">
-        <h3>پیشنهادات کلی:</h3>
+        <h3>Early Stopping چیست؟</h3>
+        <div class="key-concept">
+            تکنیکی برای توقف آموزش وقتی عملکرد مدل روی داده validation بهتر نمی‌شود. هم از overfitting جلوگیری می‌کند و هم در زمان صرفه‌جویی.
+        </div>
+
+        <h3>پارامترهای Early Stopping</h3>
         <ul>
-            <li>با مقادیر پیش‌فرض شروع کنید</li>
-            <li>یک ابرپارامتر را در یک زمان تغییر دهید</li>
-            <li>از Grid Search کوچک شروع کنید</li>
-            <li>از validation set برای تنظیم استفاده کنید</li>
-            <li>نتایج را ثبت کنید</li>
+            <li><strong>Patience:</strong> چند epoch صبر کنیم قبل از توقف (معمولاً ۵-۲۰)</li>
+            <li><strong>Min Delta:</strong> حداقل بهبود قابل قبول (معمولاً 0.001)</li>
+            <li><strong>Monitor:</strong> کدام شاخص را دنبال کنیم (val_loss, val_accuracy)</li>
+            <li><strong>Mode:</strong> 'min' (مثل loss) یا 'max' (مثل accuracy)</li>
+            <li><strong>Restore Best Weights:</strong> آیا بهترین وزن‌ها را برگردانیم؟</li>
         </ul>
 
-        <h3>ابزارها:</h3>
+        <h3>مثال عملی</h3>
+        <div class="example">
+            <p><strong>سناریو:</strong> آموزش مدل تشخیص چهره برای اپلیکیشن ایرانی</p>
+            <ul>
+                <li>Epoch 1-10: val_loss کاهش (1.2 → 0.4)</li>
+                <li>Epoch 11-15: val_loss ثابت (0.4) ولی train_loss کاهش</li>
+                <li>Epoch 16: val_loss افزایش (0.45) - شروع overfitting</li>
+                <li>Early Stopping patience=5: در epoch 20 متوقف می‌شود</li>
+                <li>بهترین مدل: epoch 10 با val_loss = 0.4</li>
+            </ul>
+        </div>
+
+        <h3>نمودار مفهومی</h3>
+        <div class="example">
+            <p>Loss train ↓↓ (همچنان کاهش)</p>
+            <p>Loss val ↓ (کاهش) → ↔ (ثابت) → ↑ (افزایش)</p>
+            <p>↑ اینجا Early Stopping عمل می‌کند</p>
+        </div>
+
+        <h3>کد PyTorch</h3>
+        <div class="formula">
+            <pre>
+class EarlyStopping:
+    def __init__(self, patience=7, min_delta=0.001):
+        self.patience = patience
+        self.min_delta = min_delta
+        self.counter = 0
+        self.best_loss = None
+        self.early_stop = False
+
+    def __call__(self, val_loss):
+        if self.best_loss is None:
+            self.best_loss = val_loss
+        elif val_loss > self.best_loss - self.min_delta:
+            self.counter += 1
+            if self.counter >= self.patience:
+                self.early_stop = True
+        else:
+            self.best_loss = val_loss
+            self.counter = 0
+
+# استفاده
+early_stopping = EarlyStopping(patience=5, min_delta=0.001)
+
+for epoch in range(100):
+    train(...)
+    val_loss = validate(...)
+    early_stopping(val_loss)
+    if early_stopping.early_stop:
+        print("Early stopping triggered")
+        break
+            </pre>
+        </div>
+
+        <h3>کد Keras</h3>
+        <div class="formula">
+            <pre>
+from tensorflow.keras.callbacks import EarlyStopping
+
+early_stopping = EarlyStopping(
+    monitor='val_loss',
+    patience=5,
+    min_delta=0.001,
+    mode='min',
+    restore_best_weights=True
+)
+
+model.fit(
+    X_train, y_train,
+    validation_data=(X_val, y_val),
+    epochs=100,
+    callbacks=[early_stopping]
+)
+            </pre>
+        </div>
+
+        <h3>ترکیب Early Stopping با LR Schedule</h3>
+        <div class="key-concept">
+            <strong>بهترین روش:</strong> ترکیب Early Stopping + Reduce LR on Plateau
+            <ol>
+                <li>اگر val_loss بهتر نشد → LR را نصف کن (ReduceLROnPlateau)</li>
+                <li>اگر بعد از چند بار کم شدن LR باز بهتر نشد → توقف (Early Stopping)</li>
+            </ol>
+            <p>این ترکیب به نام «Cyclical Learning Rate with Early Stopping» معروف است.</p>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۶: ابرپارامترهای مدل‌های غیر عصبی</button>
+    <div class="panel">
+        <h3>Random Forest</h3>
+        <table>
+            <tr>
+                <th>ابرپارامتر</th>
+                <th>توضیح</th>
+                <th>محدوده معمول</th>
+            </tr>
+            <tr>
+                <td>n_estimators</td>
+                <td>تعداد درخت‌ها</td>
+                <td>100-1000</td>
+            </tr>
+            <tr>
+                <td>max_depth</td>
+                <td>حداکثر عمق</td>
+                <td>5-30 یا None</td>
+            </tr>
+            <tr>
+                <td>min_samples_split</td>
+                <td>حداقل نمونه برای تقسیم</td>
+                <td>2-20</td>
+            </tr>
+            <tr>
+                <td>min_samples_leaf</td>
+                <td>حداقل نمونه در برگ</td>
+                <td>1-10</td>
+            </tr>
+            <tr>
+                <td>max_features</td>
+                <td>ویژگی‌ها در هر تقسیم</td>
+                <td>'sqrt', 'log2', int</td>
+            </tr>
+            <tr>
+                <td>bootstrap</td>
+                <td>نمونه‌گیری با جایگزینی</td>
+                <td>True/False</td>
+            </tr>
+        </table>
+
+        <h3>XGBoost / LightGBM</h3>
+        <table>
+            <tr>
+                <th>ابرپارامتر</th>
+                <th>توضیح</th>
+                <th>محدوده</th>
+            </tr>
+            <tr>
+                <td>learning_rate (eta)</td>
+                <td>نرخ یادگیری</td>
+                <td>0.01-0.3</td>
+            </tr>
+            <tr>
+                <td>n_estimators</td>
+                <td>تعداد درخت‌ها</td>
+                <td>100-2000</td>
+            </tr>
+            <tr>
+                <td>max_depth</td>
+                <td>عمق درخت</td>
+                <td>3-10</td>
+            </tr>
+            <tr>
+                <td>min_child_weight</td>
+                <td>حداقل وزن نمونه</td>
+                <td>1-10</td>
+            </tr>
+            <tr>
+                <td>subsample</td>
+                <td>نسبت نمونه در هر درخت</td>
+                <td>0.5-1.0</td>
+            </tr>
+            <tr>
+                <td>colsample_bytree</td>
+                <td>نسبت ویژگی در هر درخت</td>
+                <td>0.5-1.0</td>
+            </tr>
+            <tr>
+                <td>gamma</td>
+                <td>حداقل کاهش loss</td>
+                <td>0-5</td>
+            </tr>
+            <tr>
+                <td>reg_alpha (L1)</td>
+                <td>منظم‌سازی L1</td>
+                <td>0-10</td>
+            </tr>
+            <tr>
+                <td>reg_lambda (L2)</td>
+                <td>منظم‌سازی L2</td>
+                <td>0-10</td>
+            </tr>
+        </table>
+
+        <h3>SVM</h3>
         <ul>
-            <li>Optuna</li>
-            <li>Hyperopt</li>
-            <li>Ray Tune</li>
-            <li>Scikit-learn GridSearchCV, RandomizedSearchCV</li>
+                <li><strong>C:</strong> پارامتر منظم‌سازی (0.01-100، کم = منظم‌سازی بیشتر)</li>
+                <li><strong>kernel:</strong> 'linear', 'rbf', 'poly', 'sigmoid'</li>
+                <li><strong>gamma (rbf/poly):</strong> 'scale', 'auto', یا عدد (0.001-10)</li>
+                <li><strong>degree (poly):</strong> درجه چندجمله‌ای (2-5)</li>
         </ul>
+
+        <h3>K-Means</h3>
+        <ul>
+                <li><strong>n_clusters:</strong> تعداد خوشه‌ها (2-20)</li>
+                <li><strong>init:</strong> 'k-means++' (پیش‌فرض، بهتر) یا 'random'</li>
+                <li><strong>n_init:</strong> تعداد اجرا با مقداردهی متفاوت (10-50)</li>
+                <li><strong>max_iter:</strong> حداکثر تکرار (300)</li>
+        </ul>
+
+        <h3>KNN</h3>
+        <ul>
+                <li><strong>n_neighbors:</strong> K (1-50، معمولاً فرد)</li>
+                <li><strong>weights:</strong> 'uniform' یا 'distance'</li>
+                <li><strong>metric:</strong> 'euclidean', 'manhattan', 'minkowski'</li>
+                <li><strong>p:</strong> توان فاصله Minkowski (1=manhattan, 2=euclidean)</li>
+        </ul>
+    </div>
+
+    <button class="accordion">بخش ۷: ابزارهای تنظیم ابرپارامتر</button>
+    <div class="panel">
+        <h3>۱. Scikit-learn (ساده و درون‌ساختی)</h3>
+        <div class="formula">
+            <pre>
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+from sklearn.ensemble import RandomForestClassifier
+from scipy.stats import randint
+
+# Grid Search
+param_grid = {
+    'n_estimators': [100, 200, 300],
+    'max_depth': [5, 10, 20, None],
+    'min_samples_split': [2, 5, 10]
+}
+
+grid = GridSearchCV(
+    RandomForestClassifier(random_state=42),
+    param_grid,
+    cv=5,
+    scoring='f1',
+    n_jobs=-1
+)
+grid.fit(X_train, y_train)
+print(grid.best_params_)
+print(grid.best_score_)
+
+# Random Search
+param_dist = {
+    'n_estimators': randint(50, 500),
+    'max_depth': [5, 10, 20, None],
+    'min_samples_split': randint(2, 20)
+}
+
+random_search = RandomizedSearchCV(
+    RandomForestClassifier(random_state=42),
+    param_dist,
+    n_iter=50,  # 50 ترکیب تصادفی
+    cv=5,
+    scoring='f1',
+    n_jobs=-1,
+    random_state=42
+)
+random_search.fit(X_train, y_train)
+            </pre>
+        </div>
+
+        <h3>۲. Optuna (مدرن و محبوب)</h3>
+        <div class="formula">
+            <pre>
+import optuna
+
+def objective(trial):
+    # تعریف فضای جستجو
+    n_estimators = trial.suggest_int('n_estimators', 50, 500)
+    max_depth = trial.suggest_int('max_depth', 5, 30)
+    min_samples_split = trial.suggest_int('min_samples_split', 2, 20)
+
+    # آموزش مدل
+    model = RandomForestClassifier(
+        n_estimators=n_estimators,
+        max_depth=max_depth,
+        min_samples_split=min_samples_split,
+        random_state=42
+    )
+
+    # Cross-Validation
+    scores = cross_val_score(
+        model, X_train, y_train,
+        cv=5, scoring='f1'
+    )
+
+    return scores.mean()
+
+# اجرای جستجو
+study = optuna.create_study(direction='maximize')
+study.optimize(objective, n_trials=100, show_progress_bar=True)
+
+print("بهترین پارامترها:", study.best_params)
+print("بهترین F1:", study.best_value)
+            </pre>
+        </div>
+
+        <h4>ویژگی‌های Optuna:</h4>
+        <ul>
+            <li>فضای جستجوی پویا (هر trial بر اساس نتایج قبلی)</li>
+            <li>Pruning - توقف زودهنگام آزمایش‌های بد</li>
+            <li>Visualization داخلی</li>
+            <li>Distributed optimization</li>
+        </ul>
+
+        <h3>۳. Hyperopt</h3>
+        <div class="formula">
+            <pre>
+from hyperopt import fmin, tpe, hp, Trials, STATUS_OK
+
+space = {
+    'n_estimators': hp.quniform('n_estimators', 50, 500, 1),
+    'max_depth': hp.quniform('max_depth', 5, 30, 1),
+    'min_samples_split': hp.quniform('min_samples_split', 2, 20, 1)
+}
+
+def objective(params):
+    model = RandomForestClassifier(
+        n_estimators=int(params['n_estimators']),
+        max_depth=int(params['max_depth']),
+        min_samples_split=int(params['min_samples_split']),
+        random_state=42
+    )
+    scores = cross_val_score(model, X_train, y_train, cv=5, scoring='f1')
+    return {'loss': -scores.mean(), 'status': STATUS_OK}
+
+trials = Trials()
+best = fmin(
+    objective, space, algo=tpe.suggest,
+    max_evals=100, trials=trials
+)
+            </pre>
+        </div>
+
+        <h3>۴. Keras Tuner (برای شبکه عصبی)</h3>
+        <div class="formula">
+            <pre>
+import keras_tuner as kt
+
+def build_model(hp):
+    model = keras.Sequential()
+    model.add(keras.layers.Input(shape=(784,)))
+
+    for i in range(hp.Int('num_layers', 2, 5)):
+        model.add(keras.layers.Dense(
+            units=hp.Int(f'units_{i}', 32, 256, step=32),
+            activation='relu'
+        ))
+        model.add(keras.layers.Dropout(
+            hp.Float(f'dropout_{i}', 0.0, 0.5)
+        ))
+
+    model.add(keras.layers.Dense(10, activation='softmax'))
+
+    model.compile(
+        optimizer=keras.optimizers.Adam(
+            hp.Float('learning_rate', 1e-4, 1e-2, sampling='log')
+        ),
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy']
+    )
+    return model
+
+tuner = kt.BayesianOptimization(
+    build_model,
+    objective='val_accuracy',
+    max_trials=50
+)
+
+tuner.search(X_train, y_train, epochs=20, validation_data=(X_val, y_val))
+            </pre>
+        </div>
+
+        <h3>۵. Weights & Biases Sweeps</h3>
+        <p>سرویس ابری با UI گرافیکی برای ردیابی آزمایش‌ها و تنظیم ابرپارامتر.</p>
+    </div>
+
+    <button class="accordion">بخش ۸: بهترین شیوه‌ها (Best Practices)</button>
+    <div class="panel">
+        <h3>اصول کلیدی</h3>
+        <div class="key-concept">
+            <ol>
+                <li><strong>با مقادیر پیش‌فرض شروع کنید:</strong> معمولاً انتخاب خوبی هستند</li>
+                <li><strong>یک ابرپارامتر را در یک زمان تغییر دهید:</strong> تغییر همزمان چندتا، فهم را سخت می‌کند</li>
+                <li><strong>از validation set معتبر استفاده کنید:</strong> نه test set</li>
+                <li><strong>نتایج را ثبت کنید:</strong> ابزارهایی مثل MLflow، W&B</li>
+                <li><strong>Reproducibility:</strong> random seed را تنظیم کنید</li>
+                <li><strong>از Grid کوچک شروع کنید:</strong> فضای بزرگ را محدود کنید</li>
+                <li><strong>زمان‌بندی داشته باشید:</strong> برای پروژه‌های بزرگ، بودجه محاسباتی تعیین کنید</li>
+            </ol>
+        </div>
+
+        <h3>استراتژی Coarse-to-Fine</h3>
+        <div class="example">
+            <p>۱. ابتدا با Random Search در محدوده وسیع جستجو کنید</p>
+            <p>۲. ۱۰-۲۰٪ بهترین آزمایش‌ها را شناسایی کنید</p>
+            <p>۳. در آن ناحیه، Grid Search دقیق‌تر انجام دهید</p>
+            <p>۴. در صورت نیاز، Random Search دوم در ناحیه محدودتر</p>
+        </div>
+
+        <h3>جلوگیری از Overfitting روی Validation</h3>
+        <div class="warning">
+            <strong>Data Leakage در Hyperparameter Tuning:</strong>
+            <p>اگر بارها validation set را برای تنظیم استفاده کنید، به آن overfit می‌کنید!</p>
+            <p>راه‌حل: استفاده از Nested Cross-Validation</p>
+        </div>
+
+        <div class="formula">
+            <pre>
+# Nested Cross-Validation
+# لایه بیرونی: ارزیابی نهایی
+# لایه داخلی: تنظیم ابرپارامتر
+
+from sklearn.model_selection import KFold, GridSearchCV
+
+outer_cv = KFold(n_splits=5, shuffle=True, random_state=42)
+inner_cv = KFold(n_splits=3, shuffle=True, random_state=42)
+
+scores = []
+for train_idx, test_idx in outer_cv.split(X):
+    X_train_outer, X_test_outer = X[train_idx], X[test_idx]
+    y_train_outer, y_test_outer = y[train_idx], y[test_idx]
+
+    # تنظیم ابرپارامتر در train_outer
+    grid = GridSearchCV(model, param_grid, cv=inner_cv)
+    grid.fit(X_train_outer, y_train_outer)
+
+    # ارزیابی در test_outer (هرگز دیده نشده)
+    score = grid.score(X_test_outer, y_test_outer)
+    scores.append(score)
+            </pre>
+        </div>
+
+        <h3>اشتباهات رایج</h3>
+        <div class="warning">
+            <ol>
+                <li><strong>تنظیم ابرپارامتر روی Test Set:</strong> data leakage!</li>
+                <li><strong>استفاده از Train Set برای Validation:</strong> overfit می‌شود</li>
+                <li><strong>اعتماد به پیش‌فرض‌ها:</strong> برای هر مسئله متفاوت است</li>
+                <li><strong>تغییر همزمان چند ابرپارامتر:</strong> نمی‌فهمید کدام کمک کرد</li>
+                <li><strong>صرف زمان زیاد روی ابرپارامتر:</strong> به جای بهبود داده یا ویژگی</li>
+                <li><strong>عدم ثبت نتایج:</strong> فراموش می‌کنید چه چیزی جواب داد</li>
+            </ol>
+        </div>
+
+        <h3>چه زمانی تنظیم ابرپارامتر مهم نیست؟</h3>
+        <div class="key-concept">
+            <ul>
+                <li>وقتی با پیش‌فرض‌ها نتیجه خوب است</li>
+                <li>وقتی داده یا ویژگی‌ها مشکل اصلی هستند (Garbage In, Garbage Out)</li>
+                <li>وقتی مدل ساده کافی است</li>
+                <li>در مراحل اولیه پروژه - ابتدا baseline ساده</li>
+            </ul>
+        </div>
+
+        <h3>اولویت‌بندی تلاش‌ها</h3>
+        <div class="quote">
+            قانون ۸۰/۲۰ در یادگیری ماشین:
+            <ul>
+                <li>۸۰٪ بهبود از کیفیت داده و ویژگی‌ها</li>
+                <li>۲۰٪ بهبود از تنظیم مدل و ابرپارامتر</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۹: کد جامع عملی</button>
+    <div class="panel">
+        <h3>پروژه کامل: تنظیم مدل XGBoost برای پیش‌بینی ترک سرویس</h3>
+        <div class="formula">
+            <pre>
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split, StratifiedKFold
+from sklearn.metrics import f1_score, classification_report
+import xgboost as xgb
+import optuna
+import mlflow
+
+# 1. بارگذاری داده
+df = pd.read_csv('customer_churn.csv')
+X = df.drop('churn', axis=1)
+y = df['churn']
+
+# 2. تقسیم داده
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+X_train, X_val, y_train, y_val = train_test_split(
+    X_train, y_train, test_size=0.2, random_state=42, stratify=y_train
+)
+
+# 3. تعریف Objective برای Optuna
+def objective(trial):
+    params = {
+        'n_estimators': trial.suggest_int('n_estimators', 100, 1000),
+        'max_depth': trial.suggest_int('max_depth', 3, 10),
+        'learning_rate': trial.suggest_float('learning_rate', 0.01, 0.3, log=True),
+        'min_child_weight': trial.suggest_int('min_child_weight', 1, 10),
+        'subsample': trial.suggest_float('subsample', 0.5, 1.0),
+        'colsample_bytree': trial.suggest_float('colsample_bytree', 0.5, 1.0),
+        'gamma': trial.suggest_float('gamma', 0, 5),
+        'reg_alpha': trial.suggest_float('reg_alpha', 0, 10),
+        'reg_lambda': trial.suggest_float('reg_lambda', 0, 10),
+        'objective': 'binary:logistic',
+        'eval_metric': 'logloss',
+        'random_state': 42
+    }
+
+    model = xgb.XGBClassifier(**params)
+
+    # آموزش با Early Stopping
+    model.fit(
+        X_train, y_train,
+        eval_set=[(X_val, y_val)],
+        early_stopping_rounds=30,
+        verbose=False
+    )
+
+    # پیش‌بینی
+    y_pred = model.predict(X_val)
+    f1 = f1_score(y_val, y_pred, average='macro')
+
+    return f1
+
+# 4. اجرای جستجو
+study = optuna.create_study(direction='maximize')
+study.optimize(objective, n_trials=100, show_progress_bar=True)
+
+# 5. بهترین پارامترها
+print("بهترین F1:", study.best_value)
+print("بهترین پارامترها:", study.best_params)
+
+# 6. آموزش نهایی با بهترین پارامترها
+best_params = study.best_params
+best_params['random_state'] = 42
+final_model = xgb.XGBClassifier(**best_params)
+final_model.fit(X_train, y_train)
+
+# 7. ارزیابی نهایی روی Test
+y_pred_test = final_model.predict(X_test)
+print(classification_report(y_test, y_pred_test))
+            </pre>
+        </div>
+
+        <h3>پروژه کامل: تنظیم شبکه عصبی با Keras Tuner</h3>
+        <div class="formula">
+            <pre>
+import tensorflow as tf
+from tensorflow import keras
+import keras_tuner as kt
+
+# 1. تعریف مدل با فضای جستجو
+def build_model(hp):
+    model = keras.Sequential()
+    model.add(keras.layers.Input(shape=(784,)))
+
+    # تعداد لایه‌ها (2 تا 5)
+    for i in range(hp.Int('num_layers', 2, 5)):
+        model.add(keras.layers.Dense(
+            units=hp.Int(f'units_{i}', 32, 512, step=32),
+            activation=hp.Choice(
+                f'activation_{i}',
+                ['relu', 'tanh', 'selu']
+            )
+        ))
+        model.add(keras.layers.Dropout(
+            hp.Float(f'dropout_{i}', 0.0, 0.5)
+        ))
+        model.add(keras.layers.BatchNormalization())
+
+    model.add(keras.layers.Dense(10, activation='softmax'))
+
+    # Optimizer و Learning Rate
+    optimizer_choice = hp.Choice('optimizer', ['adam', 'sgd', 'rmsprop'])
+    learning_rate = hp.Float('learning_rate', 1e-4, 1e-1, sampling='log')
+
+    if optimizer_choice == 'adam':
+        optimizer = keras.optimizers.Adam(learning_rate=learning_rate)
+    elif optimizer_choice == 'sgd':
+        optimizer = keras.optimizers.SGD(learning_rate=learning_rate, momentum=0.9)
+    else:
+        optimizer = keras.optimizers.RMSprop(learning_rate=learning_rate)
+
+    model.compile(
+        optimizer=optimizer,
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy']
+    )
+    return model
+
+# 2. اجرای Tuner
+tuner = kt.BayesianOptimization(
+    build_model,
+    objective='val_accuracy',
+    max_trials=50,
+    directory='tuner_results',
+    project_name='mnist_tuning'
+)
+
+# 3. جستجو
+tuner.search(
+    X_train, y_train,
+    epochs=30,
+    validation_data=(X_val, y_val),
+    callbacks=[
+        keras.callbacks.EarlyStopping(patience=5)
+    ]
+)
+
+# 4. بهترین مدل
+best_model = tuner.get_best_models(num_models=1)[0]
+best_hp = tuner.get_best_hyperparameters(num_trials=1)[0]
+print("بهترین پارامترها:", best_hp.values)
+
+# 5. آموزش نهایی
+best_model.fit(
+    X_train, y_train,
+    epochs=50,
+    validation_data=(X_val, y_val),
+    callbacks=[
+        keras.callbacks.EarlyStopping(patience=5, restore_best_weights=True)
+    ]
+)
+
+# 6. ارزیابی نهایی
+test_loss, test_acc = best_model.evaluate(X_test, y_test)
+print(f"Test Accuracy: {test_acc:.4f}")
+            </pre>
+        </div>
+
+        <h3>مثال با MLflow برای ردیابی آزمایش‌ها</h3>
+        <div class="formula">
+            <pre>
+import mlflow
+import mlflow.sklearn
+
+mlflow.set_experiment("churn_prediction")
+
+with mlflow.start_run():
+    # لاگ پارامترها
+    mlflow.log_params(study.best_params)
+
+    # آموزش مدل
+    model.fit(X_train, y_train)
+
+    # لاگ متریک‌ها
+    y_pred = model.predict(X_test)
+    mlflow.log_metric("test_f1", f1_score(y_test, y_pred, average='macro'))
+    mlflow.log_metric("test_accuracy", accuracy_score(y_test, y_pred))
+
+    # لاگ مدل
+    mlflow.sklearn.log_model(model, "model")
+
+    # لاگ نمودارها
+    mlflow.log_artifact("confusion_matrix.png")
+            </pre>
+        </div>
     </div>
 
     <button class="accordion">یادداشت‌های استاد</button>
     <div class="panel">
         <div class="instructor-note">
             <strong>مقدمه و تفکیک مفاهیم (۸ دقیقه):</strong>
-            <p>با یک تشبیه شروع کنید: پارامتر مثل سوال‌های امتحان است که دانش‌آموز از روی تمرین یاد می‌گیرد. ابرپارامتر مثل این است که معلم بگوید دانش‌آموز چند بار تمرین کند یا چند دقیقه به هر سوال وقت دهد. پارامترها از داده یاد گرفته می‌شوند، ابرپارامترها را ما (انسان) تنظیم می‌کنیم. مثال: وزن‌های مدل پارامتر هستند، نرخ یادگیری ابرپارامتر است.</p>
+            <p>با تشبیه آشپزی شروع کنید: «دستور پخت (ابرپارامتر) را شما تعیین می‌کنید، ولی مزه (پارامتر) به مواد اولیه و اجرا بستگی دارد». مثال: در رگرسیون خطی y=wx+b، w و b پارامتر هستند (از داده یاد می‌گیرند)، ولی learning rate و تعداد epoch ابرپارامتر هستند. جدول تفاوت را با هم پر کنید. تأکید کنید که در عمل، بیشتر وقت یک مهندس ML صرف تنظیم ابرپارامترها می‌شود.</p>
         </div>
         <div class="instructor-note">
-            <strong>روش‌های تنظیم (۱۰ دقیقه):</strong>
-            <p>Grid Search: همه ترکیبات را امتحان می‌کند - مثل تست کردن همه گزینه‌ها. اگر ۳ تا learning rate و ۳ تا hidden layer داشته باشیم، ۹ بار تست می‌کند. خوب است ولی زمان‌بر. Random Search: تصادفی چند تا را انتخاب می‌کند - معمولاً بهترین نتیجه را در زمان کمتر می‌دهد. Bayesian Optimization: هوشمند است - از نتایج قبلی یاد می‌گیرد کدام جاها را امتحان کند.</p>
+            <strong>روش‌های تنظیم (۱۲ دقیقه):</strong>
+            <p>با Grid Search شروع کنید: «اگر ۳ learning rate و ۳ hidden layer داشته باشیم، ۹ ترکیب - هر کدام با 5-fold CV، 45 آموزش!». سپس Random Search: «فقط 10 ترکیب تصادفی امتحان کن، معمولاً بهتر جواب می‌دهد چون فضای بزرگ‌تری پوشش داده می‌شود». در آخر Bayesian را توضیح دهید: «مثل یک دانشمند، از نتایج قبلی یاد می‌گیرد و هوشمندانه جستجو می‌کند». مثال ملموس: «مثل پیدا کردن بهترین رستوران - Grid همه را امتحان می‌کند، Random تصادفی، Bayesian از نظرات دیگران یاد می‌گیرد».</p>
         </div>
         <div class="instructor-note">
-            <strong>نرخ یادگیری (۸ دقیقه):</strong>
-            <p>نرخ یادگیری مهم‌ترین ابرپارامتر است. اگر خیلی بزرگ باشد، مدل واگرا می‌شود (مثل کسی که از کوه می‌پرد و از آن می‌افتد). اگر خیلی کوچک باشد، آموزش خیلی طولانی می‌شود (مثل کسی که با پای برهنه از کوه پایین می‌رود). Learning Rate Schedule: اول نرخ بزرگ برای رسیدن به نزدیکی بهینه، بعد کوچک برای دقت. مثل توپی که اول پرت می‌شود و بعد آرام می‌شود.</p>
+            <strong>Learning Rate (۱۲ دقیقه):</strong>
+            <p>با تشبیه کوهستان توضیح دهید: «در تاریکی، پایین کوه می‌روید. اگر قدم‌های بزرگ بردارید (LR زیاد)، از کوه می‌افتید. اگر کوچک بردارید، خیلی طول می‌کشد». LR مهم‌ترین است - اگر وقت کم است، فقط آن را تنظیم کنید. Schedule را توضیح دهید: «اول سریع حرکت کنید (LR زیاد)، نزدیک مقصد آرام شوید (LR کم)». Cosine، Step، Exponential را با نمودار نشان دهید. مثال ParsBERT: «برای fine-tune فارسی، LR=2e-5 عالی است، LR=2e-4 فاجعه».</p>
         </div>
         <div class="instructor-note">
-            <strong>ابرپارامترهای شبکه عصبی (۸ دقیقه):</strong>
-            <p>Batch Size: ۳۲ یا ۶۴ معمولاً خوب است. batch بزرگ = سریع‌تر ولی generalization بدتر. batch کوچک = نویزدار ولی بهتر generalizes می‌کند. Dropout: معمولاً ۰.۲ تا ۰.۵. تعداد لایه‌ها: اول با یک لایه شروع کنید، اگر نتیجه نداد لایه اضافه کنید. عمیق‌تر همیشه بهتر نیست - گاهی اضافه کردن لایه نتیجه را خراب می‌کند.</p>
+            <strong>Batch Size و Epoch (۸ دقیقه):</strong>
+            <p>Batch Size را با تشبیه توضیح دهید: «می‌خواهید میانگین کلاس بگیرید. Batch=1 خیلی نوسان دارد. Batch=کل‌کلاس خیلی صاف ولی کلی‌نگر. Batch=32 تعادل خوب». Linear Scaling Rule: «اگر batch دو برابر شد، LR هم دو برابر شود». برای epoch: «اگر خیلی کم، underfit. اگر خیلی زیاد، overfit. راه‌حل: Early Stopping». توضیح دهید که برای GPU محدود، batch کوچک + gradient accumulation.</p>
         </div>
         <div class="instructor-note">
-            <strong>Early Stopping (۵ دقیقه):</strong>
-            <p>Early Stopping مثل والدی است که به کودک می‌گوید کافی است دیگر درس بخوانی - وقتی دیگر یاد نمی‌گیرد. اگر خطای validation کم نشد برای چند epoch (patience)، آموزش را متوقف کنیم. این خیلی کمک می‌کند که بیش‌برازش نکند و زمان هم صرف نشود.</p>
+            <strong>Early Stopping (۸ دقیقه):</strong>
+            <p>با تشبیه والدین توضیح دهید: «مادر به بچه می‌گوید دیگر بس است تمرین کن، چون دیگر یاد نمی‌گیری». patience یعنی چند بار به بچه فرصت بدهیم. اگر 5 بار val_loss بهتر نشد، متوقف شو. مزیت دوگانه: «هم از overfit جلوگیری می‌کند، هم در وقت صرفه‌جویی». ترکیب با Reduce LR را بگویید: «اگر val_loss بهتر نشد، اول LR را کم کن، بعد اگر باز بهتر نشد، متوقف شو».</p>
         </div>
         <div class="instructor-note">
-            <strong>جمع‌بندی (۴ دقیقه):</strong>
-            <p>خلاصه: پارامترها از داده یاد می‌گیرند، ابرپارامترها را ما تنظیم می‌کنیم. نرخ یادگیری مهم‌ترین است. Grid Search، Random Search، Bayesian Optimization روش‌های تنظیم هستند. Early Stopping کمک می‌کند. همیشه با پیش‌فرض شروع کنید و یک چیز را در یک زمان تغییر دهید. تکلیف: دانشجویان باید یک مدل ساده بسازند و ابرپارامترهای آن را تنظیم کنند.</p>
+            <strong>ابزارها و Best Practices (۱۰ دقیقه):</strong>
+            <p>Optuna را معرفی کنید: «مدرن‌ترین، بر اساس TPE، pruning داخلی». نشان دهید چطور با چند خط کد تنظیم خودکار انجام دهید. تأکید کنید: «۸۰٪ بهبود از داده و ویژگی، ۲۰٪ از ابرپارامتر». یعنی اول مطمئن شوید داده و ویژگی‌ها خوب هستند، بعد وقت صرف تنظیم کنید. Data Leakage را هشدار دهید: «اگر validation set را بارها ببینید، به آن overfit می‌کنید - Nested CV راه‌حل».</p>
+        </div>
+        <div class="instructor-note">
+            <strong>جمع‌بندی و تکلیف (۵ دقیقه):</strong>
+            <p>خلاصه کنید: پارامتر از داده، ابرپارامتر توسط ما. تنظیم ابرپارامتر زمان‌بر ولی مهم است. بهترین استراتژی: شروع با پیش‌فرض → Random Search برای محدود کردن → Grid/Bayesian برای دقیق کردن → Nested CV برای ارزیابی بی‌طرفانه. تکلیف: دانشجویان باید یک مدل (مثلاً Random Forest برای دیتاست ایرانی) انتخاب کنند و با Optuna تنظیم کنند. زمان پیشنهادی: ۱۲۰ دقیقه مطالعه + ۱۸۰ دقیقه تمرین عملی.</p>
         </div>
     </div>
 
@@ -244,160 +1349,204 @@
             <h3>۱۵.۱ تفاوت پارامتر و ابرپارامتر</h3>
 
             <h4>پارامتر (Parameter):</h4>
-            <p>مقداری که مدل از داده یاد می‌گیرد.</p>
+            <p>مقداری که مدل از داده یاد می‌گیرد. خروجی الگوریتم یادگیری.</p>
             <ul>
-                <li>وزن‌ها در رگرسیون خطی</li>
+                <li>وزن‌ها w و بایاس b در رگرسیون خطی</li>
+                <li>وزن‌ها در شبکه عصبی</li>
                 <li>مراکز خوشه‌ها در K-Means</li>
-                <li>weights در شبکه عصبی</li>
+                <li>بردارهای پشتیبان در SVM</li>
             </ul>
 
             <h4>ابرپارامتر (Hyperparameter):</h4>
             <p>مقداری که قبل از آموزش تنظیم می‌شود و از داده یاد نمی‌گیرد.</p>
             <ul>
-                <li>نرخ یادگیری</li>
+                <li>نرخ یادگیری (Learning Rate)</li>
                 <li>تعداد لایه‌ها</li>
-                <li>تعداد همسایه‌ها در KNN</li>
+                <li>تعداد همسایه‌ها K در KNN</li>
+                <li>عمق درخت</li>
+                <li>C در SVM</li>
             </ul>
 
             <h4>تفاوت کلیدی:</h4>
             <table>
-                <tr>
-                    <th>پارامتر</th>
-                    <th>ابرپارامتر</th>
-                </tr>
-                <tr>
-                    <td>از داده یاد می‌گیرد</td>
-                    <td>توسط انسان تنظیم می‌شود</td>
-                </tr>
-                <tr>
-                    <td>در مدل ذخیره می‌شود</td>
-                    <td>قبل از آموزش تعیین می‌شود</td>
-                </tr>
+                <tr><th>پارامتر</th><th>ابرپارامتر</th></tr>
+                <tr><td>از داده یاد می‌گیرد</td><td>توسط انسان تنظیم می‌شود</td></tr>
+                <tr><td>در مدل ذخیره می‌شود</td><td>قبل از آموزش تعیین می‌شود</td></tr>
+                <tr><td>بسیار زیاد</td><td>معمولاً کم (۵-۲۰)</td></tr>
+                <tr><td>با Gradient Descent</td><td>با Grid/Random/Bayesian</td></tr>
             </table>
 
-            <h3>۱۵.۲ روش‌های تنظیم ابرپارامتر</h3>
+            <h3>۱۵.۲ روش‌های تنظیم</h3>
 
-            <h4>۱. Grid Search (جستجوی شبکه‌ای):</h4>
-            <p>جستجوی تمام ترکیبات ممکن از ابرپارامترها.</p>
+            <h4>۱. Grid Search:</h4>
+            <p>تمام ترکیبات ممکن را امتحان کن.</p>
             <ul>
                 <li>✓ جامع و کامل</li>
-                <li>✗ زمان‌بر برای فضای بزرگ</li>
+                <li>✗ انفجار ترکیبی (Curse of Dimensionality)</li>
+                <li>✗ کند برای فضای بزرگ</li>
             </ul>
 
-            <h4>۲. Random Search (جستجوی تصادفی):</h4>
-            <p>جستجوی تصادفی از فضای ابرپارامتر.</p>
+            <h4>۲. Random Search:</h4>
+            <p>تعدادی ترکیب تصادفی. در عمل بهتر از Grid!</p>
             <ul>
-                <li>✓ سریع‌تر از Grid Search</li>
-                <li>✓ گاهی نتایج بهتر</li>
+                <li>✓ سریع‌تر</li>
+                <li>✓ پوشش بهتر فضای بزرگ</li>
                 <li>✗ ممکن است بهینه را از دست بدهد</li>
             </ul>
 
             <h4>۳. Bayesian Optimization:</h4>
-            <p>استفاده از مدل احتمالی برای هدایت جستجو.</p>
+            <p>از نتایج قبلی یاد می‌گیرد. هوشمندانه جستجو می‌کند.</p>
             <ul>
                 <li>✓ هوشمند</li>
                 <li>✓ کمترین تکرار</li>
                 <li>✗ پیچیده‌تر</li>
             </ul>
 
-            <h3>۱۵.۳ نرخ یادگیری (Learning Rate)</h3>
+            <h4>۴. Optuna:</h4>
+            <p>محبوب‌ترین ابزار مدرن. بر اساس TPE + pruning.</p>
 
-            <p>نرخ یادگیری مهم‌ترین ابرپارامتر است - اندازه قدم در هر تکرار بهینه‌سازی.</p>
+            <h3>۱۵.۳ نرخ یادگیری</h3>
+
+            <p>مهم‌ترین ابرپارامتر. اندازه قدم در هر تکرار.</p>
 
             <h4>مقادیر رایج:</h4>
-            <p>0.001, 0.01, 0.1, 1</p>
+            <ul>
+                <li>0.1 - مدل‌های ساده</li>
+                <li>0.01 - شبکه عصبی کوچک</li>
+                <li>0.001 - شبکه عمیق (Adam default)</li>
+                <li>0.0001 - Fine-tuning Transformer</li>
+            </ul>
 
             <h4>Learning Rate Schedules:</h4>
             <ul>
-                <li><strong>Step Decay:</strong> هر n اپoch نرخ را نصف کن</li>
-                <li><strong>Exponential Decay:</strong> نرخ به صورت نمایی کم شود</li>
-                <li><strong>Cosine Annealing:</strong> نرخ به صورت کسینوسی تغییر کند</li>
-                <li><strong>Reduce on Plateau:</strong> وقتی بهبود متوقف شد، نرخ را کم کن</li>
+                <li>Step Decay: هر n epoch نصف کن</li>
+                <li>Exponential Decay: نمایی کم کن</li>
+                <li>Cosine Annealing: کسینوسی</li>
+                <li>Reduce on Plateau: تطبیقی</li>
+                <li>Warmup: ابتدا کم، بعد زیاد، بعد کم</li>
             </ul>
 
             <h3>۱۵.۴ ابرپارامترهای شبکه عصبی</h3>
 
-            <h4>مهم‌ترین ابرپارامترها:</h4>
-            <ul>
-                <li><strong>Learning Rate:</strong> نرخ یادگیری</li>
-                <li><strong>Batch Size:</strong> اندازه دسته</li>
-                <li><strong>Number of Epochs:</strong> تعداد تکرار آموزش</li>
-                <li><strong>Hidden Layers:</strong> تعداد لایه‌های پنهان</li>
-                <li><strong>Hidden Units:</strong> تعداد نورون‌ها در هر لایه</li>
-                <li><strong>Activation Function:</strong> تابع فعال‌سازی</li>
-                <li><strong>Dropout Rate:</strong> نرخ حذف تصادفی</li>
-                <li><strong>Weight Initialization:</strong> نحوه مقداردهی اولیه</li>
-            </ul>
-
             <h4>Batch Size:</h4>
             <table>
-                <tr>
-                    <th>کوچک (32, 64, 128)</th>
-                    <th>بزرگ (256, 512, 1024)</th>
-                </tr>
-                <tr>
-                    <td>نویزدار</td>
-                    <td>همگرایی صاف</td>
-                </tr>
-                <tr>
-                    <td>معمولاً بهتر generalizes</td>
-                    <td>سریع‌تر</td>
-                </tr>
+                <tr><th>کوچک (16-128)</th><th>بزرگ (512+)</th></tr>
+                <tr><td>نویزدار ولی generalizes بهتر</td><td>سریع‌تر و صاف‌تر</td></tr>
             </table>
+
+            <h4>سایر ابرپارامترها:</h4>
+            <ul>
+                <li>Learning Rate: نرخ یادگیری</li>
+                <li>Batch Size: اندازه دسته</li>
+                <li>Epochs: تعداد تکرار</li>
+                <li>Hidden Layers: تعداد لایه‌ها</li>
+                <li>Hidden Units: نورون هر لایه</li>
+                <li>Activation: ReLU, Tanh, GELU</li>
+                <li>Dropout: 0.2-0.5 معمولاً</li>
+                <li>Weight Init: Xavier, He</li>
+                <li>Optimizer: SGD, Adam, AdamW</li>
+            </ul>
 
             <h3>۱۵.۵ Early Stopping</h3>
 
-            <p>توقف زودهنگام آموزش وقتی عملکرد روی validation بهتر نشود.</p>
+            <p>توقف زودهنگام وقتی val_loss بهتر نمی‌شود.</p>
 
             <h4>پارامترها:</h4>
             <ul>
-                <li><strong>Patience:</strong> چند epoch صبر کنیم</li>
-                <li><strong>Min Delta:</strong> چقدر بهبود مهم است</li>
-                <li><strong>Monitor:</strong> کدام معیار را监控 کنیم</li>
+                <li>Patience: چند epoch صبر کن (۵-۲۰)</li>
+                <li>Min Delta: حداقل بهبود</li>
+                <li>Monitor: val_loss یا val_acc</li>
+                <li>Restore Best Weights: برگرداندن بهترین</li>
             </ul>
 
             <h4>مزایا:</h4>
             <ul>
                 <li>جلوگیری از بیش‌برازش</li>
-                <li>کاهش زمان آموزش</li>
-                <li>انتخاب خودکار تعداد epochs</li>
+                <li>صرفه‌جویی در زمان</li>
+                <li>انتخاب خودکار epoch</li>
             </ul>
 
-            <h3>۱۵.۶ بهترین عملکردها</h3>
+            <h3>۱۵.۶ ابرپارامترهای مهم مدل‌ها</h3>
 
-            <h4>پیشنهادات کلی:</h4>
+            <h4>Random Forest:</h4>
             <ul>
-                <li>با مقادیر پیش‌فرض شروع کنید</li>
-                <li>یک ابرپارامتر را در یک زمان تغییر دهید</li>
-                <li>از Grid Search کوچک شروع کنید</li>
-                <li>از validation set برای تنظیم استفاده کنید</li>
-                <li>نتایج را ثبت کنید</li>
+                <li>n_estimators: 100-1000</li>
+                <li>max_depth: 5-30</li>
+                <li>min_samples_split: 2-20</li>
+                <li>max_features: 'sqrt', 'log2'</li>
             </ul>
 
-            <h4>ابزارها:</h4>
+            <h4>XGBoost:</h4>
             <ul>
-                <li>Optuna</li>
-                <li>Hyperopt</li>
-                <li>Ray Tune</li>
-                <li>Scikit-learn GridSearchCV, RandomizedSearchCV</li>
+                <li>learning_rate: 0.01-0.3</li>
+                <li>max_depth: 3-10</li>
+                <li>n_estimators: 100-2000</li>
+                <li>subsample: 0.5-1.0</li>
+                <li>colsample_bytree: 0.5-1.0</li>
+            </ul>
+
+            <h4>SVM:</h4>
+            <ul>
+                <li>C: 0.01-100</li>
+                <li>kernel: 'linear', 'rbf', 'poly'</li>
+                <li>gamma: 'scale', 'auto'</li>
+            </ul>
+
+            <h3>۱۵.۷ ابزارها</h3>
+
+            <ul>
+                <li><strong>Scikit-learn:</strong> GridSearchCV, RandomizedSearchCV</li>
+                <li><strong>Optuna:</strong> محبوب‌ترین، TPE</li>
+                <li><strong>Hyperopt:</strong> قدیمی‌تر، TPE</li>
+                <li><strong>Ray Tune:</strong> توزیع‌شده</li>
+                <li><strong>Keras Tuner:</strong> برای شبکه عصبی</li>
+                <li><strong>W&B Sweeps:</strong> ابری با UI</li>
+            </ul>
+
+            <h3>۱۵.۸ Best Practices</h3>
+
+            <ol>
+                <li>با پیش‌فرض شروع کن</li>
+                <li>یک ابرپارامتر در یک زمان</li>
+                <li>از validation set معتبر استفاده کن</li>
+                <li>نتایج را ثبت کن (MLflow, W&B)</li>
+                <li>Random seed را تنظیم کن</li>
+                <li>Coarse-to-Fine strategy</li>
+                <li>Nested CV برای ارزیابی بی‌طرفانه</li>
+            </ol>
+
+            <h3>۱۵.۹ اشتباهات رایج</h3>
+
+            <ul>
+                <li>تنظیم روی Test Set (data leakage)</li>
+                <li>استفاده از Train برای Validation</li>
+                <li>تغییر همزمان چند ابرپارامتر</li>
+                <li>اعتماد بیش از حد به پیش‌فرض</li>
+                <li>صرف وقت زیاد به جای بهبود داده</li>
             </ul>
 
             <h3>خلاصه فصل:</h3>
             <ol>
-                <li>پارامترها از داده یاد می‌گیرند، ابرپارامترها را ما تنظیم می‌کنیم</li>
-                <li>نرخ یادگیری مهم‌ترین ابرپارامتر است</li>
-                <li>Grid Search، Random Search، Bayesian Optimization روش‌های تنظیم هستند</li>
-                <li>Early Stopping از بیش‌برازش جلوگیری می‌کند</li>
-                <li>همیشه با پیش‌فرض شروع کنید</li>
+                <li>پارامتر از داده، ابرپارامتر توسط ما</li>
+                <li>نرخ یادگیری مهم‌ترین است</li>
+                <li>Grid/Random/Bayesian سه روش اصلی</li>
+                <li>Optuna محبوب‌ترین ابزار مدرن</li>
+                <li>Early Stopping ضروری است</li>
+                <li>۸۰٪ بهبود از داده، ۲۰٪ از ابرپارامتر</li>
             </ol>
 
             <h3>تمرین‌های خودآزمایی:</h3>
             <ol>
-                <li>تفاوت پارامتر و ابرپارامتر چیست؟</li>
-                <li>چرا نرخ یادگیری مهم‌ترین ابرپارامتر است؟</li>
-                <li>Grid Search چگونه کار می‌کند؟</li>
+                <li>تفاوت پارامتر و ابرپارامتر را با ۳ مثال توضیح دهید.</li>
+                <li>چرا Random Search در عمل بهتر از Grid Search است؟</li>
+                <li>Learning Rate Schedule چیست؟ ۳ نوع نام ببرید.</li>
                 <li>Early Stopping چه مزیتی دارد؟</li>
-                <li>یک مثال از ابرپارامتر بزنید</li>
+                <li>Nested Cross-Validation چه مشکلی را حل می‌کند؟</li>
+                <li>Linear Scaling Rule چیست؟</li>
+                <li>اگر LR خیلی بزرگ باشد چه اتفاقی می‌افتد؟ خیلی کوچک چه؟</li>
+                <li>Patience در Early Stopping چه نقشی دارد؟</li>
+                <li>چرا نباید ابرپارامتر را روی Test Set تنظیم کرد؟</li>
+                <li>Coarse-to-Fine Strategy چیست؟</li>
             </ol>
 
             <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۲۰ دقیقه</p>

@@ -3,296 +3,1187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جلسه ۱۶ - کاربردهای هوش مصنوعی در مهندسی</title>
+    <title>جلسه ۱۶ - کاربردهای هوش مصنوعی در صنایع مختلف</title>
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; line-height: 1.9; }
         h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
         h2 { color: #2980b9; margin-top: 30px; }
         h3 { color: #16a085; margin-top: 20px; }
+        h4 { color: #34495e; margin-top: 15px; }
         .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        ul { line-height: 1.8; }
+        ul, ol { line-height: 1.8; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
-        .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; }
-        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; }
-        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 10px; margin: 10px 0; }
+        .key-concept { background: #e8f6f3; border-right: 4px solid #1abc9c; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .instructor-note { background: #fef9e7; border-right: 4px solid #f1c40f; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .self-read { background: #e8f4f8; border-right: 4px solid #3498db; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .formula { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-size: 1.1em; border: 2px solid #ffc107; }
         .example { background: #e7f3ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-right: 4px solid #3498db; }
+        .warning { background: #fde8e8; border-right: 4px solid #e74c3c; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .stat-box { background: #ecf0f1; border-right: 4px solid #95a5a6; padding: 10px; margin: 10px 0; font-weight: bold; border-radius: 5px; }
+        .quote { background: #f4ecf7; border-right: 4px solid #8e44ad; padding: 10px; margin: 10px 0; font-style: italic; border-radius: 5px; }
         .accordion { background-color: #f1f1f1; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: right; outline: none; font-size: 16px; transition: 0.4s; border-radius: 5px; margin-bottom: 5px; font-weight: bold; }
         .accordion:hover { background-color: #ddd; }
         .accordion.active { background-color: #3498db; color: white; }
         .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; border: 1px solid #ddd; border-radius: 0 0 5px 5px; margin-bottom: 10px; }
+        .math { font-family: "Times New Roman", serif; font-size: 1.2em; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        code { background-color: #f4f4f4; padding: 2px 6px; border-radius: 3px; color: #c0392b; font-family: "Courier New", monospace; }
     </style>
 </head>
 <body>
     <a href="../plan.html" class="back-link">← بازگشت به برنامه درسی</a>
 
-    <h1>جلسه ۱۶: کاربردهای هوش مصنوعی در مهندسی</h1>
+    <h1>جلسه ۱۶: کاربردهای هوش مصنوعی در صنایع مختلف</h1>
+    <p style="text-align: center; color: #7f8c8d; font-size: 14px;">زمان تقریبی: ۹۰ دقیقه | نوع: مرور و پروژه | سطح: جامع</p>
 
     <div class="phase">
         <h2>اهداف یادگیری</h2>
+        <p>در پایان این جلسه، دانشجو باید بتواند:</p>
         <ul>
-            <li>آشنایی با کاربردهای عملی AI در حوزه‌های مختلف مهندسی</li>
-            <li>یادگیری از طریق مثال‌های واقعی</li>
-            <li>درک چالش‌ها و فرصت‌ها</li>
+            <li>کاربردهای واقعی AI در صنایع مختلف ایران و جهان را بشناسد</li>
+            <li>از مثال‌های عملی در حوزه‌های سلامت، مالی، حمل‌ونقل، انرژی و کشاورزی یاد بگیرد</li>
+            <li>چالش‌ها و فرصت‌های AI در هر حوزه را تحلیل کند</li>
+            <li>مدل مناسب برای هر مسئله را انتخاب کند</li>
+            <li>مسیر یادگیری و حرفه‌ای آینده خود را در AI ترسیم کند</li>
+            <li>پروژه نهایی درس را با موفقیت طراحی و اجرا کند</li>
         </ul>
     </div>
 
-    <button class="accordion">۱. پیش‌بینی بار (Load Forecasting)</button>
+    <button class="accordion">بخش ۱: مرور کلی کاربردهای AI</button>
     <div class="panel">
+        <h3>چشم‌انداز کلی بازار AI</h3>
+        <div class="stat-box">
+            بازار جهانی AI در ۲۰۲۴: بیش از ۵۰۰ میلیارد دلار
+            <br>پیش‌بینی ۲۰۳۰: بیش از ۱.۸ تریلیون دلار
+            <br>رشد سالانه: ۳۷٪
+        </div>
+
+        <h3>دسته‌بندی اصلی کاربردها</h3>
         <div class="key-concept">
-            پیش‌بینی مصرف برق/انرژی برای برنامه‌ریزی شبکه.
+            <ol>
+                <li><strong>پیش‌بینی (Prediction):</strong> قیمت، تقاضا، فروش، بار، آب و هوا</li>
+                <li><strong>تشخیص (Detection):</strong> تقلب، بیماری، عیب، چهره، شیء</li>
+                <li><strong>توصیه (Recommendation):</strong> محصول، فیلم، محتوا، دوست</li>
+                <li><strong>بهینه‌سازی (Optimization):</strong> مسیر، قیمت، زمان‌بندی، تخصیص منابع</li>
+                <li><strong>درک زبان (Language Understanding):</strong> ترجمه، خلاصه، پاسخ به سوال، چت‌بات</li>
+                <li><strong>تصمیم‌گیری (Decision Making):</strong> خودران، بازی، معاملات مالی</li>
+                <li><strong>خلق (Generation):</strong> متن، تصویر، موسیقی، کد، ویدیو</li>
+            </ol>
         </div>
-        <ul>
-            <li>پیش‌بینی کوتاه‌مدت (ساعتی)</li>
-            <li>پیش‌بینی میان‌مدت (روزانه)</li>
-            <li>پیش‌بینی بلندمدت (سالانه)</li>
-        </ul>
-        <div class="example">
-            <h3>الگوریتم‌های رایج:</h3>
-            <ul>
-                <li>LSTM (Long Short-Term Memory)</li>
-                <li>GRU (Gated Recurrent Unit)</li>
-                <li>XGBoost</li>
-                <li>Prophet (Facebook)</li>
-            </ul>
-        </div>
+
+        <h3>صنایع اصلی که از AI استفاده می‌کنند</h3>
+        <table>
+            <tr>
+                <th>صنعت</th>
+                <th>کاربردهای اصلی</th>
+                <th>مثال ایرانی</th>
+            </tr>
+            <tr>
+                <td>سلامت و پزشکی</td>
+                <td>تشخیص بیماری، کشف دارو، تصویربرداری پزشکی</td>
+                <td>بیمارستان‌های هوشمند تهران</td>
+            </tr>
+            <tr>
+                <td>مالی و بانکداری</td>
+                <td>تشخیص تقلب، امتیازدهی اعتباری، معاملات الگوریتمی</td>
+                <td>بانک پاسارگاد، ملت، ملی</td>
+            </tr>
+            <tr>
+                <td>خرده‌فروشی و تجارت الکترونیک</td>
+                <td>توصیه محصول، پیش‌بینی تقاضا، قیمت‌گذاری پویا</td>
+                <td>دیجی‌کالا، اسنپ، تپسی</td>
+            </tr>
+            <tr>
+                <td>حمل‌ونقل</td>
+                <td>مسیریابی، خودروهای خودران، بهینه‌سازی ناوگان</td>
+                <td>اسنپ، تپسی، ماکسیم</td>
+            </tr>
+            <tr>
+                <td>انرژی</td>
+                <td>پیش‌بینی بار، بهینه‌سازی شبکه، نگهداری پیش‌بینانه</td>
+                <td>برق منطقه‌ای، نیروگاه‌ها</td>
+            </tr>
+            <tr>
+                <td>کشاورزی</td>
+                <td>کشاورزی دقیق، پیش‌بینی محصول، تشخیص آفت</td>
+                <td>مزرعه‌های هوشمند</td>
+            </tr>
+            <tr>
+                <td>تولید و صنعت</td>
+                <td>کنترل کیفیت، پیش‌بینی خرابی، رباتیک</td>
+                <td>ایران خودرو، سایپا</td>
+            </tr>
+            <tr>
+                <td>آموزش</td>
+                <td>یادگیری شخصی، ارزیابی خودکار، چت‌بات آموزشی</td>
+                <td>پلتفرم‌های آموزش آنلاین</td>
+            </tr>
+            <tr>
+                <td>سرگرمی</td>
+                <td>توصیه محتوا، تولید محتوا، بازی</td>
+                <td>فیلیمو، نماوا</td>
+            </tr>
+            <tr>
+                <td>دولت و خدمات عمومی</td>
+                <td>شهر هوشمند، پیش‌بینی جرم، خدمات شهروندی</td>
+                <td>شهرداری تهران، سازمان ثبت</td>
+            </tr>
+        </table>
     </div>
 
-    <button class="accordion">۲. تحلیل خطا و ناهنجاری</button>
+    <button class="accordion">بخش ۲: کاربردهای حوزه سلامت و پزشکی</button>
     <div class="panel">
+        <h3>۱. تشخیص بیماری از تصاویر پزشکی</h3>
+
+        <div class="example">
+            <h4>مثال واقعی: تشخیص سرطان پستان در ایران</h4>
+            <p>تیم تحقیقاتی دانشگاه تهران با همکاری بیمارستان امام خمینی:</p>
+            <ul>
+                <li>استفاده از CNN (ResNet, EfficientNet)</li>
+                <li>تشخیص خودکار تومور در ماموگرافی</li>
+                <li>دقت: ۹۴٪ (در مقایسه با ۸۸٪ رادیولوژیست‌های تازه‌کار)</li>
+                <li>کاهش زمان تشخیص از ۱۵ دقیقه به ۳۰ ثانیه</li>
+                <li>تشخیص زودهنگام (در مراحل اولیه) → افزایش شانس درمان</li>
+            </ul>
+        </div>
+
+        <h4>سایر کاربردهای تصویربرداری:</h4>
+        <ul>
+            <li>تشخیص تومور مغزی از MRI (در بیمارستان‌های ایران)</li>
+            <li>تشخیص ذات‌الریه از X-ray قفسه سینه (بسیار مهم در دوران کرونا)</li>
+            <li>تشخیص رتینوپاتی دیابتی از تصاویر شبکیه</li>
+            <li>تشخیص سرطان پوست از عکس ضایعات</li>
+            <li>تحلیل نوار قلب (ECG) برای تشخیص آریتمی</li>
+        </ul>
+
+        <h3>۲. کشف دارو (Drug Discovery)</h3>
+        <div class="example">
+            <p>شرکت‌های دارویی ایرانی (مثل داروپخش، اکسیر) با استفاده از AI:</p>
+            <ul>
+                <li>غربالگری میلیون‌ها ترکیب شیمیایی</li>
+                <li>پیش‌بینی خواص دارویی (جذب، توزیع، متابولیسم، دفع)</li>
+                <li>کاهش زمان کشف از ۵ سال به ۱-۲ سال</li>
+                <li>هزینه از ۱ میلیارد دلار به ۲۰۰ میلیون دلار</li>
+            </ul>
+        </div>
+
+        <h3>۳. پزشکی شخصی‌سازی‌شده (Personalized Medicine)</h3>
         <div class="key-concept">
-            تشخیص خودکار خطاها و ناهنجاری‌ها در سیستم‌ها.
+            <strong>ایده:</strong> درمان بر اساس ژنوم، سبک زندگی و تاریخچه پزشکی هر فرد
         </div>
         <ul>
-            <li>تشخیص خطا در تجهیزات</li>
-            <li>پایش سلامت سازه‌ها</li>
-            <li>نگهداری پیشگیرانه (Predictive Maintenance)</li>
+            <li>پیش‌بینی واکنش بیمار به دارو (Pharmacogenomics)</li>
+            <li>توصیه دوز مناسب</li>
+            <li>پیش‌بینی خطر بیماری‌های ژنتیکی</li>
+            <li>درمان هدفمند سرطان (Targeted Therapy)</li>
         </ul>
+
+        <h3>۴. چت‌بات‌های سلامت</h3>
         <div class="example">
-            <h3>کاربردها:</h3>
+            <p>اپلیکیشن‌های ایرانی مثل «پذیرش۲۴»، «دکتر ساینا»:</p>
             <ul>
-                <li>تشخیص خطا در موتور هواپیما</li>
-                <li>پایش پل‌ها و سدها</li>
-                <li>تشخیص نشتی در لوله‌های نفت</li>
+                <li>پاسخ به سوالات پزشکی اولیه</li>
+                <li>یادآوری مصرف دارو</li>
+                <li>پایش علائم بیمار</li>
+                <li>رزرو نوبت پزشک</li>
+                <li>غربالگری اولیه</li>
+            </ul>
+        </div>
+
+        <h3>۵. مدیریت بیمارستان</h3>
+        <ul>
+            <li>پیش‌بینی تعداد بیماران اورژانس در هر ساعت</li>
+            <li>بهینه‌سازی زمان‌بندی پزشکان و اتاق‌های عمل</li>
+            <li>پیش‌بینی مدت بستری</li>
+            <li>مدیریت موجودی دارو</li>
+        </ul>
+
+        <h3>۶. تشخیص کووید-۱۹ و بیماری‌های همه‌گیر</h3>
+        <div class="example">
+            <p>در دوران کرونا، ایران نیز از AI استفاده کرد:</p>
+            <ul>
+                <li>تشخیص کووید از CT Scan با دقت ۹۰٪</li>
+                <li>پیش‌بینی شیوع بیماری (مدل SIR + ML)</li>
+                <li>ردیابی تماس با استفاده از اپلیکیشن‌ها</li>
+                <li>توزیع بهینه واکسن</li>
             </ul>
         </div>
     </div>
 
-    <button class="accordion">۳. پردازش زبان طبیعی (NLP)</button>
+    <button class="accordion">بخش ۳: کاربردهای حوزه مالی و بانکداری</button>
     <div class="panel">
-        <ul>
-            <li>چت‌بات‌های پشتیبانی</li>
-            <li>تحلیل احساسات</li>
-            <li>خلاصه‌سازی اسناد</li>
-            <li>ترجمه ماشینی</li>
-            <li>تشخیص گفتار</li>
-        </ul>
+        <h3>۱. تشخیص تقلب (Fraud Detection)</h3>
+
         <div class="example">
-            <h3>ابزارها:</h3>
+            <h4>مثال واقعی: بانک پاسارگاد</h4>
             <ul>
-                <li>Transformers (BERT, GPT)</li>
-                <li>NLTK, spaCy</li>
-                <li>Speech Recognition APIs</li>
+                <li>پایش لحظه‌ای ۱۰ میلیون تراکنش روزانه</li>
+                <li>تشخیص تراکنش‌های مشکوک با ML</li>
+                <li>کاهش ۷۰٪ تقلب</li>
+                <li>پس‌انداز ۵۰۰ میلیارد تومان در سال</li>
             </ul>
+            <p><strong>الگوریتم‌ها:</strong> Isolation Forest، Autoencoders، XGBoost، شبکه‌های LSTM برای تراکنش‌های متوالی</p>
         </div>
-    </div>
 
-    <button class="accordion">۴. پردازش تصویر</button>
-    <div class="panel">
-        <ul>
-            <li>بینایی ماشین در صنعت</li>
-            <li>تشخیص عیب</li>
-            <li>خودروهای خودران</li>
-            <li>پزشکی (تشخیص بیماری)</li>
-            <li>تشخیص چهره</li>
-        </ul>
-        <div class="example">
-            <h3>شبکه‌های رایج:</h3>
-            <ul>
-                <li>CNN (Convolutional Neural Network)</li>
-                <li>YOLO</li>
-                <li>ResNet</li>
-                <li>VGG</li>
-            </ul>
-        </div>
-    </div>
+        <h4>انواع تقلب:</h4>
+        <table>
+            <tr>
+                <th>نوع</th>
+                <th>ویژگی‌ها</th>
+                <th>روش تشخیص</th>
+            </tr>
+            <tr>
+                <td>کارت جعلی</td>
+                <td>تراکنش غیرعادی، مکان غیرعادی</td>
+                <td>Anomaly Detection</td>
+            </tr>
+            <tr>
+                <td>پولشویی</td>
+                <td>الگوی تراکنش پیچیده</td>
+                <td>Graph Neural Networks</td>
+            </tr>
+            <tr>
+                <td>وام تقلبی</td>
+                <td>هویت جعلی، درآمد غیرواقعی</td>
+                <td>طبقه‌بندی + گراف</td>
+            </tr>
+            <tr>
+                <td>بیمه تقلبی</td>
+                <td>ادعای خسارت غیرواقعی</td>
+                <td>NLP + ML</td>
+            </tr>
+        </table>
 
-    <button class="accordion">۵. سایر کاربردها</button>
-    <div class="panel">
-        <ul>
-            <li>بهینه‌سازی زنجیره تأمین</li>
-            <li>پیش‌بینی تقاضا</li>
-            <li>سیستم‌های توصیه‌گر</li>
-            <li>کنترل فرآیندها</li>
-            <li>بهینه‌سازی انرژی</li>
-            <li>طراحی به کمک کامپیوتر (CAD)</li>
-        </ul>
-    </div>
-
-    <button class="accordion">جمع‌بندی و پروژه نهایی</button>
-    <div class="panel">
+        <h3>۲. امتیازدهی اعتباری (Credit Scoring)</h3>
         <div class="key-concept">
-            AI ابزار قدرتمندی است که می‌تواند بهره‌وری، دقت و سرعت را در حوزه‌های مختلف مهندسی افزایش دهد.
+            پیش‌بینی احتمال بازپرداخت وام توسط مشتری
         </div>
-        <p>در پروژه پایانی، دانشجویان باید یکی از کاربردهای زیر را پیاده‌سازی کنند:</p>
+
+        <div class="example">
+            <p>مدل‌های اعتبارسنجی در ایران:</p>
+            <ul>
+                <li><strong>داده‌ها:</strong> سن، درآمد، شغل، تاریخچه بانکی، سوابق</li>
+                <li><strong>مدل:</strong> Logistic Regression, XGBoost, Neural Networks</li>
+                <li><strong>خروجی:</strong> امتیاز ۳۰۰-۸۵۰ (مشابه FICO)</li>
+                <li><strong>دقت:</strong> AUC 0.85-0.92</li>
+                <li><strong>استفاده:</strong> تصمیم‌گیری برای وام، کارت اعتباری</li>
+            </ul>
+        </div>
+
+        <h3>۳. معاملات الگوریتمی (Algorithmic Trading)</h3>
         <ul>
-            <li>پیش‌بینی بار (Load Forecasting)</li>
-            <li>تحلیل ناهنجاری (Anomaly Detection)</li>
-            <li>پردازش زبان طبیعی</li>
-            <li>پردازش تصویر</li>
+            <li>پیش‌بینی قیمت سهام، دلار، طلا در بورس تهران</li>
+            <li>خرید و فروش خودکار با سرعت میلی‌ثانیه</li>
+            <li>High Frequency Trading (HFT)</li>
+            <li>Market Making (تأمین نقدینگی)</li>
         </ul>
+
+        <div class="example">
+            <p><strong>مثال:</strong> صندوق‌های سرمایه‌گذاری ایرانی از ML برای پیش‌بینی شاخص کل بورس استفاده می‌کنند. مدل‌های LSTM با دقت ۶۰-۶۵٪ جهت حرکت قیمت را پیش‌بینی می‌کنند (درصد پایین ولی با مدیریت ریسک، سودآور است).</p>
+        </div>
+
+        <h3>۴. تحلیل ریسک (Risk Management)</h3>
+        <ul>
+            <li>پیش‌بینی ریسک نکول (Default Risk)</li>
+            <li>مدیریت پورتفوی بهینه (Markowitz + ML)</li>
+            <li>Value at Risk (VaR) با یادگیری ماشین</li>
+            <li>Stress Testing</li>
+        </ul>
+
+        <h3>۵. پردازش اسناد مالی (OCR + NLP)</h3>
+        <ul>
+            <li>استخراج خودکار داده از فاکتورها، چک‌ها</li>
+            <li>تشخیص چک جعلی</li>
+            <li>طبقه‌بندی خودکار ایمیل‌های بانکی</li>
+            <li>پردازش درخواست‌های وام به صورت خودکار</li>
+        </ul>
+
+        <h3>۶. مشاوره مالی رباتیک (Robo-Advisor)</h3>
+        <div class="example">
+            <p>اپلیکیشن‌های ایرانی مثل «آینده‌نگر» یا «همراه تریدر»:</p>
+            <ul>
+                <li>تحلیل پرتفوی کاربر</li>
+                <li>پیشنهاد سرمایه‌گذاری بر اساس ریسک‌پذیری</li>
+                <li>بهینه‌سازی مالیاتی</li>
+                <li>هشدارهای هوشمند بازار</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۴: کاربردهای تجارت الکترونیک و خرده‌فروشی</button>
+    <div class="panel">
+        <h3>۱. سیستم‌های توصیه‌گر (Recommender Systems)</h3>
+
+        <div class="example">
+            <h4>مثال واقعی: دیجی‌کالا</h4>
+            <p>سیستم توصیه دیجی‌کالا از سه روش اصلی استفاده می‌کند:</p>
+            <ul>
+                <li><strong>Collaborative Filtering:</strong> «کاربرانی مثل شما این را خریدند»</li>
+                <li><strong>Content-Based:</strong> «چون گوشی سامسونگ دیدید، کاور سامسونگ هم پیشنهاد می‌دهیم»</li>
+                <li><strong>Hybrid:</strong> ترکیب دو روش</li>
+                <li><strong>Deep Learning:</strong> Neural Collaborative Filtering</li>
+            </ul>
+            <p><strong>تأثیر:</strong> ۳۰-۴۰٪ فروش از طریق پیشنهادات شخصی</p>
+        </div>
+
+        <h4>سایر سیستم‌های توصیه در ایران:</h4>
+        <table>
+            <tr>
+                <th>پلتفرم</th>
+                <th>نوع توصیه</th>
+            </tr>
+            <tr>
+                <td>فیلیمو/نماوا</td>
+                <td>فیلم و سریال</td>
+            </tr>
+            <tr>
+                <td>اسنپ‌فود</td>
+                <td>رستوران و غذا</td>
+            </tr>
+            <tr>
+                <td>اسنپ</td>
+                <td>مقصد سفر، تبلیغات</td>
+            </tr>
+            <tr>
+                <td>طاقچه/کتابراه</td>
+                <td>کتاب</td>
+            </tr>
+            <tr>
+                <td>آپارات</td>
+                <td>ویدیو</td>
+            </tr>
+            <tr>
+                <td>ترب/ایمالز</td>
+                <td>محصول با بهترین قیمت</td>
+            </tr>
+        </table>
+
+        <h3>۲. قیمت‌گذاری پویا (Dynamic Pricing)</h3>
+        <div class="example">
+            <h4>مثال اسنپ</h4>
+            <p>اسنپ قیمت سفر را بر اساس پارامترهای مختلف تنظیم می‌کند:</p>
+            <ul>
+                <li>تقاضا (تعداد درخواست)</li>
+                <li>عرضه (تعداد راننده)</li>
+                <li>ساعت روز</li>
+                <li>شرایط آب و هوا (باران = قیمت بالاتر)</li>
+                <li>رویدادهای ویژه (کنسرت، بازی فوتبال)</li>
+                <li>مسافت و ترافیک</li>
+            </ul>
+            <p>مدل: Reinforcement Learning برای بهینه‌سازی درآمد و رضایت</p>
+        </div>
+
+        <h3>۳. پیش‌بینی تقاضا (Demand Forecasting)</h3>
+        <ul>
+            <li>پیش‌بینی فروش روزانه/هفتگی محصولات</li>
+            <li>مدیریت موجودی انبار</li>
+            <li>برنامه‌ریزی موجودی فصلی (مثلاً یلدا)</li>
+            <li>کاهش ضایعات محصولات فاسدشدنی</li>
+        </ul>
+
+        <h3>۴. جستجوی هوشمند</h3>
+        <div class="example">
+            <p>در دیجی‌کالا و ترب:</p>
+            <ul>
+                <li>درک مفهوم جستجو (مثلاً «گوشی ارزان» = گوشی با قیمت پایین)</li>
+                <li>رفع غلط املایی (NLP)</li>
+                <li>پیشنهاد خودکار (Autocomplete)</li>
+                <li>جستجوی تصویری (مثلاً عکس یک کفش → محصولات مشابه)</li>
+                <li>جستجوی صوتی</li>
+            </ul>
+        </div>
+
+        <h3>۵. چت‌بات پشتیبانی مشتری</h3>
+        <ul>
+            <li>پاسخ به سوالات متداول</li>
+            <li>پیگیری سفارش</li>
+            <li>راهنمای خرید</li>
+            <li>رسیدگی به شکایات ساده</li>
+            <li>ارجاع به اپراتور در موارد پیچیده</li>
+        </ul>
+
+        <h3>۶. تحلیل نظرات مشتریان (Sentiment Analysis)</h3>
+        <div class="example">
+            <p>در دیجی‌کالا و ترب، نظرات مشتریان با NLP تحلیل می‌شود:</p>
+            <ul>
+                <li>تشخیص مثبت/منفی/خنثی</li>
+                <li>استخراج موضوع شکایت (مثلاً «ارسال دیر»، «کیفیت بد»)</li>
+                <li>اولویت‌بندی پاسخ‌ها</li>
+                <li>هشدار خودکار به فروشنده</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۵: کاربردهای حمل‌ونقل</button>
+    <div class="panel">
+        <h3>۱. مسیریابی هوشمند</h3>
+        <div class="example">
+            <h4>اسنپ و تپسی</h4>
+            <ul>
+                <li>محاسبه سریع‌ترین مسیر با الگوریتم‌های گراف (Dijkstra، A*)</li>
+                <li>در نظر گرفتن ترافیک لحظه‌ای</li>
+                <li>پیشنهاد مسیر جایگزین در صورت ترافیک</li>
+                <li>تخمین زمان رسیدن (ETA) با دقت بالا</li>
+                <li>Match کردن مسافر و راننده بهینه</li>
+            </ul>
+        </div>
+
+        <h3>۲. خودروهای خودران (Autonomous Vehicles)</h3>
+        <p>اگرچه در ایران هنوز تجاری‌سازی نشده، فناوری‌های مرتبط استفاده می‌شوند:</p>
+        <ul>
+            <li><strong>تشخیص عابر پیاده:</strong> YOLO، Faster R-CNN</li>
+            <li><strong>تشخیص علائم رانندگی:</strong> CNN</li>
+            <li><strong>تشخیص خط جاده:</strong> Segmentation</li>
+            <li><strong>ادغام سنسورها (Sensor Fusion):</strong> LiDAR + Camera + Radar</li>
+        </ul>
+
+        <h3>۳. بهینه‌سازی ناوگان حمل‌ونقل عمومی</h3>
+        <ul>
+            <li>پیش‌بینی تقاضای اتوبوس و مترو در هر ساعت</li>
+            <li>تنظیم زمان‌بندی حرکت</li>
+            <li>تخصیص اتوبوس به مسیرهای پرتقاضا</li>
+            <li>پیشنهاد مسیرهای جدید</li>
+        </ul>
+
+        <div class="example">
+            <p>در تهران، شرکت بهره‌برداری مترو از ML برای پیش‌بینی تعداد مسافران هر ایستگاه در ساعات مختلف استفاده می‌کند.</p>
+        </div>
+
+        <h3>۴. مدیریت ترافیک شهری</h3>
+        <ul>
+            <li>تنظیم هوشمند چراغ‌های راهنمایی</li>
+            <li>پیش‌بینی ترافیک در ساعات آینده</li>
+            <li>پیشنهاد مسیر جایگزین</li>
+            <li>تشخیص تصادف و اعزام سریع امداد</li>
+            <li>تحلیل الگوهای ترافیکی</li>
+        </ul>
+
+        <h3>۵. لجستیک و تحویل کالا</h3>
+        <div class="example">
+            <p>شرکت‌های پست ایران، پست پیشتاز، تیپاکس:</p>
+            <ul>
+                <li>بهینه‌سازی مسیر تحویل (Vehicle Routing Problem)</li>
+                <li>پیش‌بینی زمان تحویل</li>
+                <li>مدیریت موجودی</li>
+                <li>تشخیص آدرس اشتباه</li>
+                <li>ادغام چند مرسوله در یک سفر</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۶: کاربردهای صنعت و تولید</button>
+    <div class="panel">
+        <h3>۱. کنترل کیفیت بینایی ماشین</h3>
+        <div class="example">
+            <h4>مثال: کارخانه ایران خودرو</h4>
+            <ul>
+                <li>بازرسی خودکار بدنه خودرو با دوربین</li>
+                <li>تشخیص خط و خش، فرورفتگی، رنگ ناهمگون</li>
+                <li>دقت ۹۹.۵٪ در تشخیص عیب (بالاتر از چشم انسان)</li>
+                <li>سرعت ۱ خودرو در ۳۰ ثانیه</li>
+                <li>کاهش شکایات مشتری از عیوب ظاهری</li>
+            </ul>
+        </div>
+
+        <h4>سایر کاربردها:</h4>
+        <ul>
+            <li>تشخیص عیب در تراشه‌های الکترونیکی</li>
+            <li>کنترل کیفیت مواد غذایی (مثلاً تشخیص میوه‌های معیوب)</li>
+            <li>بازرسی پارچه و نساجی</li>
+            <li>تشخیص ترک در لوله‌ها</li>
+        </ul>
+
+        <h3>۲. نگهداری پیش‌بینانه (Predictive Maintenance)</h3>
+        <div class="key-concept">
+            پیش‌بینی خرابی تجهیزات قبل از وقوع، برای کاهش downtime و هزینه
+        </div>
+
+        <div class="example">
+            <h4>مثال: نیروگاه‌ها و پالایشگاه‌های ایران</h4>
+            <ul>
+                <li>نصب سنسور روی تجهیزات (دما، لرزش، فشار، صدا)</li>
+                <li>پایش لحظه‌ای با IoT</li>
+                <li>مدل ML پیش‌بینی می‌کند کدام قطعه تا چند روز دیگر خراب می‌شود</li>
+                <li>تعمیر در زمان مناسب (نه زود، نه دیر)</li>
+                <li>کاهش ۳۰-۵۰٪ هزینه نگهداری</li>
+                <li>افزایش عمر تجهیزات</li>
+            </ul>
+        </div>
+
+        <h3>۳. بهینه‌سازی فرآیند تولید</h3>
+        <ul>
+            <li>تنظیم پارامترهای دستگاه برای کیفیت بهینه</li>
+            <li>کاهش مصرف انرژی</li>
+            <li>کاهش ضایعات مواد اولیه</li>
+            <li>افزایش سرعت تولید</li>
+            <li>Digital Twin (مدل دیجیتال فرآیند)</li>
+        </ul>
+
+        <h3>۴. رباتیک صنعتی هوشمند</h3>
+        <ul>
+            <li>ربات‌های همکار (Collaborative Robots)</li>
+            <li>بازوهای رباتیک با دید کامپیوتر</li>
+            <li>اتوماسیون خطوط تولید</li>
+            <li>انبارداری خودکار (مثلاً آمازون، در ایران دیجی‌کالا)</li>
+        </ul>
+    </div>
+
+    <button class="accordion">بخش ۷: کاربردهای انرژی و آب</button>
+    <div class="panel">
+        <h3>۱. پیش‌بینی بار (Load Forecasting)</h3>
+        <div class="example">
+            <h4>شرکت مدیریت شبکه برق ایران</h4>
+            <ul>
+                <li>پیش‌بینی مصرف برق فردا، هفته آینده، ماه آینده</li>
+                <li>مدل‌ها: LSTM، Prophet، XGBoost</li>
+                <li>دقت: MAPE = 2-3%</li>
+                <li>اهمیت: تنظیم تولید نیروگاه‌ها، واردات/صادرات برق</li>
+            </ul>
+            <p><strong>چالش ایران:</strong> پیک مصرف در تابستان (کولر) و زمستان (گاز)</p>
+        </div>
+
+        <h3>۲. بهینه‌سازی شبکه توزیع</h3>
+        <ul>
+            <li>کاهش تلفات شبکه (در ایران حدود ۱۰-۱۲٪)</li>
+            <li>پیش‌بینی بار ترانسفورماتورها</li>
+            <li>تشخیص سرقت برق</li>
+            <li>مدیریت تولید پراکنده (خورشیدی پشت‌بامی)</li>
+        </ul>
+
+        <h3>۳. انرژی‌های تجدیدپذیر</h3>
+        <ul>
+            <li>پیش‌بینی تولید نیروگاه خورشیدی (وابسته به هوا)</li>
+            <li>پیش‌بینی باد برای نیروگاه بادی</li>
+            <li>مدیریت باتری‌های ذخیره‌سازی</li>
+            <li>ادغام با شبکه (Grid Integration)</li>
+        </ul>
+
+        <h3>۴. مدیریت آب</h3>
+        <div class="example">
+            <p>بحران آب در ایران، AI می‌تواند کمک کند:</p>
+            <ul>
+                <li>پیش‌بینی مصرف آب در هر منطقه</li>
+                <li>تشخیص نشت در شبکه آبرسانی</li>
+                <li>پیش‌بینی خشکسالی</li>
+                <li>بهینه‌سازی آبیاری کشاورزی</li>
+                <li>پیش‌بینی بارش (با تصاویر ماهواره‌ای)</li>
+            </ul>
+        </div>
+
+        <h3>۵. ساختمان‌های هوشمند</h3>
+        <ul>
+            <li>کنترل هوشمند تهویه، روشنایی، گرمایش</li>
+            <li>کاهش ۲۰-۳۰٪ مصرف انرژی</li>
+            <li>تشخیص اشغال اتاق (Occupancy Detection)</li>
+            <li>پیش‌بینی مصرف بر اساس الگوی ساکنان</li>
+        </ul>
+    </div>
+
+    <button class="accordion">بخش ۸: کاربردهای کشاورزی</button>
+    <div class="panel">
+        <h3>۱. کشاورزی دقیق (Precision Agriculture)</h3>
+        <div class="example">
+            <h4>مزارع هوشمند در ایران</h4>
+            <ul>
+                <li>تصاویر ماهواره‌ای + پهپاد برای پایش مزرعه</li>
+                <li>تشخیص نقاط نیازمند آب/کود/آفت‌کش</li>
+                <li>آبیاری متغیر (Variable Rate Irrigation)</li>
+                <li>کاهش ۳۰٪ مصرف آب</li>
+                <li>افزایش ۲۰٪ عملکرد</li>
+            </ul>
+        </div>
+
+        <h3>۲. تشخیص بیماری گیاهی و آفت</h3>
+        <ul>
+            <li>CNN برای تشخیص بیماری از روی برگ</li>
+            <li>تشخیص زودهنگام (قبل از گسترش)</li>
+            <li>پیشنهاد سم مناسب</li>
+                <li>پایش گلخانه با سنسور و تصویر</li>
+        </ul>
+
+        <h3>۳. پیش‌بینی عملکرد محصول</h3>
+        <ul>
+            <li>پیش‌بینی برداشت گندم، برنج، جو</li>
+            <li>تخمین تولید میوه (پسته، سیب، انار)</li>
+            <li>برنامه‌ریزی قیمت و صادرات</li>
+            <li>مدیریت زنجیره تأمین</li>
+        </ul>
+
+        <h3>۴. مدیریت دامداری</h3>
+        <ul>
+            <li>پایش سلامت دام با سنسور</li>
+            <li>تشخیص بیماری قبل از علائم بالینی</li>
+            <li>بهینه‌سازی خوراک</li>
+            <li>تشخیص فحلی (Estrus Detection)</li>
+            <li>شیردوشی خودکار با ربات</li>
+        </ul>
+    </div>
+
+    <button class="accordion">بخش ۹: پردازش زبان طبیعی فارسی</button>
+    <div class="panel">
+        <h3>چالش‌های خاص NLP فارسی</h3>
+        <div class="warning">
+            زبان فارسی چالش‌های منحصربه‌فردی دارد:
+            <ul>
+                <li>راست به چپ (RTL)</li>
+                <li>خط اتصال (حروف در کلمه به هم می‌چسبند)</li>
+                <li>نیم‌فاصله (مثلاً «می‌روم»)</li>
+                <li>کلمات با املای متعدد (مثلاً «رفت» می‌تواند «رِفت» باشد)</li>
+                <li>لهجه‌های متنوع (فارسی، دری، تاجیکی)</li>
+                <li>کمبود داده برچسب‌خورده</li>
+            </ul>
+        </div>
+
+        <h3>مدل‌های زبانی فارسی</h3>
+        <table>
+            <tr>
+                <th>مدل</th>
+                <th>سازنده</th>
+                <th>کاربرد</th>
+            </tr>
+            <tr>
+                <td>ParsBERT</td>
+                <td>Farasa</td>
+                <td>درک زبان عمومی</td>
+            </tr>
+            <tr>
+                <td>BERT-fa</td>
+                <td>Hugging Face</td>
+                <td>طبقه‌بندی متن</td>
+            </tr>
+            <tr>
+                <td>mBERT</td>
+                <td>Google</td>
+                <td>چندزبانه</td>
+            </tr>
+            <tr>
+                <td>XLM-RoBERTa</td>
+                <td>Meta</td>
+                <td>چندزبانه قوی</td>
+            </tr>
+            <tr>
+                <td>GPT فارسی</td>
+                <td>محققان ایرانی</td>
+                <td>تولید متن</td>
+            </tr>
+        </table>
+
+        <h3>کاربردهای عملی NLP فارسی</h3>
+        <ul>
+            <li><strong>تشخیص موجودیت نام‌دار (NER):</strong> استخراج اسامی، مکان‌ها، تاریخ‌ها</li>
+            <li><strong>تحلیل احساسات:</strong> نظرات محصولات، توییتر فارسی</li>
+            <li><strong>خلاصه‌سازی:</strong> اخبار، گزارش‌ها</li>
+            <li><strong>ترجمه ماشینی:</strong> فارسی-انگلیسی (Google Translate)</li>
+            <li><strong>تشخیص گفتار:</strong> فارسی (در دستیارهای صوتی)</li>
+            <li><strong>پرسش و پاسخ:</strong> چت‌بات‌های فارسی</li>
+            <li><strong>تشخیص اخبار جعلی:</strong> فارسی</li>
+            <li><strong>تحلیل محتوا:</strong> فیلترینگ هوشمند</li>
+        </ul>
+
+        <h3>مثال: چت‌بات پشتیبانی بانکی</h3>
+        <div class="example">
+            <p>بانک‌های ایرانی مثل بانک ملت و پاسارگاد:</p>
+            <ul>
+                <li>تشخیص سوال مشتری (مثلاً «موجودی حسابم چقدره؟»)</li>
+                <li>استخراج موجودیت (شماره حساب، نوع سوال)</li>
+                <li>پاسخ مناسب از پایگاه دانش</li>
+                <li>پشتیبانی ۲۴/۷</li>
+                <li>کاهش ۶۰٪ تماس‌های تلفنی</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۱۰: مسیر یادگیری و حرفه در AI</button>
+    <div class="panel">
+        <h3>نقش‌های شغلی در AI</h3>
+        <table>
+            <tr>
+                <th>نقش</th>
+                <th>شرح</th>
+                <th>مهارت‌ها</th>
+            </tr>
+            <tr>
+                <td>Data Scientist</td>
+                <td>تحلیل داده، ساخت مدل</td>
+                <td>Python, SQL, ML, Statistics</td>
+            </tr>
+            <tr>
+                <td>ML Engineer</td>
+                <td>پیاده‌سازی و استقرار مدل</td>
+                <td>Python, ML, Cloud, Docker</td>
+            </tr>
+            <tr>
+                <td>Deep Learning Engineer</td>
+                <td>مدل‌های یادگیری عمیق</td>
+                <td>PyTorch, TensorFlow, CNN, RNN</td>
+            </tr>
+            <tr>
+                <td>NLP Engineer</td>
+                <td>پردازش زبان طبیعی</td>
+                <td>Transformers, BERT, GPT</td>
+            </tr>
+            <tr>
+                <td>Computer Vision Engineer</td>
+                <td>بینایی ماشین</td>
+                <td>CNN, YOLO, OpenCV</td>
+            </tr>
+            <tr>
+                <td>MLOps Engineer</td>
+                <td>زیرساخت ML</td>
+                <td>Kubernetes, MLflow, AWS</td>
+            </tr>
+            <tr>
+                <td>AI Researcher</td>
+                <td>تحقیق و توسعه</td>
+                <td>Math, ML Theory, Research</td>
+            </tr>
+            <tr>
+                <td>AI Product Manager</td>
+                <td>مدیریت محصول AI</td>
+                <td>Business + Technical</td>
+            </tr>
+            <tr>
+                <td>Prompt Engineer</td>
+                <td>مهندسی پرامپت</td>
+                <td>LLM, Creative Writing</td>
+            </tr>
+            <tr>
+                <td>AI Ethics Specialist</td>
+                <td>اخلاق و مسئولیت AI</td>
+                <td>Policy, Law, Bias Detection</td>
+            </tr>
+        </table>
+
+        <h3>حقوق در ایران و جهان</h3>
+        <div class="stat-box">
+            ایران: ۳۰-۱۵۰ میلیون تومان در ماه (بسته به تجربه)
+            <br>آمریکا: ۱۵۰-۴۰۰ هزار دلار در سال
+            <br>اروپا: ۸۰-۲۰۰ هزار یورو در سال
+            <br>دورکاری جهانی: امکان کار برای شرکت‌های بین‌المللی با حقوق ارزی
+        </div>
+
+        <h3>مسیر یادگیری پیشنهادی</h3>
+        <div class="key-concept">
+            <ol>
+                <li><strong>پایه ریاضی:</strong> جبر خطی، آمار، احتمالات، بهینه‌سازی</li>
+                <li><strong>برنامه‌نویسی:</strong> Python (NumPy, Pandas, Matplotlib)</li>
+                <li><strong>ML پایه:</strong> Scikit-learn، الگوریتم‌های کلاسیک</li>
+                <li><strong>ML پیشرفته:</strong> XGBoost, LightGBM, Ensemble</li>
+                <li><strong>Deep Learning:</strong> PyTorch یا TensorFlow</li>
+                <li><strong>تخصص:</strong> NLP، Computer Vision، یا Reinforcement Learning</li>
+                <li><strong>MLOps:</strong> Docker, Kubernetes, Cloud</li>
+                <li><strong>پروژه‌های عملی:</strong> Kaggle، گیت‌هاب، رزومه‌سازی</li>
+            </ol>
+        </div>
+
+        <h3>منابع فارسی و انگلیسی</h3>
+        <ul>
+            <li><strong>کتاب‌های فارسی:</strong> «یادگیری ماشین با پایتون»، «هوش مصنوعی برای همه»</li>
+            <li><strong>دوره‌های انگلیسی:</strong> Coursera Andrew Ng، Fast.ai، DeepLearning.AI</li>
+            <li><strong>پلتفرم‌ها:</strong> Kaggle، Colab، GitHub</li>
+            <li><strong>مقالات:</strong> Papers with Code، arXiv</li>
+            <li><strong>انجمن‌ها:</strong> Reddit (r/MachineLearning)، Stack Overflow</li>
+            <li><strong>کانال‌های یوتیوب فارسی:</strong> آموزش‌های رایگان متعدد</li>
+        </ul>
+    </div>
+
+    <button class="accordion">بخش ۱۱: چالش‌ها و ملاحظات اخلاقی</button>
+    <div class="panel">
+        <h3>چالش‌های فنی</h3>
+        <div class="warning">
+            <ul>
+                <li><strong>کیفیت داده:</strong> داده‌های ایرانی اغلب ناقص، ناسازگار، یا قدیمی هستند</li>
+                <li><strong>حریم خصوصی:</strong> حفاظت از داده‌های شخصی (GDPR، قوانین داخلی)</li>
+                <li><strong>توضیح‌پذیری:</strong> مدل‌های پیچیده قابل توضیح نیستند (Black Box)</li>
+                <li><strong>Bias:</strong> مدل‌ها ممکن است تبعیض‌آمیز باشند (تبعیض جنسیتی، نژادی، طبقاتی)</li>
+                <li><strong>هزینه محاسباتی:</strong> GPUهای قوی گران هستند</li>
+                <li><strong>نگهداری:</strong> مدل‌ها نیاز به به‌روزرسانی دارند (Model Drift)</li>
+                <li><strong>تعمیم‌پذیری:</strong> مدل آموزش‌دیده در یک منطقه ممکن است در منطقه دیگر کار نکند</li>
+            </ul>
+        </div>
+
+        <h3>ملاحظات اخلاقی</h3>
+        <div class="key-concept">
+            <ol>
+                <li><strong>Bias (تبعیض):</strong> اگر داده آموزشی تبعیض‌آمیز باشد، مدل هم تبعیض‌آمیز است</li>
+                <li><strong>شفافیت:</strong> کاربران حق دارند بدانند چگونه تصمیم‌گیری می‌شود</li>
+                <li><strong>مسئولیت:</strong> اگر مدل اشتباه کند، چه کسی مسئول است؟</li>
+                <li><strong>اشتغال:</strong> AI جایگزین مشاغل می‌شود - مسئولیت اجتماعی چیست؟</li>
+                <li><strong>دسترسی:</strong> آیا همه به فناوری AI دسترسی دارند؟</li>
+                <li><strong>نظارت:</strong> دولت چگونه باید AI را قانون‌گذاری کند؟</li>
+            </ol>
+        </div>
+
+        <h3>مثال واقعی از Bias</h3>
+        <div class="example">
+            <p>سیستم تشخیص چهره آمازون (Rekognition) در تست‌ها:</p>
+            <ul>
+                <li>تشخیص چهره مردان سفیدپوست: ۹۹٪</li>
+                <li>تشخیص چهره زنان سیاهپوست: ۶۵٪</li>
+                <li>دلیل: داده آموزشی نامتوازن</li>
+            </ul>
+            <p>نتیجه: شرکت‌ها مجبور شدند داده آموزشی را متنوع‌تر کنند.</p>
+        </div>
+
+        <h3>آینده AI در ایران و جهان</h3>
+        <div class="quote">
+            <strong>پیش‌بینی‌ها:</strong>
+            <ul>
+                <li>۲۰۲۵-۲۰۳۰: AI در همه صنایع نفوذ می‌کند</li>
+                <li>۲۰۳۰: AGI (هوش مصنوعی عمومی) ممکن است محقق شود</li>
+                <li>۲۰۳۵: ربات‌های همکار انسان در محیط کار عادی می‌شوند</li>
+                <li>۲۰۴۰: خودروهای خودران اکثریت بازار را می‌گیرند</li>
+                <li>۲۰۵۰: AI ممکن است با هوش انسان برابری کند</li>
+            </ul>
+        </div>
+
+        <h3>فرصت‌های ایران</h3>
+        <div class="key-concept">
+            <ul>
+                <li>جمعیت جوان و تحصیل‌کرده</li>
+                <li>بازار بزرگ داخلی (۸۵ میلیون نفر)</li>
+                <li>مسائل منحصربه‌فرد (بحران آب، تحریم، بومی‌سازی)</li>
+                <li>نیروی کار ارزان‌تر نسبت به جهان</li>
+                <li>فرصت صادرات نرم‌افزار و خدمات AI</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="accordion">بخش ۱۲: پروژه نهایی درس</button>
+    <div class="panel">
+        <h3>تعریف پروژه</h3>
+        <div class="key-concept">
+            <strong>هدف:</strong> دانشجویان باید یک مسئله واقعی را با استفاده از مفاهیم این درس حل کنند.
+        </div>
+
+        <h3>انتخاب موضوع (۵ پیشنهاد)</h3>
+        <table>
+            <tr>
+                <th>موضوع</th>
+                <th>نوع ML</th>
+                <th>منبع داده</th>
+                <th>سطح</th>
+            </tr>
+            <tr>
+                <td>تشخیص اسپم پیامک فارسی</td>
+                <td>NLP Classification</td>
+                <td>جمع‌آوری از دیتابیس‌های فارسی</td>
+                <td>متوسط</td>
+            </tr>
+            <tr>
+                <td>پیش‌بینی قیمت خانه در تهران</td>
+                <td>Regression</td>
+                <td>Scrape از دیوار</td>
+                <td>متوسط</td>
+            </tr>
+            <tr>
+                <td>تشخیص احساس نظرات دیجی‌کالا</td>
+                <td>NLP Sentiment</td>
+                <td>API یا Kaggle</td>
+                <td>متوسط</td>
+            </tr>
+            <tr>
+                <td>تشخیص بیماری گیاهی از تصویر برگ</td>
+                <td>Computer Vision</td>
+                <td>PlantVillage Dataset</td>
+                <td>پیشرفته</td>
+            </tr>
+            <tr>
+                <td>تشخیص تقلب تراکنش بانکی</td>
+                <td>Anomaly Detection</td>
+                <td>Kaggle Credit Card Fraud</td>
+                <td>پیشرفته</td>
+            </tr>
+        </table>
+
+        <h3>مراحل اجرا (۸ مرحله)</h3>
+        <div class="formula">
+            ۱. تعریف مسئله (Problem Definition)
+            ۲. جمع‌آوری داده (Data Collection)
+            ۳. پاکسازی و پیش‌پردازش (Preprocessing)
+            ۴. تحلیل اکتشافی داده (EDA)
+            ۵. مهندسی ویژگی (Feature Engineering)
+            ۶. ساخت و آموزش مدل (Model Building)
+            ۷. ارزیابی (Evaluation)
+            ۸. استقرار و گزارش (Deployment & Reporting)
+        </div>
+
+        <h3>معیارهای ارزیابی پروژه</h3>
+        <table>
+            <tr>
+                <th>معیار</th>
+                <th>امتیاز</th>
+                <th>توضیح</th>
+            </tr>
+            <tr>
+                <td>تعریف مسئله</td>
+                <td>۱۰</td>
+                <td>وضوح و اهمیت</td>
+            </tr>
+            <tr>
+                <td>کیفیت داده</td>
+                <td>۱۵</td>
+                <td>جمع‌آوری و پاکسازی</td>
+            </tr>
+            <tr>
+                <td>تحلیل اکتشافی</td>
+                <td>۱۰</td>
+                <td>نمودارها و آمار</td>
+            </tr>
+            <tr>
+                <td>مهندسی ویژگی</td>
+                <td>۱۵</td>
+                <td>خلاقیت و تناسب</td>
+            </tr>
+            <tr>
+                <td>مدل‌سازی</td>
+                <td>۲۰</td>
+                <td>انتخاب و تنظیم</td>
+            </tr>
+            <tr>
+                <td>ارزیابی</td>
+                <td>۱۰</td>
+                <td>شاخص‌های مناسب</td>
+            </tr>
+            <tr>
+                <td>گزارش و ارائه</td>
+                <td>۱۵</td>
+                <td>شفافیت و کیفیت</td>
+            </tr>
+            <tr>
+                <td>نوآوری</td>
+                <td>۵</td>
+                <td>ایده‌های جدید</td>
+            </tr>
+        </table>
+
+        <h3>تحویل‌ها (Deliverables)</h3>
+        <ul>
+            <li>کد در گیت‌هاب (مخزن عمومی یا خصوصی)</li>
+            <li>گزارش PDF (۱۰-۲۰ صفحه)</li>
+            <li>ارائه شفاهی (۱۵ دقیقه)</li>
+            <li>دموی عملی (اگر ممکن)</li>
+        </ul>
+
+        <h3>زمان‌بندی پیشنهادی</h3>
+        <div class="example">
+            <ul>
+                <li>هفته ۱-۲: تعریف مسئله و جمع‌آوری داده</li>
+                <li>هفته ۳: پاکسازی و EDA</li>
+                <li>هفته ۴-۵: مدل‌سازی و آزمایش</li>
+                <li>هفته ۶: بهینه‌سازی و تنظیم</li>
+                <li>هفته ۷: نگارش گزارش</li>
+                <li>هفته ۸: ارائه</li>
+            </ul>
+        </div>
+
+        <h3>منابع پروژه</h3>
+        <div class="key-concept">
+            <ul>
+                <li><strong>دیتاست‌های فارسی:</strong> github.com/m3hrdadfi/sofa, github.com/azizkhani</li>
+                <li><strong>Kaggle:</strong> kaggle.com/datasets (هزاران دیتاست)</li>
+                <li><strong>UCI ML Repository:</strong> دیتاست‌های معتبر</li>
+                <li><strong>Google Dataset Search:</strong> جستجوی دیتاست</li>
+                <li><strong>API‌های عمومی:</strong> Twitter, GitHub, OpenWeather</li>
+            </ul>
+        </div>
     </div>
 
     <button class="accordion">یادداشت‌های استاد</button>
     <div class="panel">
         <div class="instructor-note">
-            <strong>مقدمه و اهمیت کاربردها (۸ دقیقه):</strong>
-            <p>این جلسه آخرین جلسه تئوری است و باید دانشجویان را برای پروژه پایانی آماده کند. با یک سوال شروع کنید: «در طول این ترم چه چیزی یاد گرفتید؟». سپس بگویید که حالا می‌خواهیم ببینیم این مفاهیم در دنیای واقعی چطور استفاده می‌شوند. تأکید کنید که AI فقط یک درس نیست - یک مهارت کاربردی است که می‌تواند درآمدزا باشد.</p>
+            <strong>مقدمه و چشم‌انداز (۸ دقیقه):</strong>
+            <p>این جلسه آخرین جلسه تئوری است. با مرور کلی شروع کنید: «از تحول دیجیتال شروع کردیم، به یادگیری ماشین و یادگیری عمیق رسیدیم. حالا می‌خواهیم ببینیم در دنیای واقعی چطور استفاده می‌شود». آمار بازار را بگویید: «بازار AI در ۲۰۳۰ بیش از ۱.۸ تریلیون دلار خواهد بود - این یعنی فرصت شغلی عظیم». تأکید کنید که AI فقط درس نیست، مهارت کاربردی و درآمدزاست.</p>
         </div>
         <div class="instructor-note">
-            <strong>پیش‌بینی بار (۸ دقیقه):</strong>
-            <p>این یکی از رایج‌ترین کاربردها در ایران است. شرکت‌های برق باید بدانند که فردا چقدر برق مصرف می‌شود تا بتوانند تولید را تنظیم کنند. LSTM و GRU برای داده‌های زمانی عالی هستند. XGBoost هم خوب کار می‌کند. می‌توانید یک مثال عملی از داده‌های برق ایران بزنید.</p>
+            <strong>سلامت و پزشکی (۱۰ دقیقه):</strong>
+            <p>تشخیص سرطان از ماموگرافی را با مثال ملموس توضیح دهید: «تیم دانشگاه تهران با CNN توانست دقت ۹۴٪ کسب کند، بالاتر از رادیولوژیست‌های تازه‌کار. این یعنی جان انسان‌ها نجات پیدا می‌کند». در دوران کرونا، اهمیت AI در تشخیص و پیش‌بینی شیوع را بگویید. کاربردهای NLP فارسی مثل چت‌بات «دکتر ساینا» را مثال بزنید.</p>
         </div>
         <div class="instructor-note">
-            <strong>تحلیل ناهنجاری (۸ دقیقه):</strong>
-            <p>این برای صنعت خیلی مهم است. نگهداری پیشگیرانه یعنی قبل از اینکه دستگاه خراب شود، بفهمیم که دارد خراب می‌شود - این میلیاردها تومان صرفه‌جویی می‌کند. مثال: موتور هواپیما - اگر خراب شود جان انسان‌ها در خطر است. پس باید از قبل پیش‌بینی کنیم.</p>
+            <strong>مالی و بانکداری (۱۰ دقیقه):</strong>
+            <p>تشخیص تقلب را با عدد توضیح دهید: «بانک پاسارگاد روزانه ۱۰ میلیون تراکنش دارد. مدل ML می‌تواند در لحظه تراکنش‌های مشکوک را پرچم بگذارد. در سال ۵۰۰ میلیارد تومان صرفه‌جویی می‌شود». امتیازدهی اعتباری را توضیح دهید: «وام‌دهی سنتی بر اساس ضامن و وثیقه بود. الان با ML، حتی بدون ضامن می‌توان به متقاضی وام داد - انقلابی در شمول مالی». معاملات الگوریتمی در بورس تهران هم اشاره کنید.</p>
         </div>
         <div class="instructor-note">
-            <strong>پردازش زبان و تصویر (۸ دقیقه):</strong>
-            <p>NLP و بینایی ماشین پرکاربردترین حوزه‌ها هستند. چت‌بات‌ها که الان همه جا هستند، NLP هستند. تشخیص عیب در کارخانه‌ها با بینایی ماشین انجام می‌شود. در ایران هم شرکت‌های زیادی در این حوزه‌ها فعال هستند.</p>
+            <strong>تجارت الکترونیک و حمل‌ونقل (۱۰ دقیقه):</strong>
+            <p>سیستم توصیه دیجی‌کالا: «۳۰-۴۰٪ فروش از پیشنهادات شخصی است - یعنی اگر این سیستم نباشد، ۴۰٪ فروش از دست می‌رود». قیمت‌گذاری پویای اسنپ: «در ساعت شلوغی یا باران، قیمت بالا می‌رود. این کار بهینه‌سازی درآمد و رضایت است». مسیریابی اسنپ با الگوریتم‌های گراف را ساده توضیح دهید. لجستیک و تیپاکس را مثال بزنید.</p>
         </div>
         <div class="instructor-note">
-            <strong>پروژه پایانی (۱۰ دقیقه):</strong>
-            <p>توضیح دهید که پروژه پایانی چیست. هر دانشجو باید یکی از کاربردها را انتخاب کند و یک پروژه کوچک بسازد. باید شامل: جمع‌آوری داده، پیش‌پردازش، ساخت مدل، و ارزیابی باشد. می‌توانند از داده‌های آماده (Kaggle) استفاده کنند.</p>
+            <strong>صنعت و انرژی (۸ دقیقه):</strong>
+            <p>کنترل کیفیت در ایران خودرو: «دوربین‌ها عیب بدنه را در ۳۰ ثانیه تشخیص می‌دهند - دقتی بالاتر از چشم انسان». نگهداری پیش‌بینانه: «در پالایشگاه، اگر پمپی بدون برنامه خراب شود، ۱۰ میلیارد تومان خسارت. با AI، یک هفته قبل پیش‌بینی می‌شود». پیش‌بینی بار برق: «ایران تابستان‌ها پیک مصرف دارد. شرکت برق با LSTM پیش‌بینی می‌کند که فردا چقدر برق نیاز است - MAPE = 2-3%».</p>
         </div>
         <div class="instructor-note">
-            <strong>جمع‌بندی کل ترم (۵ دقیقه):</strong>
-            <p>یک خلاصه کلی از همه جلسات بدهید: از مفهوم تحول دیجیتال شروع کردیم، رفتیم سراغ AI و ML، یاد گرفتیم چطور داده آماده کنیم، مدل بسازیم، ارزیابی کنیم. الآن دانشجویان باید بتوانند یک پروژه ML کوچک از صفر تا صد انجام دهند. این مهارت خیلی ارزشمند است.</p>
+            <strong>کشاورزی و NLP فارسی (۸ دقیقه):</strong>
+            <p>بحران آب ایران: «AI می‌تواند ۳۰٪ آب کمتر با همان عملکرد استفاده کند». مزارع هوشمند و تشخیص آفت از تصویر را مثال بزنید. NLP فارسی: «چالش‌های فارسی - خط اتصال، نیم‌فاصله، لهجه. ParsBERT مدل ساخت ایرانی‌ها برای حل این مشکلات. چت‌بات بانکی که فارسی بفهمد، ۶۰٪ تماس‌ها را کم می‌کند».</p>
+        </div>
+        <div class="instructor-note">
+            <strong>مسیر شغلی و پروژه (۱۰ دقیقه):</strong>
+            <p>نقش‌های شغلی و حقوق را مرور کنید. «Data Scientist تازه‌کار در ایران ۳۰-۵۰ میلیون، با تجربه ۱۰۰-۱۵۰ میلیون». مسیر یادگیری: ریاضی → Python → ML → DL → تخصص. پروژه نهایی را توضیح دهید: «یکی از ۵ موضوع پیشنهادی را انتخاب کنید. ۸ هفته وقت دارید. تحویل: کد + گزارش + ارائه». تأکید کنید: «این پروژه می‌تواند نمونه کار رزومه شما باشد».</p>
+        </div>
+        <div class="instructor-note">
+            <strong>چالش‌ها و اخلاق (۸ دقیقه):</strong>
+            <p>از Bias شروع کنید: «اگر داده آموزشی تبعیض‌آمیز باشد، مدل هم تبعیض‌آمیز است. مثال: سیستم چهره‌ای که برای سیاه‌پوستان ۶۵٪ دقت داشت ولی برای سفیدپوستان ۹۹٪». توضیح دهید: «مسئولیت خطای مدل با کیست؟ اگر AI تشخیص داد فلانی سرطان ندارد ولی داشت، چه کسی پاسخگوست؟». به آینده اشاره کنید: «AI در ۲۰۳۰ بیش از ۱.۸ تریلیون دلار بازار دارد - ایران هم می‌تواند سهم داشته باشد».</p>
+        </div>
+        <div class="instructor-note">
+            <strong>جمع‌بندی کل ترم (۸ دقیقه):</strong>
+            <p>یک خلاصه سفر یادگیری بدهید: «از مفهوم تحول دیجیتال شروع کردیم. دیدیم چطور فناوری‌ها صنایع را تغییر می‌دهند. به ML وارد شدیم - از رگرسیون تا شبکه‌های عصبی. یاد گرفتیم چطور داده آماده کنیم، مدل بسازیم، ارزیابی کنیم، و ابرپارامترها را تنظیم کنیم. حالا می‌دانیم در هر صنعتی چطور از AI استفاده کنیم. این مهارت خیلی ارزشمند است - در ایران و جهان. تکلیف: پروژه نهایی را شروع کنید. زمان پیشنهادی: ۱۸۰ دقیقه برای جلسه، ۸ هفته برای پروژه».</p>
         </div>
     </div>
 
     <button class="accordion">مطالعه شخصی (Self-Read)</button>
     <div class="panel">
         <div class="self-read">
-            <h2>فصل شانزدهم: کاربردهای هوش مصنوعی در مهندسی</h2>
+            <h2>فصل شانزدهم: کاربردهای هوش مصنوعی در صنایع</h2>
 
-            <h3>۱۶.۱ پیش‌بینی بار (Load Forecasting)</h3>
-
-            <p>پیش‌بینی مصرف برق و انرژی برای برنامه‌ریزی شبکه برق.</p>
-
-            <h4>انواع پیش‌بینی:</h4>
+            <h3>۱۶.۱ چشم‌انداز کلی</h3>
+            <p>AI در همه صنایع نفوذ کرده:</p>
             <ul>
-                <li>پیش‌بینی کوتاه‌مدت (ساعتی)</li>
-                <li>پیش‌بینی میان‌مدت (روزانه)</li>
-                <li>پیش‌بینی بلندمدت (سالانه)</li>
+                <li>پیش‌بینی (Prediction)</li>
+                <li>تشخیص (Detection)</li>
+                <li>توصیه (Recommendation)</li>
+                <li>بهینه‌سازی (Optimization)</li>
+                <li>درک زبان (Language)</li>
+                <li>تصمیم‌گیری (Decision)</li>
+                <li>خلق (Generation)</li>
             </ul>
 
-            <h4>الگوریتم‌های رایج:</h4>
+            <h3>۱۶.۲ سلامت و پزشکی</h3>
             <ul>
-                <li>LSTM (Long Short-Term Memory)</li>
-                <li>GRU (Gated Recurrent Unit)</li>
-                <li>XGBoost</li>
-                <li>Prophet (Facebook)</li>
+                <li>تشخیص بیماری از تصویر (CNN)</li>
+                <li>کشف دارو</li>
+                <li>پزشکی شخصی‌سازی‌شده</li>
+                <li>چت‌بات سلامت</li>
+                <li>مدیریت بیمارستان</li>
+                <li>تشخیص کووید-۱۹</li>
             </ul>
 
-            <h3>۱۶.۲ تحلیل خطا و ناهنجاری</h3>
-
-            <p>تشخیص خودکار خطاها و ناهنجاری‌ها در سیستم‌های صنعتی.</p>
-
-            <h4>کاربردها:</h4>
+            <h3>۱۶.۳ مالی و بانکداری</h3>
             <ul>
-                <li>تشخیص خطا در تجهیزات</li>
-                <li>پایش سلامت سازه‌ها</li>
-                <li>نگهداری پیشگیرانه (Predictive Maintenance)</li>
-                <li>تشخیص خطا در موتور هواپیما</li>
-                <li>پایش پل‌ها و سدها</li>
-                <li>تشخیص نشتی در لوله‌های نفت</li>
+                <li>تشخیص تقلب (Fraud Detection)</li>
+                <li>امتیازدهی اعتباری (Credit Scoring)</li>
+                <li>معاملات الگوریتمی</li>
+                <li>تحلیل ریسک</li>
+                <li>پردازش اسناد مالی</li>
+                <li>Robo-Advisor</li>
             </ul>
 
-            <h3>۱۶.۳ پردازش زبان طبیعی (NLP)</h3>
-
-            <h4>کاربردها:</h4>
+            <h3>۱۶.۴ تجارت الکترونیک</h3>
             <ul>
-                <li>چت‌بات‌های پشتیبانی</li>
-                <li>تحلیل احساسات</li>
-                <li>خلاصه‌سازی اسناد</li>
-                <li>ترجمه ماشینی</li>
-                <li>تشخیص گفتار</li>
-            </ul>
-
-            <h4>ابزارها:</h4>
-            <ul>
-                <li>Transformers (BERT, GPT)</li>
-                <li>NLTK, spaCy</li>
-                <li>Speech Recognition APIs</li>
-            </ul>
-
-            <h3>۱۶.۴ پردازش تصویر</h3>
-
-            <h4>کاربردها:</h4>
-            <ul>
-                <li>بینایی ماشین در صنعت</li>
-                <li>تشخیص عیب</li>
-                <li>خودروهای خودران</li>
-                <li>پزشکی (تشخیص بیماری)</li>
-                <li>تشخیص چهره</li>
-            </ul>
-
-            <h4>شبکه‌های رایج:</h4>
-            <ul>
-                <li>CNN (Convolutional Neural Network)</li>
-                <li>YOLO</li>
-                <li>ResNet</li>
-                <li>VGG</li>
-            </ul>
-
-            <h3>۱۶.۵ سایر کاربردها</h3>
-
-            <ul>
-                <li>بهینه‌سازی زنجیره تأمین</li>
+                <li>سیستم‌های توصیه‌گر (دیجی‌کالا، فیلیمو)</li>
+                <li>قیمت‌گذاری پویا (اسنپ)</li>
                 <li>پیش‌بینی تقاضا</li>
-                <li>سیستم‌های توصیه‌گر</li>
-                <li>کنترل فرآیندها</li>
-                <li>بهینه‌سازی انرژی</li>
-                <li>طراحی به کمک کامپیوتر (CAD)</li>
+                <li>جستجوی هوشمند</li>
+                <li>چت‌بات پشتیبانی</li>
+                <li>تحلیل نظرات</li>
             </ul>
 
-            <h3>۱۶.۶ پروژه پایانی</h3>
-
-            <p>در پروژه پایانی، دانشجویان باید یکی از کاربردهای زیر را پیاده‌سازی کنند:</p>
+            <h3>۱۶.۵ حمل‌ونقل</h3>
             <ul>
-                <li>پیش‌بینی بار (Load Forecasting)</li>
-                <li>تحلیل ناهنجاری (Anomaly Detection)</li>
-                <li>پردازش زبان طبیعی</li>
-                <li>پردازش تصویر</li>
+                <li>مسیریابی هوشمند (اسنپ، تپسی)</li>
+                <li>خودروهای خودران</li>
+                <li>بهینه‌سازی ناوگان حمل‌ونقل عمومی</li>
+                <li>مدیریت ترافیک شهری</li>
+                <li>لجستیک و تحویل کالا</li>
             </ul>
 
-            <h4>مراحل پروژه:</h4>
+            <h3>۱۶.۶ صنعت و تولید</h3>
+            <ul>
+                <li>کنترل کیفیت با بینایی ماشین (ایران خودرو)</li>
+                <li>نگهداری پیش‌بینانه (پالایشگاه‌ها)</li>
+                <li>بهینه‌سازی فرآیند تولید</li>
+                <li>رباتیک صنعتی هوشمند</li>
+            </ul>
+
+            <h3>۱۶.۷ انرژی و آب</h3>
+            <ul>
+                <li>پیش‌بینی بار (LSTM, Prophet)</li>
+                <li>بهینه‌سازی شبکه توزیع</li>
+                <li>انرژی‌های تجدیدپذیر</li>
+                <li>مدیریت آب (بحران ایران)</li>
+                <li>ساختمان‌های هوشمند</li>
+            </ul>
+
+            <h3>۱۶.۸ کشاورزی</h3>
+            <ul>
+                <li>کشاورزی دقیق</li>
+                <li>تشخیص بیماری گیاهی</li>
+                <li>پیش‌بینی عملکرد محصول</li>
+                <li>مدیریت دامداری</li>
+            </ul>
+
+            <h3>۱۶.۹ NLP فارسی</h3>
+            <p>چالش‌های فارسی:</p>
+            <ul>
+                <li>راست به چپ (RTL)</li>
+                <li>خط اتصال</li>
+                <li>نیم‌فاصله</li>
+                <li>کمبود داده برچسب‌خورده</li>
+            </ul>
+            <p>مدل‌های فارسی: ParsBERT, BERT-fa, mBERT, XLM-RoBERTa</p>
+            <p>کاربردها: NER، تحلیل احساسات، خلاصه‌سازی، ترجمه، چت‌بات، تشخیص گفتار</p>
+
+            <h3>۱۶.۱۰ مسیر شغلی</h3>
+            <ul>
+                <li>Data Scientist</li>
+                <li>ML Engineer</li>
+                <li>Deep Learning Engineer</li>
+                <li>NLP Engineer</li>
+                <li>Computer Vision Engineer</li>
+                <li>MLOps Engineer</li>
+                <li>AI Researcher</li>
+                <li>AI Product Manager</li>
+            </ul>
+
+            <h3>۱۶.۱۱ چالش‌های اخلاقی</h3>
+            <ul>
+                <li>Bias (تبعیض)</li>
+                <li>شفافیت</li>
+                <li>مسئولیت</li>
+                <li>اشتغال</li>
+                <li>دسترسی</li>
+                <li>نظارت دولتی</li>
+            </ul>
+
+            <h3>۱۶.۱۲ پروژه نهایی</h3>
+            <p>۸ مرحله:</p>
             <ol>
+                <li>تعریف مسئله</li>
                 <li>جمع‌آوری داده</li>
-                <li>پیش‌پردازش داده</li>
+                <li>پاکسازی و پیش‌پردازش</li>
+                <li>تحلیل اکتشافی</li>
+                <li>مهندسی ویژگی</li>
                 <li>ساخت و آموزش مدل</li>
-                <li>ارزیابی مدل</li>
+                <li>ارزیابی</li>
+                <li>استقرار و گزارش</li>
             </ol>
 
             <h3>خلاصه فصل:</h3>
             <ol>
-                <li>AI کاربردهای گسترده‌ای در مهندسی دارد</li>
-                <li>پیش‌بینی بار برای برنامه‌ریزی انرژی ضروری است</li>
-                <li>تشخیص ناهنجاری در نگهداری پیشگیرانه مهم است</li>
-                <li>NLP و بینایی ماشین پرکاربردترین حوزه‌ها هستند</li>
-                <li>پروژه پایانی فرصتی برای تمرین مفاهیم است</li>
+                <li>AI در همه صنایع نفوذ کرده است</li>
+                <li>سلامت، مالی، تجارت الکترونیک پیشرو هستند</li>
+                <li>ایران در حال توسعه است</li>
+                <li>مسائل اخلاقی مهم هستند</li>
+                <li>مسیر شغلی روشن و پردرآمد است</li>
+                <li>پروژه نهایی فرصت عملی است</li>
             </ol>
 
             <h3>تمرین‌های خودآزمایی:</h3>
             <ol>
-                <li>یک مثال از کاربرد AI در صنعت بزنید</li>
-                <li>چرا پیش‌بینی بار مهم است؟</li>
-                <li>نگهداری پیشگیرانه چیست؟</li>
-                <li>یک کاربرد NLP در زندگی روزمره نام ببرید</li>
-                <li>چه مراحلی برای یک پروژه ML نیاز است؟</li>
+                <li>سه کاربرد AI در سلامت ایران نام ببرید.</li>
+                <li>تشخیص تقلب بانکی چگونه کار می‌کند؟</li>
+                <li>سیستم توصیه دیجی‌کالا چه تاثیری بر فروش دارد؟</li>
+                <li>قیمت‌گذاری پویای اسنپ چگونه کار می‌کند؟</li>
+                <li>نگهداری پیش‌بینانه چیست و چه فایده‌ای دارد؟</li>
+                <li>چالش‌های NLP فارسی چیست؟</li>
+                <li>۵ نقش شغلی در AI نام ببرید.</li>
+                <li>چرا مسائل اخلاقی در AI مهم هستند؟</li>
+                <li>مراحل پروژه نهایی را شرح دهید.</li>
+                <li>اگر می‌خواستید یک استارتاپ AI در ایران راه‌اندازی کنید، چه حوزه‌ای را انتخاب می‌کردید و چرا؟</li>
             </ol>
 
-            <p><strong>زمان پیشنهادی مطالعه:</strong> ۹۰ دقیقه</p>
+            <p><strong>زمان پیشنهادی مطالعه:</strong> ۱۸۰ دقیقه (همراه با مرور کل ترم)</p>
         </div>
     </div>
 
@@ -312,7 +1203,14 @@
     </script>
 
     <p style="text-align: center; color: #7f8c8d; margin-top: 40px;">
-        <a href="../plan.html">بازگشت به برنامه درسی</a>
+        <a href="../plan.html">بازگشت به برنامه درسی</a> |
+        <a href="session15.html">→ جلسه قبل: ابرپارامترها</a>
     </p>
+
+    <div class="phase" style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <h2 style="color: white; border: none;">🎉 پایان درس «هوش مصنوعی و تحول دیجیتال»</h2>
+        <p style="font-size: 1.1em;">امیدواریم این سفر یادگیری برای شما مفید و لذت‌بخش بوده باشد.</p>
+        <p>موفق باشید در پروژه نهایی و آینده حرفه‌ای شما در AI! 🚀</p>
+    </div>
 </body>
 </html>
