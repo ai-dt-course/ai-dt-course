@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هوش مصنوعی و تحول دیجیتال | صفحه اصلی درس</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 40px 20px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(52, 152, 219, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(155, 89, 182, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(46, 204, 113, 0.2) 0%, transparent 50%);
+            animation: pulseBackground 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseBackground {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .hero-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .floating-icons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 2.5rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-icon:nth-child(1) { top: 10%; right: 10%; animation-delay: 0s; font-size: 3rem; }
+        .floating-icon:nth-child(2) { top: 20%; left: 15%; animation-delay: 1s; font-size: 2rem; }
+        .floating-icon:nth-child(3) { top: 60%; right: 20%; animation-delay: 2s; font-size: 2.8rem; }
+        .floating-icon:nth-child(4) { top: 70%; left: 10%; animation-delay: 3s; font-size: 2.2rem; }
+        .floating-icon:nth-child(5) { top: 40%; right: 5%; animation-delay: 4s; font-size: 3.2rem; }
+        .floating-icon:nth-child(6) { top: 85%; left: 30%; animation-delay: 5s; font-size: 2.5rem; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 1100px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #fff 0%, #a8edea 50%, #fed6e3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-right: auto;
+            margin-left: auto;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+            margin: 50px 0;
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+        }
+
+        .stat-item {
+            padding: 25px 15px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.9s backwards;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #9b59b6);
+            color: white;
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(52, 152, 219, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            animation: bounce 2s infinite;
+            font-size: 1.5rem;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== Sections General ===== */
+        section {
+            padding: 80px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: linear-gradient(135deg, #3498db20, #9b59b620);
+            color: #3498db;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== About Section ===== */
+        .about {
+            background: white;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .about-card {
+            padding: 35px 25px;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #ecf0f1;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #3498db20, transparent);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .about-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(52, 152, 219, 0.15);
+            border-color: #3498db;
+        }
+
+        .about-icon {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3498db15, #9b59b615);
+            border-radius: 15px;
+        }
+
+        .about-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .about-card p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+
+        .course-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa, #ecf0f1);
+            border-radius: 20px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-item .label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .info-item .value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        /* ===== Sessions Section ===== */
+        .sessions {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
+        }
+
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .session-card {
+            background: white;
+            border-radius: 18px;
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .session-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(52, 152, 219, 0.2);
+            border-color: #3498db;
+        }
+
+        .session-header {
+            padding: 25px 25px 15px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            position: relative;
+        }
+
+        .session-card:nth-child(4n+2) .session-header {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .session-card:nth-child(4n+3) .session-header {
+            background: linear-gradient(135deg, #16a085, #1abc9c);
+        }
+
+        .session-card:nth-child(4n+4) .session-header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .session-number {
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .session-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .session-body {
+            padding: 20px 25px 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .session-topics {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .session-topics li {
+            padding: 8px 0;
+            color: #555;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .session-topics li::before {
+            content: '◂';
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .session-topics li:last-child {
+            border-bottom: none;
+        }
+
+        .session-arrow {
+            margin-top: auto;
+            color: #3498db;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.3s ease;
+        }
+
+        .session-card:hover .session-arrow {
+            gap: 14px;
+        }
+
+        /* ===== Topics Section ===== */
+        .topics {
+            background: white;
+        }
+
+        .topics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .topic-block {
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa, #ecf0f1);
+            border-radius: 16px;
+            border-right: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .topic-block:nth-child(even) {
+            border-right-color: #9b59b6;
+        }
+
+        .topic-block:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .topic-block h4 {
+            font-size: 1.15rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+
+        .topic-block h4 i {
+            color: #3498db;
+        }
+
+        .topic-block:nth-child(even) h4 i {
+            color: #9b59b6;
+        }
+
+        .topic-block p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* ===== Resources Section ===== */
+        .resources {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+        }
+
+        .resources .section-title,
+        .resources .section-subtitle {
+            color: white;
+        }
+
+        .resources .section-subtitle {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .resource-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .resource-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .resource-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .resource-card h4 {
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .resource-card p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            background: #1a1a2e;
+            color: rgba(255,255,255,0.7);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: #3498db;
+        }
+
+        .footer-divider {
+            width: 100%;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 30px 0 20px;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .hero-cta {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+
+            section {
+                padding: 50px 15px;
+            }
+
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== Hero Section ===== -->
+<section class="hero">
+    <div class="hero-grid"></div>
+    <div class="floating-icons">
+        <i class="fas fa-brain floating-icon"></i>
+        <i class="fas fa-robot floating-icon"></i>
+        <i class="fas fa-network-wired floating-icon"></i>
+        <i class="fas fa-chart-line floating-icon"></i>
+        <i class="fas fa-database floating-icon"></i>
+        <i class="fas fa-code floating-icon"></i>
+    </div>
+
+    <div class="hero-content">
+        <span class="badge"><i class="fas fa-graduation-cap"></i>دانشکده علوم کامپیوتر</span>
+
+        <h1>هوش مصنوعی و تحول دیجیتال</h1>
+        <p class="hero-subtitle">
+            سفری جامع از مفاهیم پایه تا کاربردهای پیشرفته هوش مصنوعی در صنایع مختلف؛
+            با رویکرد عملی، مثال‌های واقعی ایرانی و پروژه‌های کاربردی
+        </p>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number">۱۶</span>
+                <span class="stat-label">جلسه آموزشی</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">۳</span>
+                <span class="stat-label">تمرین عملی</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">۲</span>
+                <span class="stat-label">پروژه تحقیقاتی</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">۲</span>
+                <span class="stat-label">آزمون ارزیابی</span>
+            </div>
+        </div>
+
+        <div class="hero-cta">
+            <a href="#sessions" class="btn btn-primary">
+                <span>شروع یادگیری</span>
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <a href="#topics" class="btn btn-secondary">
+                <i class="fas fa-bullseye"></i>
+                <span>اهداف</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="scroll-indicator">
+        <i class="fas fa-chevron-down"></i>
+    </div>
+</section>
+
+<!-- ===== About Section ===== -->
+<section class="about" id="about">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">درباره درس</span>
+            <h2 class="section-title">چرا این درس را بیاموزیم؟</h2>
+            <p class="section-subtitle">
+                در عصر تحول دیجیتال، هوش مصنوعی به یکی از مهم‌ترین مهارت‌های مهندسان تبدیل شده است
+            </p>
+        </div>
+
+        <div class="about-grid">
+            <div class="about-card">
+                <div class="about-icon"><i class="fas fa-rocket"></i></div>
+                <h3>آینده‌نگری شغلی</h3>
+                <p>بازار جهانی AI در سال ۲۰۳۰ بیش از ۱.۸ تریلیون دلار خواهد بود. این درس شما را برای فرصت‌های شغلی پردرآمد آماده می‌کند.</p>
+            </div>
+
+            <div class="about-card">
+                <div class="about-icon"><i class="fas fa-flask"></i></div>
+                <h3>رویکرد علمی-عملی</h3>
+                <p>ترکیبی از تئوری قوی، مثال‌های واقعی ایرانی، کدهای عملی و پروژه‌های کاربردی که آموخته‌ها را تثبیت می‌کند.</p>
+            </div>
+
+            <div class="about-card">
+                <div class="about-icon"><i class="fas fa-cogs"></i></div>
+                <h3>پوشش جامع</h3>
+                <p>از مفاهیم پایه تحول دیجیتال تا الگوریتم‌های پیشرفته یادگیری ماشین و کاربرد آن‌ها در صنایع مختلف ایران و جهان.</p>
+            </div>
+
+            <div class="about-card">
+                <div class="about-icon"><i class="fas fa-lightbulb"></i></div>
+                <h3>حل مسئله واقعی</h3>
+                <p>پروژه‌های درس با الهام از چالش‌های واقعی ایران طراحی شده‌اند: تشخیص تقلب، پیش‌بینی بازار، سیستم توصیه و بیشتر.</p>
+            </div>
+
+            <div class="about-card">
+                <div class="about-icon"><i class="fas fa-users"></i></div>
+                <h3>مثال‌های ایرانی</h3>
+                <p>تمام مفاهیم با مثال‌های ملموس از اسنپ، دیجی‌کالا، فیلیمو، بانک‌های ایرانی و صنایع داخل کشور توضیح داده می‌شوند.</p>
+            </div>
+
+            <div class="about-card">
+                <div class="about-icon"><i class="fas fa-certificate"></i></div>
+                <h3>مسیر حرفه‌ای روشن</h3>
+                <p>در پایان درس، توانایی حل مسئله واقعی با AI، ساخت نمونه کار و ورود به بازار کار را خواهید داشت.</p>
+            </div>
+        </div>
+
+        <div class="course-info">
+            <div class="info-item">
+                <span class="label"><i class="fas fa-book"></i> تعداد واحد</span>
+                <span class="value">۲ واحد</span>
+            </div>
+            <div class="info-item">
+                <span class="label"><i class="fas fa-clock"></i> مدت دوره</span>
+                <span class="value">۱۶ هفته</span>
+            </div>
+            <div class="info-item">
+                <span class="label"><i class="fas fa-signal"></i> سطح</span>
+                <span class="value">کارشناسی</span>
+            </div>
+            <div class="info-item">
+                <span class="label"><i class="fas fa-tools"></i> پیش‌نیاز</span>
+                <span class="value">برنامه‌نویسی، آمار</span>
+            </div>
+            <div class="info-item">
+                <span class="label"><i class="fas fa-language"></i> زبان</span>
+                <span class="value">فارسی</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Sessions Section ===== -->
+<section class="sessions" id="sessions">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">۱۶ جلسه آموزشی</span>
+            <h2 class="section-title">جلسات درس</h2>
+            <p class="section-subtitle">
+                هر جلسه شامل محتوای تئوری، مثال‌های عملی، یادداشت‌های استاد و تمرین‌های کاربردی است
+            </p>
+        </div>
+
+        <div class="sessions-grid">
+            <a href="sessions/session01.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۱</span>
+                    <h3 class="session-title">مقدمه‌ای بر تحول دیجیتال</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>تعریف تحول دیجیتال</li>
+                        <li>تفاوت با دیجیتالی‌سازی</li>
+                        <li>مدل‌های بلوغ تحول</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session02.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۲</span>
+                    <h3 class="session-title">فناوری‌های تحول‌آفرین</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>IoT، Cloud، Big Data</li>
+                        <li>Blockchain و 5G</li>
+                        <li>کاربرد در صنایع ایرانی</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session03.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۳</span>
+                    <h3 class="session-title">مقدمه‌ای بر هوش مصنوعی</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>تاریخچه AI</li>
+                        <li>شاخه‌های اصلی</li>
+                        <li>AI در زندگی روزمره</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session04.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۴</span>
+                    <h3 class="session-title">چالش‌های AI و تحول دیجیتال</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>چالش‌های فنی و اخلاقی</li>
+                        <li>حریم خصوصی و Bias</li>
+                        <li>قوانین و مقررات</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session05.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۵</span>
+                    <h3 class="session-title">مفاهیم پایه یادگیری ماشین</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>تعریف ML و انواع آن</li>
+                        <li>فرآیند یادگیری</li>
+                        <li>الگوریتم‌های اصلی</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session06.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۶</span>
+                    <h3 class="session-title">رگرسیون و CSP</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>رگرسیون خطی و غیرخطی</li>
+                        <li>تحلیل سری زمانی</li>
+                        <li>پیش‌بینی قیمت مسکن</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session07.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۷</span>
+                    <h3 class="session-title">توابع هدف، هزینه و ضرر</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>MSE، MAE، Cross-Entropy</li>
+                        <li>تفاوت Loss و Cost</li>
+                        <li>انتخاب تابع هدف مناسب</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session08.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۸</span>
+                    <h3 class="session-title">Gradient Descent</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>الگوریتم گرادیان کاهشی</li>
+                        <li>Batch، SGD، Mini-batch</li>
+                        <li>Adam و Momentum</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session09.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۹</span>
+                    <h3 class="session-title">دسته‌بندی و خوشه‌بندی</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>KNN، SVM، Decision Tree</li>
+                        <li>K-Means، DBSCAN</li>
+                        <li>طبقه‌بندی مشتریان</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session10.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۱۰</span>
+                    <h3 class="session-title">انواع یادگیری ماشین</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>با ناظر، بدون ناظر</li>
+                        <li>تقویتی و نیمه‌نظارتی</li>
+                        <li>Self-Supervised</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session11.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۱۱</span>
+                    <h3 class="session-title">پیش‌پردازش داده</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>پاکسازی داده</li>
+                        <li>مقیاس‌بندی و Encoding</li>
+                        <li>Pipeline ساختاردهی</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session12.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۱۲</span>
+                    <h3 class="session-title">داده نامتوازن و پرت</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>SMOTE و Oversampling</li>
+                        <li>تشخیص Outlier</li>
+                        <li>مدیریت داده‌های پرت</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session13.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۱۳</span>
+                    <h3 class="session-title">بیش‌برازش و کم‌برازش</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>Bias-Variance Tradeoff</li>
+                        <li>Regularization و Dropout</li>
+                        <li>Early Stopping</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session14.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۱۴</span>
+                    <h3 class="session-title">شاخص‌های ارزیابی مدل</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>Accuracy، Precision، Recall</li>
+                        <li>F1 و ROC-AUC</li>
+                        <li>Cross-Validation</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session15.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۱۵</span>
+                    <h3 class="session-title">پارامترها و ابرپارامترها</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>Learning Rate و Schedule</li>
+                        <li>Grid، Random، Bayesian Search</li>
+                        <li>Optuna و Hyperopt</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a href="sessions/session16.html" class="session-card">
+                <div class="session-header">
+                    <span class="session-number">جلسه ۱۶</span>
+                    <h3 class="session-title">کاربردهای AI در صنایع</h3>
+                </div>
+                <div class="session-body">
+                    <ul class="session-topics">
+                        <li>سلامت، مالی، حمل‌ونقل</li>
+                        <li>صنعت، انرژی، کشاورزی</li>
+                        <li>پروژه نهایی درس</li>
+                    </ul>
+                    <div class="session-arrow">
+                        <span>مشاهده جلسه</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Topics Section ===== -->
+<section class="topics" id="topics">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">سرفصل‌های کلیدی</span>
+            <h2 class="section-title">چه مهارت‌هایی کسب خواهید کرد؟</h2>
+            <p class="section-subtitle">
+                در پایان این درس، شما با مجموعه‌ای کامل از مهارت‌های عملی و تئوری آشنا خواهید شد
+            </p>
+        </div>
+
+        <div class="topics-container">
+            <div class="topic-block">
+                <h4><i class="fas fa-chart-bar"></i> تحلیل داده</h4>
+                <p>توانایی تحلیل اکتشافی داده، مصورسازی، شناسایی الگوها و آماده‌سازی داده برای مدل‌سازی با ابزارهایی مانند Pandas و Matplotlib.</p>
+            </div>
+
+            <div class="topic-block">
+                <h4><i class="fas fa-code"></i> الگوریتم‌های ML</h4>
+                <p>درک عمیق الگوریتم‌های کلاسیک و مدرن یادگیری ماشین از رگرسیون تا شبکه‌های عصبی عمیق، با پیاده‌سازی عملی.</p>
+            </div>
+
+            <div class="topic-block">
+                <h4><i class="fas fa-bug"></i> پیش‌پردازش حرفه‌ای</h4>
+                <p>مدیریت داده‌های ناقص، نامتوازن، پرت و تبدیل آن‌ها به فرمت مناسب برای آموزش مدل‌های قوی و قابل اعتماد.</p>
+            </div>
+
+            <div class="topic-block">
+                <h4><i class="fas fa-balance-scale"></i> ارزیابی و انتخاب مدل</h4>
+                <p>تسلط بر شاخص‌های ارزیابی، تفسیر نتایج، مقایسه مدل‌ها و انتخاب بهترین گزینه بر اساس نیاز مسئله واقعی.</p>
+            </div>
+
+            <div class="topic-block">
+                <h4><i class="fas fa-sliders-h"></i> تنظیم ابرپارامترها</h4>
+                <p>استفاده از ابزارهای مدرن مانند Optuna برای تنظیم خودکار و هوشمندانه پارامترها و دستیابی بهترین عملکرد.</p>
+            </div>
+
+            <div class="topic-block">
+                <h4><i class="fas fa-industry"></i> کاربرد در صنایع</h4>
+                <p>آشنایی با کاربردهای واقعی در سلامت، مالی، حمل‌ونقل، صنعت، انرژی و کشاورزی با مثال‌های ایرانی و جهانی.</p>
+            </div>
+
+            <div class="topic-block">
+                <h4><i class="fas fa-project-diagram"></i> حل مسئله End-to-End</h4>
+                <p>توانایی حل کامل یک مسئله ML: از تعریف مسئله، جمع‌آوری داده، ساخت مدل، ارزیابی تا استقرار عملی.</p>
+            </div>
+
+            <div class="topic-block">
+                <h4><i class="fas fa-shield-alt"></i> ملاحظات اخلاقی</h4>
+                <p>درک مسائل اخلاقی مانند Bias، حریم خصوصی، شفافیت و مسئولیت‌پذیری در طراحی و استقرار سیستم‌های AI.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Resources Section ===== -->
+<section class="resources" id="resources">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">منابع تکمیلی</span>
+            <h2 class="section-title">مواد و منابع درس</h2>
+            <p class="section-subtitle">
+                علاوه بر جلسات، تمرین‌ها، پروژه‌ها و آزمون‌های متنوعی برای تثبیت یادگیری فراهم شده است
+            </p>
+        </div>
+
+        <div class="resources-grid">
+            <a href="exercises/exercise01.html" class="resource-card">
+                <i class="fas fa-pen-fancy resource-icon"></i>
+                <h4>تمرین‌ها</h4>
+                <p>۳ تمرین عملی برای تثبیت مفاهیم تئوری</p>
+            </a>
+
+            <a href="projects/project_midterm.html" class="resource-card">
+                <i class="fas fa-tasks resource-icon"></i>
+                <h4>پروژه نیم‌ترم</h4>
+                <p>پیش‌بینی بار با داده‌های واقعی</p>
+            </a>
+
+            <a href="projects/project_final.html" class="resource-card">
+                <i class="fas fa-laptop-code resource-icon"></i>
+                <h4>پروژه پایانی</h4>
+                <p>تحلیل ناهنجاری، NLP یا پردازش تصویر</p>
+            </a>
+
+            <a href="exams/midterm.html" class="resource-card">
+                <i class="fas fa-file-alt resource-icon"></i>
+                <h4>آزمون میان‌ترم</h4>
+                <p>سوالات جلسات ۱ تا ۸</p>
+            </a>
+
+            <a href="exams/final.html" class="resource-card">
+                <i class="fas fa-file-code resource-icon"></i>
+                <h4>آزمون پایانی</h4>
+                <p>سوالات جامع جلسات ۹ تا ۱۶</p>
+            </a>
+
+            <a href="references.html" class="resource-card">
+                <i class="fas fa-bookmark resource-icon"></i>
+                <h4>منابع و مراجع</h4>
+                <p>لیست کامل کتاب‌ها و مقالات</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+    <div class="footer-content">
+        <p style="font-size: 1.05rem; margin-bottom: 10px;">
+            <strong>درس هوش مصنوعی و تحول دیجیتال</strong>
+        </p>
+        <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">
+            کارگروه مهندسی کامپیوتر | ۲ واحد
+        </p>
+
+        <div class="footer-links">
+            <a href="plan.html"><i class="fas fa-clipboard-list"></i> برنامه درسی</a>
+            <a href="#sessions"><i class="fas fa-book"></i> جلسات</a>
+            <a href="#resources"><i class="fas fa-folder-open"></i> منابع</a>
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.4);">
+            ساخته شده با ❤️ برای دانشجویان ایرانی | آخرین بروزرسانی: ۱۴۰۵/۰۶/۱۸
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>
