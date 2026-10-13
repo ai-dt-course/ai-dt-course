@@ -1,0 +1,10 @@
+.DS_Store
+*.swp
+*.swo
+*~
+node_modules/
+
+# Local-only files
+plan.html
+CLAUDE.md
+exams/.DS_Store

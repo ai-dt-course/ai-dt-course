@@ -606,6 +606,36 @@
             font-size: 0.9rem;
         }
 
+        .resource-card.placeholder {
+            cursor: default;
+            opacity: 0.55;
+            position: relative;
+        }
+
+        .resource-card.placeholder:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: none;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .resource-card.placeholder::after {
+            content: 'به‌زودی';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 3px 10px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .resource-card.placeholder .resource-icon {
+            opacity: 0.6;
+        }
+
         /* ===== Footer ===== */
         .footer {
             background: #1a1a2e;
@@ -1170,35 +1200,35 @@
         </div>
 
         <div class="resources-grid">
-            <a href="exercises/exercise01.html" class="resource-card">
+            <div class="resource-card placeholder">
                 <i class="fas fa-pen-fancy resource-icon"></i>
                 <h4>تمرین‌ها</h4>
                 <p>۳ تمرین عملی برای تثبیت مفاهیم تئوری</p>
-            </a>
+            </div>
 
-            <a href="projects/project_midterm.html" class="resource-card">
+            <div class="resource-card placeholder">
                 <i class="fas fa-tasks resource-icon"></i>
                 <h4>پروژه نیم‌ترم</h4>
                 <p>پیش‌بینی بار با داده‌های واقعی</p>
-            </a>
+            </div>
 
-            <a href="projects/project_final.html" class="resource-card">
+            <div class="resource-card placeholder">
                 <i class="fas fa-laptop-code resource-icon"></i>
                 <h4>پروژه پایانی</h4>
                 <p>تحلیل ناهنجاری، NLP یا پردازش تصویر</p>
-            </a>
+            </div>
 
-            <a href="exams/midterm.html" class="resource-card">
+            <div class="resource-card placeholder">
                 <i class="fas fa-file-alt resource-icon"></i>
                 <h4>آزمون میان‌ترم</h4>
                 <p>سوالات جلسات ۱ تا ۸</p>
-            </a>
+            </div>
 
-            <a href="exams/final.html" class="resource-card">
+            <div class="resource-card placeholder">
                 <i class="fas fa-file-code resource-icon"></i>
                 <h4>آزمون پایانی</h4>
                 <p>سوالات جامع جلسات ۹ تا ۱۶</p>
-            </a>
+            </div>
 
             <a href="references.html" class="resource-card">
                 <i class="fas fa-bookmark resource-icon"></i>
@@ -1220,7 +1250,6 @@
         </p>
 
         <div class="footer-links">
-            <a href="plan.html"><i class="fas fa-clipboard-list"></i> برنامه درسی</a>
             <a href="#sessions"><i class="fas fa-book"></i> جلسات</a>
             <a href="#resources"><i class="fas fa-folder-open"></i> منابع</a>
         </div>

@@ -3,81 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منابع تکمیلی درس هوش مصنوعی و تحول دیجیتال</title>
+    <title>منابع تکمیلی - هوش مصنوعی و تحول دیجیتال</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
-        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
-        h2 { color: #2980b9; margin-top: 30px; }
-        .phase { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        ul { line-height: 1.8; }
-        .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
+        body {
+            font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
+            background: linear-gradient(180deg, #f5f7fb 0%, #e8edf5 100%);
+            color: #2c3e50;
+            line-height: 1.9;
+            margin: 0;
+            padding: 0;
+        }
+        .session-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            min-height: 100vh;
+        }
+        .session-hero {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: white;
+            padding: 50px 40px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .session-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(52, 152, 219, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(155, 89, 182, 0.3) 0%, transparent 50%);
+        }
+        .session-hero h1 {
+            color: white;
+            border: none;
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+        .session-hero .meta {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.75);
+            position: relative;
+            z-index: 2;
+        }
+        .session-hero .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 8px 18px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .session-hero .back-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(-3px);
+        }
+        .session-body { padding: 30px 40px 50px; }
+        h1 { color: #2c3e50; font-weight: 700; }
+        h2 {
+            background: linear-gradient(135deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 40px;
+            font-weight: 700;
+        }
+        h3 { color: #16a085; margin-top: 25px; font-weight: 600; }
+        h4 { color: #34495e; margin-top: 20px; font-weight: 600; }
+        .phase {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border: 1px solid #ecf0f1;
+            transition: all 0.3s ease;
+        }
+        .phase:hover {
+            box-shadow: 0 4px 20px rgba(52, 152, 219, 0.12);
+        }
+        .phase h2 { margin-top: 0; }
+        ul, ol { line-height: 2; padding-right: 25px; }
+        .ref-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #3498db15, #9b59b615);
+            color: #3498db;
+            margin-left: 10px;
+            font-size: 1rem;
+        }
+        .phase h2 i { color: #3498db; }
+        .footer-note {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
     </style>
 </head>
 <body>
-    <p><a href="index.html" class="back-link">← بازگشت به صفحه اصلی درس</a></p>
-    <a href="plan.html" class="back-link">← بازگشت به برنامه درسی</a>
+    <div class="session-container">
 
-    <h1>منابع تکمیلی درس هوش مصنوعی و تحول دیجیتال</h1>
+        <div class="session-hero">
+            <a href="index.html" class="back-link">← بازگشت به صفحه اصلی درس</a>
+            <h1><i class="fas fa-bookmark" style="margin-left: 12px;"></i>منابع تکمیلی درس</h1>
+            <div class="meta">کتاب‌ها، مقالات، ابزارها و منابع آنلاین پیشنهادی برای مطالعه بیشتر</div>
+        </div>
 
-    <div class="phase">
-        <h2>منابع اصلی درس</h2>
-        <ul>
-            <li>A. Lindholm, N. Wahlström, F. Lindsten, and T. B. Schön. <em>Machine Learning: A First Course for Engineers and Scientists</em>. Cambridge University Press, 2022.</li>
-            <li>T. M. Siebel. <em>Digital Transformation: Survive and Thrive in an Era of Mass Extinction</em>. Rodin Books, 2019.</li>
-            <li>E. Hossain. <em>Machine Learning Crash Course for Engineers</em>. Springer, 2024.</li>
-        </ul>
+        <div class="session-body">
+
+            <div class="phase">
+                <h2><i class="fas fa-graduation-cap"></i> منابع اصلی درس</h2>
+                <ul>
+                    <li><em>Machine Learning: A First Course for Engineers and Scientists</em> — A. Lindholm, N. Wahlström, F. Lindsten, T. B. Schön. Cambridge University Press, 2022.</li>
+                    <li><em>Digital Transformation: Survive and Thrive in an Era of Mass Extinction</em> — T. M. Siebel. Rodin Books, 2019.</li>
+                    <li><em>Machine Learning Crash Course for Engineers</em> — E. Hossain. Springer, 2024.</li>
+                </ul>
+            </div>
+
+            <div class="phase">
+                <h2><i class="fas fa-book-open"></i> منابع تکمیلی</h2>
+                <ul>
+                    <li><em>Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow</em> — A. Géron. O'Reilly, 2019.</li>
+                    <li><em>Artificial Intelligence: A Modern Approach</em> — S. Russell, P. Norvig. Pearson, 2020.</li>
+                    <li><em>Deep Learning</em> — I. Goodfellow, Y. Bengio, A. Courville. MIT Press, 2016.</li>
+                    <li><em>The Elements of Statistical Learning</em> — T. Hastie, R. Tibshirani, J. Friedman. Springer, 2009.</li>
+                </ul>
+            </div>
+
+            <div class="phase">
+                <h2><i class="fas fa-globe"></i> منابع آنلاین</h2>
+                <ul>
+                    <li><strong>jupyter.org</strong> — محیط اجرای کدهای پایتون</li>
+                    <li><strong>Google Colab</strong> — محیط رایگان اجرای کد ML</li>
+                    <li><strong>Kaggle</strong> — مجموعه داده‌ها و رقابت‌ها</li>
+                    <li><strong>Scikit-learn Documentation</strong> — مستندات sklearn</li>
+                    <li><strong>TensorFlow Tutorials</strong> — آموزش‌های تنسورفلو</li>
+                    <li><strong>PyTorch Tutorials</strong> — آموزش‌های پای‌تورچ</li>
+                    <li><strong>Fast.ai</strong> — آموزش‌های رایگان یادگیری عمیق</li>
+                    <li><strong>Coursera — Machine Learning</strong> — دوره Andrew Ng</li>
+                </ul>
+            </div>
+
+            <div class="phase">
+                <h2><i class="fas fa-code"></i> کتابخانه‌های پایتون</h2>
+                <ul>
+                    <li><strong>NumPy</strong> — محاسبات عددی</li>
+                    <li><strong>Pandas</strong> — تحلیل داده</li>
+                    <li><strong>Matplotlib</strong> — رسم نمودار</li>
+                    <li><strong>Scikit-learn</strong> — یادگیری ماشین</li>
+                    <li><strong>TensorFlow</strong> — یادگیری عمیق</li>
+                    <li><strong>PyTorch</strong> — یادگیری عمیق</li>
+                    <li><strong>Seaborn</strong> — نمودارهای آماری</li>
+                    <li><strong>Statsmodels</strong> — مدل‌های آماری</li>
+                </ul>
+            </div>
+
+            <div class="phase">
+                <h2><i class="fas fa-database"></i> مجموعه داده‌های رایج</h2>
+                <ul>
+                    <li><strong>UCI Machine Learning Repository</strong> — مجموعه داده‌های classic</li>
+                    <li><strong>Kaggle Datasets</strong> — داده‌های متنوع</li>
+                    <li><strong>Google Dataset Search</strong> — جستجوی داده</li>
+                    <li><strong>OpenML</strong> — پلتفرم داده باز</li>
+                </ul>
+            </div>
+
+            <p class="footer-note">
+                منابع این صفحه صرفاً پیشنهادی هستند و استفاده از منابع جایگزین با کیفیت مشکلی ندارد.
+            </p>
+
+        </div>
     </div>
-
-    <div class="phase">
-        <h2>منابع تکمیلی</h2>
-        <ul>
-            <li>A. Géron. <em>Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow</em>. O'Reilly, 2019.</li>
-            <li>S. Russell and P. Norvig. <em>Artificial Intelligence: A Modern Approach</em>. Pearson, 2020.</li>
-            <li>I. Goodfellow, Y. Bengio, and A. Courville. <em>Deep Learning</em>. MIT Press, 2016.</li>
-            <li>T. Hastie, R. Tibshirani, and J. Friedman. <em>The Elements of Statistical Learning</em>. Springer, 2009.</li>
-        </ul>
-    </div>
-
-    <div class="phase">
-        <h2>منابع آنلاین</h2>
-        <ul>
-            <li><strong>jupyter.org</strong> - محیط اجرای کدهای پایتون</li>
-            <li><strong>Google Colab</strong> - محیط رایگان اجرای کد ML</li>
-            <li><strong>Kaggle</strong> - مجموعه داده‌ها و رقابت‌ها</li>
-            <li><strong>Scikit-learn Documentation</strong> - مستندات sklearn</li>
-            <li><strong>TensorFlow Tutorials</strong> - آموزش‌های تنسورفلو</li>
-            <li><strong>PyTorch Tutorials</strong> - آموزش‌های پای‌تورچ</li>
-            <li><strong>Fast.ai</strong> - آموزش‌های رایگان یادگیری عمیق</li>
-            <li><strong>Coursera - Machine Learning</strong> - دوره Andrew Ng</li>
-        </ul>
-    </div>
-
-    <div class="phase">
-        <h2>کتابخانه‌های پایتون</h2>
-        <ul>
-            <li><strong>NumPy</strong> - محاسبات عددی</li>
-            <li><strong>Pandas</strong> - تحلیل داده</li>
-            <li><strong>Matplotlib</strong> - رسم نمودار</li>
-            <li><strong>Scikit-learn</strong> - یادگیری ماشین</li>
-            <li><strong>TensorFlow</strong> - یادگیری عمیق</li>
-            <li><strong>PyTorch</strong> - یادگیری عمیق</li>
-            <li><strong>Seaborn</strong> - نمودارهای آماری</li>
-            <li><strong>Statsmodels</strong> - مدل‌های آماری</li>
-        </ul>
-    </div>
-
-    <div class="phase">
-        <h2>مجموعه داده‌های رایج</h2>
-        <ul>
-            <li><strong>UCI Machine Learning Repository</strong> - مجموعه داده‌های classic</li>
-            <li><strong>Kaggle Datasets</strong> - داده‌های متنوع</li>
-            <li><strong>Google Dataset Search</strong> - جستجوی داده</li>
-            <li><strong>OpenML</strong> - پلتفرم داده باز</li>
-        </ul>
-    </div>
-
-    <p style="text-align: center; color: #7f8c8d; margin-top: 40px;">
-        <a href="plan.html">بازگشت به برنامه درسی</a>
-    </p>
 </body>
 </html>
